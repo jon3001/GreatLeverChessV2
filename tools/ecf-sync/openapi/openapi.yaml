@@ -1,0 +1,420 @@
+openapi: 3.1.0
+
+info:
+  title: LMS v2 REST API
+  version: '2'
+  description: |
+    Read-only JSON API for League Management System (LMS) data.
+
+    All endpoints require a valid API key. Keys are issued per LMS user and
+    carry exactly the same permissions as their owner — data that is
+    restricted in the web interface is equally restricted via the API.
+
+    ## Authentication
+
+    Supply your API key via the `Authorization: Bearer lmsk_...` header.
+
+    Keys can be created and managed at `/user/{uid}/api-keys`.
+
+servers:
+  - url: /lms/lmsrest/v2
+    description: Production
+  - url: /test10/lmsrest/v2
+    description: Test environment
+  - url: /lmsdev/lmsrest/v2
+    description: Development environment
+
+security:
+  - bearerAuth: []
+
+paths:
+
+  /org/{org}/seasons:
+    get:
+      operationId: getSeasons
+      summary: List seasons for an organisation
+      parameters:
+        - $ref: '#/components/parameters/OrgId'
+      responses:
+        '200':
+          description: Seasons belonging to the organisation, ordered by status (`active`, `new`, `old`) then display order within each status
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [seasons]
+                properties:
+                  seasons:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Season'
+              example:
+                seasons:
+                  - id: 1
+                    name: '2025-26'
+                    status: active
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /season/{sid}/events:
+    get:
+      operationId: getSeasonEvents
+      summary: List events in a season
+      parameters:
+        - $ref: '#/components/parameters/SeasonId'
+      responses:
+        '200':
+          description: Events (divisions, cups, etc.) within the season
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [events]
+                properties:
+                  events:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Event'
+              example:
+                events:
+                  - id: 1
+                    name: Division 1
+                    type: team_league
+                  - id: 2
+                    name: Division 2
+                    type: team_league
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /event/{eid}/results:
+    get:
+      operationId: getEventResults
+      summary: Game results for an event
+      description: |
+        Returns results and scheduling information for all fixtures in the event.
+
+        The response shape depends on the event type:
+        - **Team events** (league, knockout): returns `fixtures`, each with
+          board-level game results, team names, and aggregate scores.
+        - **Individual events** (Swiss, all-play-all, etc.): returns `rounds`,
+          each with a list of games and the round date/time.
+
+        Fixtures and rounds are included even if no games have been played yet,
+        so that date and time information is always available. All fixtures are
+        returned regardless of their `winner` status; use that field to filter
+        if needed.
+      parameters:
+        - $ref: '#/components/parameters/EventId'
+      responses:
+        '200':
+          description: Game results — shape varies by event type (see description)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventResults'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+
+components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: '`Authorization: Bearer lmsk_...`'
+
+  parameters:
+    OrgId:
+      name: org
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: Organisation ID
+    SeasonId:
+      name: sid
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: Season ID
+    EventId:
+      name: eid
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: Event ID
+
+  responses:
+    Unauthenticated:
+      description: No API key provided, or the key is invalid or disabled
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: The API key owner does not have permission to view this data
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  schemas:
+
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+          description: Human-readable description of the problem
+
+    NamedId:
+      type: object
+      required: [id, name]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+
+    EventType:
+      type: string
+      enum:
+        - team_league
+        - knockout_draw_start
+        - knockout_draw_round
+        - individual_swiss
+        - individual_unstructured
+        - individual_all_play_all
+        - individual_knockout
+
+    Event:
+      type: object
+      required: [id, name, type]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/EventType'
+
+    Season:
+      type: object
+      required: [id, name, status]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        status:
+          type: string
+          enum: [new, active, old]
+
+    Player:
+      type: object
+      required: [lms_id, rating_code, name, rating, secondary_rating]
+      properties:
+        lms_id:
+          type: integer
+          description: >
+            LMS internal player ID. Negative values denote special
+            non-player slots (byes, defaults, etc.).
+        rating_code:
+          type: ['string', 'null']
+          description: Federation rating code including check digit, e.g. `123456A`
+        name:
+          type: ['string', 'null']
+          description: Player name in "Lastname, Firstname" format
+        rating:
+          type: ['integer', 'null']
+          description: >
+            Primary rating saved when the match result was entered (the
+            non-bracketed value in the HTML match card view). The rating list
+            used is configured per event by the organiser. Null if unavailable.
+        secondary_rating:
+          type: ['integer', 'null']
+          description: >
+            Secondary rating from the event's configured secondary rating list
+            (the bracketed value in the HTML match card view). Null if no
+            secondary rating list is configured for this event, or if the
+            player has no entry in that list.
+
+    TeamGame:
+      type: object
+      required: [board, home_colour, result, home_player, away_player]
+      properties:
+        board:
+          type: integer
+          description: Board number, where 1 is the top board
+        home_colour:
+          type: string
+          enum: [W, B]
+          description: Chess colour played by the home-team player
+        result:
+          type: ['string', 'null']
+          enum: [home_win, home_default_win, away_win, away_default_win, draw, double_default, adjourned, adjudicated, null]
+          description: |
+            Game result from the home team's perspective:
+            - `home_win` — home player won
+            - `home_default_win` — home player won because away player defaulted (game not played)
+            - `away_win` — away player won
+            - `away_default_win` — away player won because home player defaulted (game not played)
+            - `draw` — draw
+            - `double_default` — both players defaulted (scored as 0-0)
+            - `adjourned` — game not yet completed
+            - `adjudicated` — result determined by adjudication
+            - `null` — result not recorded or unrecognised
+        home_player:
+          $ref: '#/components/schemas/Player'
+        away_player:
+          $ref: '#/components/schemas/Player'
+
+    IndividualGame:
+      type: object
+      required: [result, white_player, black_player]
+      properties:
+        result:
+          type: ['string', 'null']
+          enum: [white_win, white_default_win, black_win, black_default_win, draw, double_default, adjourned, adjudicated, null]
+          description: |
+            Game result:
+            - `white_win` — white player won
+            - `white_default_win` — white player won because black player defaulted (game not played)
+            - `black_win` — black player won
+            - `black_default_win` — black player won because white player defaulted (game not played)
+            - `draw` — draw
+            - `double_default` — both players defaulted (scored as 0-0)
+            - `adjourned` — game not yet completed
+            - `adjudicated` — result determined by adjudication
+            - `null` — result not recorded or unrecognised
+        white_player:
+          $ref: '#/components/schemas/Player'
+        black_player:
+          $ref: '#/components/schemas/Player'
+
+    IndividualRound:
+      type: object
+      required: [fixture_id, round, date, time, games]
+      properties:
+        fixture_id:
+          type: integer
+        round:
+          type: integer
+          description: Round number within the event
+        date:
+          type: ['string', 'null']
+          format: date
+          description: Round date in YYYY-MM-DD format, or null if not scheduled
+        time:
+          type: ['string', 'null']
+          description: Round start time in HH:MM (24-hour) format, or null if not known
+        games:
+          type: array
+          items:
+            $ref: '#/components/schemas/IndividualGame'
+          description: Games in this round, ordered by board number
+
+    FixtureWinner:
+      type: string
+      enum:
+        - home
+        - away
+        - draw
+        - home_winning
+        - away_winning
+        - disputed
+        - unknown
+        - none
+      description: |
+        Result or current status of the fixture:
+        - `home` — home team won
+        - `away` — away team won
+        - `draw` — match drawn
+        - `home_winning` — incomplete, home team currently winning
+        - `away_winning` — incomplete, away team currently winning
+        - `disputed` — result is under dispute
+        - `unknown` — result not yet entered (future or unplayed fixture)
+        - `none` — fixture does not contribute to the league table
+
+    Fixture:
+      type: object
+      required: [fixture_id, round, date, time, home_team, away_team, home_score, away_score, winner, board_count, games]
+      properties:
+        fixture_id:
+          type: integer
+        round:
+          type: integer
+          description: Round number within the event
+        date:
+          type: ['string', 'null']
+          format: date
+          description: Match date in YYYY-MM-DD format, or null if not yet scheduled
+        time:
+          type: ['string', 'null']
+          description: Match start time in HH:MM (24-hour) format, falling back to the home club's default match time, or null if not known
+        home_team:
+          type: ['string', 'null']
+        away_team:
+          type: ['string', 'null']
+        home_score:
+          type: number
+          description: Total match points for the home team (half-point increments)
+        away_score:
+          type: number
+          description: Total match points for the away team (half-point increments)
+        winner:
+          $ref: '#/components/schemas/FixtureWinner'
+        board_count:
+          type: integer
+          description: Number of boards in the match, as configured for the event
+        games:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamGame'
+          description: Individual board results, ordered by board number
+
+    TeamEventResults:
+      type: object
+      required: [event_name, event_type, fixtures]
+      properties:
+        event_name:
+          type: string
+        event_type:
+          $ref: '#/components/schemas/EventType'
+        fixtures:
+          type: array
+          items:
+            $ref: '#/components/schemas/Fixture'
+          description: Fixtures ordered by fixture ID; future fixtures with no games yet have an empty `games` array
+
+    IndividualEventResults:
+      type: object
+      required: [event_name, event_type, rounds]
+      properties:
+        event_name:
+          type: string
+        event_type:
+          $ref: '#/components/schemas/EventType'
+        rounds:
+          type: array
+          items:
+            $ref: '#/components/schemas/IndividualRound'
+          description: Rounds ordered by round number; future rounds with no games yet have an empty `games` array
+
+    EventResults:
+      oneOf:
+        - $ref: '#/components/schemas/TeamEventResults'
+        - $ref: '#/components/schemas/IndividualEventResults'
