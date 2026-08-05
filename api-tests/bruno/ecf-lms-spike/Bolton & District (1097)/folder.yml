@@ -1,0 +1,7 @@
+info:
+  name: Bolton & District (1097)
+  type: folder
+  seq: 2
+
+request:
+  auth: inherit

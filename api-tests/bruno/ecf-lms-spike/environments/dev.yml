@@ -1,0 +1,7 @@
+name: dev
+variables:
+  - name: baseUrl
+    value: https://lms.englishchess.org.uk/lms/lmsrest/v2
+  - secret: true
+    name: bearerToken
+    description: ""
