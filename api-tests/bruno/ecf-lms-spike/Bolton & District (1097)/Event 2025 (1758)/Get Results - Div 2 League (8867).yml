@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{baseUrl}}/event/8868/results"
+  url: "{{baseUrl}}/event/8867/results"
   auth:
     type: bearer
     token: "{{bearerToken}}"

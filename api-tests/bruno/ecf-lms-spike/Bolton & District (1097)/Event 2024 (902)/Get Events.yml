@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{baseUrl}}/season/901/events"
+  url: "{{baseUrl}}/season/902/events"
   auth:
     type: bearer
     token: "{{bearerToken}}"
