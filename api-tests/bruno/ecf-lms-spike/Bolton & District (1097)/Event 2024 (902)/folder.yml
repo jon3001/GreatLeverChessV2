@@ -1,0 +1,7 @@
+info:
+  name: Event 2024 (902)
+  type: folder
+  seq: 3
+
+request:
+  auth: inherit
