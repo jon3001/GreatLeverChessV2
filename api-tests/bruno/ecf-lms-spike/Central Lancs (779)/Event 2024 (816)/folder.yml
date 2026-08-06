@@ -1,0 +1,7 @@
+info:
+  name: Event 2024 (816)
+  type: folder
+  seq: 3
+
+request:
+  auth: inherit
