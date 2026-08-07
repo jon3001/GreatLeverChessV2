@@ -1,3 +1,6 @@
 baseURL = 'https://example.org/'
 locale = 'en-us'
 title = 'My New Hugo Project'
+
+[taxonomies]
+    season = 'seasons'

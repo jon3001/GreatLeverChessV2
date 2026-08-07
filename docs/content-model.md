@@ -22,7 +22,7 @@ fixture file directly.
     organisation: central-lancashire   # normalised org slug, from data/own_team.json's keys
     event: division-a                  # normalised event slug
     event_type: team_league            # team_league | knockout_draw_round
-    season: "2025-26"                  # normalised slug, from data/season.json — NOT the raw ECF sid
+    seasons: "2025-26"                  # normalised slug, from data/season.json — NOT the raw ECF sid
     own_team: great-lever-a            # resolved via data/own_team.json, per organisation
     opponent: Heywood A                # display string, trimmed — no stable ID exists, see §2.3
     venue: home                        # home | away
@@ -122,6 +122,62 @@ allowlist, not a special case.
 Hand-maintained through Stage 1/2, one line flipped at each season rollover.
 Stage 3's `EcfLmsSync` can overwrite it wholesale from whichever `season_id`
 the API reports `status: active` for, per organisation in its allowlist.
+
+**Field list — replace the existing `season` entry with:**
+
+    seasons: ["2025-26"]               # normalised slug, list-valued — NOT the raw ECF sid — see §2.5
+
+**Corrected 7 August 2026 — Session 2, second half.** Renamed `season` →
+`seasons`, and changed from a scalar string to a single-element list. Both
+changes are required by Hugo's taxonomy front matter convention, discovered
+while wiring the taxonomy declaration in `hugo.toml` — full finding in §2.5.
+The value still only ever holds one entry; the list shape is Hugo's
+requirement, not a modelling decision, and nothing about the season lookup
+files or the eventual transform's logic changes because of it.
+
+---
+
+### §2.5 — Hugo taxonomy wiring: `render: link`, not `render: never`
+
+**Confirmed 7 August 2026 — Session 2, second half.** `hugo.toml` declares:
+
+    [taxonomies]
+      season = 'seasons'
+
+Front matter uses the plural key (`seasons`), per Hugo convention — see the
+amended field list above.
+
+`content/fixtures/_index.md` cascades build options to every fixture:
+
+    ---
+    title: "Fixtures"
+    cascade:
+      - build:
+          render: link
+          list: always
+    ---
+
+**Why `link`, not `never`.** The delivery plan originally specified
+`render: never`. Verified against three hand-created test fixtures that
+`render: never` — despite `list: always` — silently excludes pages from
+whatever internal collection Hugo scans to build `.Site.Taxonomies`, even
+though the same pages still appear correctly in `.Site.RegularPages`.
+Isolated by changing only the cascade's `render` value and nothing else:
+switching to `render: link` fixed it immediately. `render: link` still
+writes no HTML file to disk — a fixture's computed `.Permalink` 404s exactly
+as `render: never`'s would have — so the practical outcome (no browsable
+per-fixture page) is unchanged. The difference is entirely about which
+internal Hugo collection the page counts as a member of, not about anything
+a site visitor could observe.
+
+**Governing rule for future sessions:** any page needing taxonomy membership
+without its own rendered page uses `render: link`, not `render: never`.
+
+**Also worth knowing:** the reserved front matter object is `build` on the
+Hugo version this project uses (0.164.0), not `_build`. Older tutorials and
+this plan's own earlier drafts use the pre-rename `_build`, which Hugo
+silently ignores rather than erroring on — no warning, no build failure,
+just a cascade that quietly does nothing.
 
 ---
 
