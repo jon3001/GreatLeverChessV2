@@ -1,0 +1,10 @@
+{
+  "bolton-district": [
+    { "raw_name": "Great Lever", "slug": "great-lever" }
+  ],
+  "central-lancashire": [
+    { "raw_name": "Great Lever A", "slug": "great-lever-a" },
+    { "raw_name": "Great Lever B", "slug": "great-lever-b" },
+    { "raw_name": "Great Lever C", "slug": "great-lever-c" }
+  ]
+}

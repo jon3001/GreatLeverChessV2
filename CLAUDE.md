@@ -25,6 +25,13 @@ Since Hugo 0.162, content files of type text/html are rejected by
 default under /content. Content is Markdown. Do not add HTML content
 files or relax security.allowContent without asking.
 
+`data/` files: filenames use underscores, not hyphens
+(`own_team.json`, not `own-team.json`). Hugo exposes `data/`
+filenames as Go template fields under `.Site.Data`, and a hyphenated
+name doesn't parse as valid dot notation — you'd be stuck writing
+`index .Site.Data "own-team"` everywhere instead of
+`.Site.Data.own_team`.
+
 ## How to work with me
 
 Explain non-trivial decisions inline. Do not produce finished files
@@ -45,3 +52,7 @@ current frontend idiom.
   JavaScript disabled. JS adds convenience, never function.
 - Semantic HTML and WCAG 2.2 AA as a baseline, not a later pass.
 - British English in all site content. Dates as "Tue 14 Oct 2026".
+- Fixture front matter schema is fixed — see docs/content-model.md.
+  Don't add, rename, or drop a field without flagging it first;
+  content-structure changes are expensive once real content exists
+  (spec §5).
