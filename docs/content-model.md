@@ -4,15 +4,13 @@
 real captured JSON (Bolton Division 1, Central Lancashire Division A, Vaux
 Cup, Friendly Development League — 2025/26 season, both leagues). Companion
 to `great_lever_chess_website_v2.md` §5, which this document makes concrete
-enough to hand to Session 3's transform. Hugo taxonomy wiring for `season`
-is a separate session — not covered here.
+enough to hand to Session 3's transform.
 
 ---
 
 ## 1. Fixture front matter
 
-One file per fixture, `content/fixtures/{slug}.md`, `_build.render: "never"`
-via a cascade in `content/fixtures/_index.md`. Machine-written and
+One file per fixture, content/fixtures/{slug}.md, build.render: "link" via a cascade in content/fixtures/_index.md — see §2.5 for why link rather than never. Machine-written and
 machine-owned — the sync tool is the sole writer; a human never edits a
 fixture file directly.
 
@@ -22,7 +20,7 @@ fixture file directly.
     organisation: central-lancashire   # normalised org slug, from data/own_team.json's keys
     event: division-a                  # normalised event slug
     event_type: team_league            # team_league | knockout_draw_round
-    seasons: "2025-26"                  # normalised slug, from data/season.json — NOT the raw ECF sid
+    seasons: ["2025-26"]                # normalised slug, list-valued — from data/season.json — NOT the raw ECF sid — see §2.5
     own_team: great-lever-a            # resolved via data/own_team.json, per organisation
     opponent: Heywood A                # display string, trimmed — no stable ID exists, see §2.3
     venue: home                        # home | away
