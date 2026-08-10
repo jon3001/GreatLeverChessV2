@@ -32,6 +32,18 @@ name doesn't parse as valid dot notation — you'd be stuck writing
 `index .Site.Data "own-team"` everywhere instead of
 `.Site.Data.own_team`.
 
+## ECF LMS capture data
+Raw ECF LMS API captures live under `ecf-captures/lms/`, never at
+the repo root directly — nested to leave room for a future
+`ecf-captures/rating/` sibling if the separate ECF Ratings API is
+ever integrated. Naming:
+`org-{orgId}/season-{seasonId}/event-{eventId}.json`, all three IDs
+zero-padded (org/season to 4 digits, event to 5) purely for stable
+directory/file sort order — the padding carries no other meaning,
+parse the numeric value, don't rely on its width. These are
+fixture inputs for `tools/ecf-lms-transform/`, committed, read-only
+from that tool's point of view.
+
 ## How to work with me
 
 Explain non-trivial decisions inline. Do not produce finished files
