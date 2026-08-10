@@ -6,13 +6,43 @@ Cup, Friendly Development League — 2025/26 season, both leagues). Companion
 to `great_lever_chess_website_v2.md` §5, which this document makes concrete
 enough to hand to Session 3's transform.
 
+**Revised 11 August 2026, pre-Session 3.** `lms_id` replaced by a nested
+`source` block (§2.6), generated filename convention fixed (§1), a fourth
+lookup file added (§4), and two new data-quality notes recorded (§3.6, §3.7).
+All settled before the transform wrote its first file, so no migration is
+implied — but nothing below is committed to the repo yet either.
+
 ---
 
 ## 1. Fixture front matter
 
-One file per fixture, content/fixtures/{slug}.md, build.render: "link" via a cascade in content/fixtures/_index.md — see §2.5 for why link rather than never. Machine-written and
-machine-owned — the sync tool is the sole writer; a human never edits a
-fixture file directly.
+One file per fixture. `build.render: "link"` via a cascade in
+`content/fixtures/_index.md` — see §2.5 for why `link` rather than `never`.
+Machine-written and machine-owned — the sync tool is the sole writer; a human
+never edits a fixture file directly.
+
+**Path and filename — fixed 11 August 2026:**
+
+    content/fixtures/{season}/ecflms-{fixture_id}.md
+
+The season subdirectory is a filesystem convenience only; it contains no
+`_index.md` and is therefore not its own Hugo section. The `ecflms-` prefix
+mirrors the `ecf-captures/lms/` provenance convention already used for the
+inputs, and matches `source.system` in the front matter below.
+
+Three properties the filename must keep, in priority order:
+
+1. **Deterministic and stable.** `EcfLmsSync` will later match-and-overwrite
+   the existing file. A filename derived from a mutable field — date or
+   opponent name — moves when a fixture is rearranged (§3.3), turning every
+   subsequent sync into a duplicate create rather than an update.
+2. **Derivable from the source identifier alone.** Nothing else in the
+   payload is guaranteed stable.
+3. **Source-tagged.** Cheap here specifically because fixtures render no page
+   (§2.5), so the filename is never a user-facing slug — it is purely a git
+   and idempotency key. No readability or SEO cost to weigh a prefix against.
+
+**Front matter:**
 
     date: 2025-11-25
     time: "19:30"                      # LMS fixture-level field; CAN BE NULL — see §3.1
@@ -20,7 +50,7 @@ fixture file directly.
     organisation: central-lancashire   # normalised org slug, from data/own_team.json's keys
     event: division-a                  # normalised event slug
     event_type: team_league            # team_league | knockout_draw_round
-    seasons: ["2025-26"]                # normalised slug, list-valued — from data/season.json — NOT the raw ECF sid — see §2.5
+    seasons: ["2025-26"]               # normalised slug, list-valued — from data/season.json — NOT the raw ECF sid — see §2.5
     own_team: great-lever-a            # resolved via data/own_team.json, per organisation
     opponent: Heywood A                # display string, trimmed — no stable ID exists, see §2.3
     venue: home                        # home | away
@@ -30,12 +60,22 @@ fixture file directly.
     score_against: 3
     declared_board_count: 6            # as declared; may not equal games.length — see spike findings
     boards: []                         # see §1.1
-    lms_id: 130772                     # the LMS fixture_id — NOT the same field as boards[].player.lms_id, see §3.5
+    source:                            # provenance block — see §2.6
+      system: ecflms
+      org_id: 779                      # parsed from the capture PATH, not the payload
+      season_id: 1805                  # parsed from the capture PATH, not the payload
+      event_id: 9131                   # parsed from the capture PATH, not the payload
+      fixture_id: 130772               # the LMS fixture_id, from the payload
 
 No `opponent_id`. No `last_synced` (lives in `data/sync-status.json`, unchanged
 from the 5 August decision). No `winner` (unreliable — derive outcome from
 scores; `games: []` / `winner: "unknown"` in the source is a played/unplayed
-signal only, see §2.1, never an outcome signal).
+signal only, see §2.1, never an outcome signal). No stored URLs — see §2.6.
+
+**Superseded 11 August 2026:** the top-level `lms_id` field is gone,
+replaced by `source.fixture_id`. Anything referring to a fixture by its LMS
+identity — the News article `related_fixture` join, the calendar feed's
+`UID`, the eventual sync tool's upsert key — now reads `source.fixture_id`.
 
 ### 1.1 `boards[]`
 
@@ -62,6 +102,15 @@ are excluded from any player-level aggregation but kept in `boards[]` verbatim
 — they're the source data for a future "defaults conceded" statistic. Every
 name string must be emitted quoted (`"Null, AJ"` is a real player; unquoted
 it's a YAML null literal).
+
+`rating: null` is a genuine unrated-player state and must be preserved as
+`null`, never coerced to `0`. The LMS's own match card renders it as `0000`,
+which is a display convention on ECF's side, not a rating value. Distinguish
+a real unrated player from a placeholder by `rating_code`, not by `rating`: a
+real player always carries a `rating_code` even when `rating` is null; only
+the `-2`/`-5` sentinels have `rating_code: null`. Both cases occur in the same
+captured fixture — `org-1097/season-1758/event-08866.json`, Atherton A v
+Radcliffe — which makes it a useful transform test case.
 
 ---
 
@@ -96,23 +145,35 @@ findings, defaults are not consistently reconciled by the API).
 
 ### 2.3 `own_team` / `opponent` resolution
 
-Match `home_team` and `away_team` against `data/own_team.json`'s entries for
-the fixture's `organisation`. Whichever side matches is `own_team` (resolved
-to its slug) and determines `venue`; the other side's raw string becomes
-`opponent` (trimmed, stored verbatim). No `opponent_id` — confirmed 6 August
-2026 that `home_team`/`away_team` are bare strings in every league, with no
-underlying identifier of any kind.
+**Trim `home_team` and `away_team` before matching** — see §3.6. This is not
+the same cosmetic concern as player-name whitespace, because team names are
+the join key.
+
+Match the trimmed `home_team` and `away_team` against `data/own_team.json`'s
+entries for the fixture's `organisation`. Whichever side matches is `own_team`
+(resolved to its slug) and determines `venue`; the other side's trimmed string
+becomes `opponent`, stored verbatim otherwise. No `opponent_id` — confirmed
+6 August 2026 that `home_team`/`away_team` are bare strings in every league,
+with no underlying identifier of any kind.
+
+A fixture where **neither** side matches the org's `own_team` entries is a
+transform error, not a silent skip — it means either a new Great Lever team
+variant the lookup doesn't know about, or a capture from an event Great Lever
+doesn't play in. Fail loudly and log the raw strings.
 
 ### 2.4 `season` resolution and the current-season pointer
 
 Look up `(organisation, raw season_id)` in `data/season.json` → normalised
-slug. The raw `sid` is not stored in front matter — once resolved, it's not
-needed downstream.
+slug. The raw `sid` is not stored under `seasons`, which holds only the
+normalised slug — but it *is* retained in `source.season_id` for provenance
+and link construction (§2.6). These are two different jobs: `seasons` is the
+taxonomy term the site groups by, `source.season_id` is the identifier the
+LMS knows the season by.
 
 `data/current_season.json` holds the currently-live season slug **per
 organisation** (not per team — a season is an organisational property; all of
 an org's teams share it). `/fixtures/` and `/results/` templates filter to
-fixtures where `season` matches that organisation's entry. An organisation
+fixtures where `seasons` contains that organisation's entry. An organisation
 absent from this file means Great Lever isn't fielding a team there this
 cycle — same graceful-degradation shape already used for the sync tool's org
 allowlist, not a special case.
@@ -120,10 +181,6 @@ allowlist, not a special case.
 Hand-maintained through Stage 1/2, one line flipped at each season rollover.
 Stage 3's `EcfLmsSync` can overwrite it wholesale from whichever `season_id`
 the API reports `status: active` for, per organisation in its allowlist.
-
-**Field list — replace the existing `season` entry with:**
-
-    seasons: ["2025-26"]               # normalised slug, list-valued — NOT the raw ECF sid — see §2.5
 
 **Corrected 7 August 2026 — Session 2, second half.** Renamed `season` →
 `seasons`, and changed from a scalar string to a single-element list. Both
@@ -133,9 +190,7 @@ The value still only ever holds one entry; the list shape is Hugo's
 requirement, not a modelling decision, and nothing about the season lookup
 files or the eventual transform's logic changes because of it.
 
----
-
-### §2.5 — Hugo taxonomy wiring: `render: link`, not `render: never`
+### 2.5 Hugo taxonomy wiring: `render: link`, not `render: never`
 
 **Confirmed 7 August 2026 — Session 2, second half.** `hugo.toml` declares:
 
@@ -143,7 +198,7 @@ files or the eventual transform's logic changes because of it.
       season = 'seasons'
 
 Front matter uses the plural key (`seasons`), per Hugo convention — see the
-amended field list above.
+field list in §1.
 
 `content/fixtures/_index.md` cascades build options to every fixture:
 
@@ -177,6 +232,63 @@ this plan's own earlier drafts use the pre-rename `_build`, which Hugo
 silently ignores rather than erroring on — no warning, no build failure,
 just a cascade that quietly does nothing.
 
+### 2.6 The `source` block — added 11 August 2026
+
+Replaces the flat `lms_id` field. Five keys: `system`, `org_id`, `season_id`,
+`event_id`, `fixture_id`.
+
+**Why it exists.** Three pressures, resolved together:
+
+- **Deep links back to the LMS.** Members should be able to verify a fixture
+  against the authoritative source. This is not merely a hedge against sync
+  delay: the API exposes no verification status at all (§3.7), so the
+  generated site structurally cannot show whether a result has been checked,
+  and must point at the page that can.
+- **`event_id` is not in the payload.** It exists only in the capture file
+  path. Without lifting it into front matter during Session 3, the
+  event-level link is unconstructable, and recovering it after backfill means
+  re-deriving it across every generated file.
+- **`lms_id` was the one ECF-specific name in an otherwise portable schema.**
+  Every other field — `date`, `own_team`, `opponent`, `boards[]` — would
+  apply unchanged to a differently-sourced fixture.
+
+**Why nested rather than `source_`-prefixed flat fields.** It quarantines the
+source-specific part of the schema in one visible place, and lets a
+differently-shaped source carry a different key set without the schema
+accumulating mostly-null columns. Hugo reads nested params without ceremony
+(`.Params.source.fixture_id`; `where` accepts the dotted path). The one thing
+nesting cannot do is back a taxonomy, which requires top-level values — not a
+constraint here, since a `/source/ecflms/` archive page isn't wanted.
+
+**Where the IDs come from.** `fixture_id` is in the payload. The other three
+are parsed out of the capture path
+(`ecf-captures/lms/org-{orgId}/season-{seasonId}/event-{eventId}.json`) —
+parse the numeric value, never infer meaning from the zero-padding width.
+Re-confirmed 11 August 2026 that the payload's complete top-level key set is
+`event_name`, `event_type`, `fixtures[]` and nothing else: no event, org or
+season context anywhere in the response body.
+
+**URLs are not stored in front matter.** IDs live in the fixture files; URL
+patterns live in `data/sources.json` (§4), keyed by `source.system`; the
+template assembles the link. Same division of labour as `own_team.json` and
+`season.json`. The LMS is Drupal, and Drupal path structures do get
+restructured across major versions — a pattern change should be a one-line
+edit rather than a regeneration and re-commit of every content file. Storing
+IDs also keeps fixture files honest about what the API actually returned.
+
+**Deliberately not designed yet.** An optional `source.url` escape hatch for
+sources with no derivable per-fixture URL, and the template's graceful "no
+link available" path (a Session 8 concern). Neither is needed while ECF LMS
+is the only source.
+
+**Not a multi-source abstraction.** If a non-LMS league is ever ingested it
+gets its own disposable transform writing this same front matter — not an
+extended `ecf-lms-transform` understanding two formats. Two alternative
+sources were examined concretely on 11 August (South East Lancashire Summer
+League's MS Access XML export; the ECF Ratings site's per-event game lists)
+and both are structurally unlike the LMS payload in ways no interface
+invented from a sample of one would have predicted.
+
 ---
 
 ## 3. Data-quality notes for the Session 3 transform
@@ -200,24 +312,51 @@ Confirmed directly in both leagues' live 2025/26 data (Bolton `123667`,
 `123671`; Central Lancashire `130780` — each ID-sequenced among fixtures from
 one month but actually played months later). `date` should always be read as
 "the current scheduled/played date," never assumed frozen at an original
-slot.
+slot. This is also why the generated filename keys on `fixture_id` and not on
+the date (§1).
 
 **3.4 — Postponed and withdrawn fixtures are indistinguishable from the API
 alone.** Both serialise as `0–0`, `winner: "unknown"`, `games: []`. See §2.1.
 
-**3.5 — `lms_id` names two unrelated things.** The API's `fixture_id` becomes
-front matter's top-level `lms_id`. The API's `player.lms_id` becomes
-`boards[].player.lms_id` / `boards[].opponent.lms_id` — a completely
-different value, scoped to a player not a fixture. Same field name, no
-relationship. Worth a comment in the transform code itself, not just here.
+**3.5 — `lms_id` no longer names two things at fixture level.** Historically
+the API's `fixture_id` became a top-level front matter `lms_id`, colliding
+confusingly with `player.lms_id` — a completely different value scoped to a
+player, not a fixture. The `source` block resolves this: the fixture
+identifier is now `source.fixture_id`, and `lms_id` appears only inside
+`boards[].player` / `boards[].opponent`, where it means exactly what the API
+means by it. Still worth a comment in the transform code, since the API's own
+naming retains the collision.
+
+**3.6 — Team names carry stray whitespace, and it matters more than player
+whitespace does.** *(new 11 August 2026)* Bolton Division 1 returns
+`"Radcliffe "` with a trailing space on every one of the ten fixtures
+involving that club. Not observed in Central Lancashire Division A (event
+9131), so it is likely per-organisation rather than universal.
+
+Player-name whitespace was downgraded to a cosmetic display concern on
+3 August because `rating_code` carries the join instead. **That downgrade does
+not transfer to teams:** `home_team`/`away_team` have no identifier at all
+(§2.3), so the name *is* the key for the `own_team` and `opponent` lookups.
+An untrimmed `"Radcliffe "` simply fails to match a clean `"Radcliffe"` and
+falls through — silently, unless §2.3's fail-loudly rule catches it. Trim both
+team names at transform time, alongside player names.
+
+**3.7 — The API exposes no verification status.** *(new 11 August 2026)* The
+LMS fixtures page carries a Status column (`OV` / `OU` — verified /
+unverified) and each match card footer names who reported and verified the
+result. None of it is in the payload. The generated site therefore cannot
+display whether a result has been verified and **must not imply that it has**
+— which is the practical argument for the per-fixture deep link in §2.6.
 
 ---
 
 ## 4. `data/` lookup files
 
-Three files, JSON (matching the format already established by
+Four files, JSON (matching the format already established by
 `data/sync-status.json` and `data/stats/season.json` elsewhere in the spec —
-no new format introduced for these).
+no new format introduced for these). Filenames use underscores, not hyphens —
+Hugo exposes `data/` filenames as Go template fields under `.Site.Data`, and
+a hyphenated name doesn't parse as dot notation.
 
 ### `data/own_team.json`
 
@@ -236,6 +375,10 @@ lettered.
         { "raw_name": "Great Lever C", "slug": "great-lever-c" }
       ]
     }
+
+`raw_name` values are stored already-trimmed; the transform trims the
+incoming API string before comparing (§3.6), so no entry should ever be added
+here with leading or trailing whitespace to "match" a dirty source value.
 
 Manchester's `"Great Lever 1"` variant deliberately not included — out of
 scope until Stage 4 backfill.
@@ -268,11 +411,37 @@ Great Lever team; absence means "not playing there this cycle."
       "central-lancashire": "2025-26"
     }
 
+### `data/sources.json` — added 11 August 2026
+
+URL patterns keyed by `source.system`, so templates can build deep links from
+the IDs in front matter rather than having URLs baked into every content file
+(§2.6). Placeholders are substituted from the fixture's `source` block.
+
+    {
+      "ecflms": {
+        "label": "ECF LMS",
+        "fixture_url": "https://lms.englishchess.org.uk/lms/fixture/{fixture_id}",
+        "event_url": "https://lms.englishchess.org.uk/lms/event/{event_id}/fixtures"
+      }
+    }
+
+No template consumes this until Session 8. It lands in Session 3 because it
+is part of the same decision as the `source` block, and splitting the two
+invites the URL patterns being hard-coded into a template later "just for
+now."
+
 ---
 
-## 5. Explicitly out of scope tonight
+## 5. Explicitly out of scope
 
-Hugo taxonomy wiring for `season` (`/archive/{season}/` generation,
-`taxonomy.html`/`term.html` templates) — separate sitting, per the delivery
-plan's Session 2 split. Nothing above blocks it; these three files are its
-prerequisite, not its implementation.
+**Session 2's original scope note, retained:** Hugo taxonomy wiring for
+`season` was completed in Session 2's second half — see §2.5.
+
+**Session 3 non-goals**, unchanged from the delivery plan: no HTTP, no auth,
+no scheduling, no idempotent upsert. The transform reads files from disk and
+writes files to disk. Anything that would need an `HttpClient` belongs to
+`EcfLmsSync`.
+
+**Not designed until a concrete need exists:** any shared abstraction over
+multiple data sources (§2.6), a `source.url` escape hatch, and the
+"no link available" template fallback.
