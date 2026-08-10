@@ -1,0 +1,17 @@
+info:
+  name: Get Results - Div A League (6826)
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{baseUrl}}/event/6826/results"
+  auth:
+    type: bearer
+    token: "{{bearerToken}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

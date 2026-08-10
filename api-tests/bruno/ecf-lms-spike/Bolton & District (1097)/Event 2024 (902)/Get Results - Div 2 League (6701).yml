@@ -1,0 +1,17 @@
+info:
+  name: Get Results - Div 2 League (6701)
+  type: http
+  seq: 5
+
+http:
+  method: GET
+  url: "{{baseUrl}}/event/6701/results"
+  auth:
+    type: bearer
+    token: "{{bearerToken}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

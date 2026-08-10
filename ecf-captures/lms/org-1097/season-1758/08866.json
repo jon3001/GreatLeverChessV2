@@ -1,0 +1,3484 @@
+{
+    "event_name": "Division 1",
+    "event_type": "team_league",
+    "fixtures": [
+        {
+            "fixture_id": 123656,
+            "round": 1,
+            "date": "2025-10-06",
+            "time": "19:30",
+            "home_team": "Bolton A",
+            "away_team": "Great Lever",
+            "home_score": 1,
+            "away_score": 4,
+            "winner": "away",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19515,
+                        "rating_code": "251776A",
+                        "name": "McLaughlin, Noel S",
+                        "rating": 1934,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19564,
+                        "rating_code": "119904D",
+                        "name": "Surtees, Mike J",
+                        "rating": 2152,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 114560,
+                        "rating_code": "275063G",
+                        "name": "Manson, Jonathan",
+                        "rating": 1600,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19567,
+                        "rating_code": "127696H",
+                        "name": "Kobryn, Peter J",
+                        "rating": 1889,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19536,
+                        "rating_code": "312061C",
+                        "name": "Eccleston, Bryony",
+                        "rating": 1698,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19569,
+                        "rating_code": "136971E",
+                        "name": "Jardine, Chris",
+                        "rating": 1860,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19498,
+                        "rating_code": "108513L",
+                        "name": "Clissold, Julian C",
+                        "rating": 1647,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19560,
+                        "rating_code": "104991E",
+                        "name": "Crowther, Andrew",
+                        "rating": 1668,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19503,
+                        "rating_code": "114007D",
+                        "name": "Lamb, Ian D",
+                        "rating": 1595,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19572,
+                        "rating_code": "287757A",
+                        "name": "Davies, Brian",
+                        "rating": 1246,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123657,
+            "round": 1,
+            "date": "2025-10-08",
+            "time": "19:30",
+            "home_team": "Radcliffe ",
+            "away_team": "Bolton B",
+            "home_score": 4,
+            "away_score": 1,
+            "winner": "home",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19496,
+                        "rating_code": "104797J",
+                        "name": "Tyton, Adam",
+                        "rating": 1896,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 100766,
+                        "rating_code": "283645C",
+                        "name": "Storrie-Baxter, James",
+                        "rating": 1600,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19528,
+                        "rating_code": "302953A",
+                        "name": "Doherty, Paul",
+                        "rating": 1791,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19512,
+                        "rating_code": "185739D",
+                        "name": "Beavan, Andrew",
+                        "rating": 1467,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 19575,
+                        "rating_code": "270788D",
+                        "name": "Hutchinson, Steve",
+                        "rating": 1589,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 58747,
+                        "rating_code": "345821A",
+                        "name": "Swallow, Geoff",
+                        "rating": 1550,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 19574,
+                        "rating_code": "166521C",
+                        "name": "Baron, Lee",
+                        "rating": 1351,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19505,
+                        "rating_code": "119099E",
+                        "name": "Skipworth, John C",
+                        "rating": 1535,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 123748,
+                        "rating_code": "381310B",
+                        "name": "Hamid, Imran",
+                        "rating": 1350,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19506,
+                        "rating_code": "119961E",
+                        "name": "Swift, Mike",
+                        "rating": 1357,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 6,
+                    "home_colour": "W",
+                    "result": "double_default",
+                    "home_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123658,
+            "round": 1,
+            "date": "2025-10-09",
+            "time": "19:30",
+            "home_team": "Swinton \u0026 Worsley A",
+            "away_team": "Atherton A",
+            "home_score": 1,
+            "away_score": 4,
+            "winner": "away",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "W",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 51007,
+                        "rating_code": "134031B",
+                        "name": "Wilson, Andrew I",
+                        "rating": 2070,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 56494,
+                        "rating_code": "344961A",
+                        "name": "Norris, Ethan",
+                        "rating": 2186,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 121628,
+                        "rating_code": "136107H",
+                        "name": "Lewis, Andrew",
+                        "rating": 2042,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 113824,
+                        "rating_code": "376312C",
+                        "name": "Barnes, Jamie",
+                        "rating": 1967,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "W",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 74169,
+                        "rating_code": "210514H",
+                        "name": "Burgess, David",
+                        "rating": 1927,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 41610,
+                        "rating_code": "127340B",
+                        "name": "Kay, Lee P",
+                        "rating": 1960,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 41533,
+                        "rating_code": "244471K",
+                        "name": "Hodgson, Christopher",
+                        "rating": 1887,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19561,
+                        "rating_code": "108722J",
+                        "name": "Connor, Michael I",
+                        "rating": 1757,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 83243,
+                        "rating_code": "345611A",
+                        "name": "Maheshwari, Shlok",
+                        "rating": 1733,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 41619,
+                        "rating_code": "341416E",
+                        "name": "Barnett, Elliott",
+                        "rating": 1702,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 6,
+                    "home_colour": "B",
+                    "result": "double_default",
+                    "home_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123659,
+            "round": 2,
+            "date": "2025-10-23",
+            "time": "19:30",
+            "home_team": "Great Lever",
+            "away_team": "Radcliffe ",
+            "home_score": 4,
+            "away_score": 1,
+            "winner": "home",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 19564,
+                        "rating_code": "119904D",
+                        "name": "Surtees, Mike J",
+                        "rating": 2152,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19496,
+                        "rating_code": "104797J",
+                        "name": "Tyton, Adam",
+                        "rating": 1896,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 19569,
+                        "rating_code": "136971E",
+                        "name": "Jardine, Chris",
+                        "rating": 1860,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19575,
+                        "rating_code": "270788D",
+                        "name": "Hutchinson, Steve",
+                        "rating": 1589,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19570,
+                        "rating_code": "143105F",
+                        "name": "Lonsdale, Jon I",
+                        "rating": 1813,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19574,
+                        "rating_code": "166521C",
+                        "name": "Baron, Lee",
+                        "rating": 1351,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19560,
+                        "rating_code": "104991E",
+                        "name": "Crowther, Andrew",
+                        "rating": 1668,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 123748,
+                        "rating_code": "381310B",
+                        "name": "Hamid, Imran",
+                        "rating": 1350,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19572,
+                        "rating_code": "287757A",
+                        "name": "Davies, Brian",
+                        "rating": 1246,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 69197,
+                        "rating_code": "327385E",
+                        "name": "Pitchford, Trevor",
+                        "rating": 1423,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123660,
+            "round": 2,
+            "date": "2025-10-20",
+            "time": "19:30",
+            "home_team": "Bolton B",
+            "away_team": "Swinton \u0026 Worsley A",
+            "home_score": 2,
+            "away_score": 3,
+            "winner": "away",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 64732,
+                        "rating_code": "348483L",
+                        "name": "Agyemang, David",
+                        "rating": 1802,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 51007,
+                        "rating_code": "134031B",
+                        "name": "Wilson, Andrew I",
+                        "rating": 2070,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19498,
+                        "rating_code": "108513L",
+                        "name": "Clissold, Julian C",
+                        "rating": 1647,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 41533,
+                        "rating_code": "244471K",
+                        "name": "Hodgson, Christopher",
+                        "rating": 1887,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 100766,
+                        "rating_code": "283645C",
+                        "name": "Storrie-Baxter, James",
+                        "rating": 1600,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 57221,
+                        "rating_code": "345643C",
+                        "name": "Chalupa, Ondrej",
+                        "rating": 1798,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 58747,
+                        "rating_code": "345821A",
+                        "name": "Swallow, Geoff",
+                        "rating": 1550,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 41562,
+                        "rating_code": "331091H",
+                        "name": "Chu, Yin",
+                        "rating": 1404,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19506,
+                        "rating_code": "119961E",
+                        "name": "Swift, Mike",
+                        "rating": 1357,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 83249,
+                        "rating_code": "346407G",
+                        "name": "Otaryan, David",
+                        "rating": 1453,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123661,
+            "round": 2,
+            "date": "2025-10-21",
+            "time": "19:30",
+            "home_team": "Atherton A",
+            "away_team": "Bolton A",
+            "home_score": 4.5,
+            "away_score": 0.5,
+            "winner": "home",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 71694,
+                        "rating_code": "230117K",
+                        "name": "McCarthy, Damian M",
+                        "rating": 1942,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19515,
+                        "rating_code": "251776A",
+                        "name": "McLaughlin, Noel S",
+                        "rating": 1934,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 103457,
+                        "rating_code": "129586L",
+                        "name": "Brodie, David G",
+                        "rating": 1809,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19499,
+                        "rating_code": "111056B",
+                        "name": "Gardner, Allan",
+                        "rating": 1792,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19561,
+                        "rating_code": "108722J",
+                        "name": "Connor, Michael I",
+                        "rating": 1757,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19505,
+                        "rating_code": "119099E",
+                        "name": "Skipworth, John C",
+                        "rating": 1535,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 41612,
+                        "rating_code": "170361E",
+                        "name": "Leonard, Paul",
+                        "rating": 1639,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19506,
+                        "rating_code": "119961E",
+                        "name": "Swift, Mike",
+                        "rating": 1357,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "B",
+                    "result": "home_default_win",
+                    "home_player": {
+                        "lms_id": 41618,
+                        "rating_code": "322945C",
+                        "name": "Oldham, Anthony",
+                        "rating": 1471,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123662,
+            "round": 3,
+            "date": "2025-11-03",
+            "time": "19:30",
+            "home_team": "Bolton B",
+            "away_team": "Great Lever",
+            "home_score": 1.5,
+            "away_score": 3.5,
+            "winner": "away",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "W",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 100766,
+                        "rating_code": "283645C",
+                        "name": "Storrie-Baxter, James",
+                        "rating": 1600,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19564,
+                        "rating_code": "119904D",
+                        "name": "Surtees, Mike J",
+                        "rating": 2152,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 58747,
+                        "rating_code": "345821A",
+                        "name": "Swallow, Geoff",
+                        "rating": 1550,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19569,
+                        "rating_code": "136971E",
+                        "name": "Jardine, Chris",
+                        "rating": 1860,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "W",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 114560,
+                        "rating_code": "275063G",
+                        "name": "Manson, Jonathan",
+                        "rating": 1600,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19570,
+                        "rating_code": "143105F",
+                        "name": "Lonsdale, Jon I",
+                        "rating": 1813,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19505,
+                        "rating_code": "119099E",
+                        "name": "Skipworth, John C",
+                        "rating": 1447,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19560,
+                        "rating_code": "104991E",
+                        "name": "Crowther, Andrew",
+                        "rating": 1668,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 125321,
+                        "rating_code": "382102L",
+                        "name": "Taylor, Dianne",
+                        "rating": 1400,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19572,
+                        "rating_code": "287757A",
+                        "name": "Davies, Brian",
+                        "rating": 1246,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123663,
+            "round": 3,
+            "date": "2025-11-03",
+            "time": "19:30",
+            "home_team": "Bolton A",
+            "away_team": "Swinton \u0026 Worsley A",
+            "home_score": 1,
+            "away_score": 4,
+            "winner": "away",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "W",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19515,
+                        "rating_code": "251776A",
+                        "name": "McLaughlin, Noel S",
+                        "rating": 1934,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 75988,
+                        "rating_code": "348155E",
+                        "name": "Rughani, Mahin",
+                        "rating": 2151,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19499,
+                        "rating_code": "111056B",
+                        "name": "Gardner, Allan",
+                        "rating": 1792,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 41533,
+                        "rating_code": "244471K",
+                        "name": "Hodgson, Christopher",
+                        "rating": 1887,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "W",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19498,
+                        "rating_code": "108513L",
+                        "name": "Clissold, Julian C",
+                        "rating": 1647,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 83244,
+                        "rating_code": "349067B",
+                        "name": "Cheung, Leo",
+                        "rating": 1907,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19536,
+                        "rating_code": "312061C",
+                        "name": "Eccleston, Bryony",
+                        "rating": 1698,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 57221,
+                        "rating_code": "345643C",
+                        "name": "Chalupa, Ondrej",
+                        "rating": 1798,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19544,
+                        "rating_code": "313646C",
+                        "name": "Eccleston, Rowan",
+                        "rating": 1650,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 83225,
+                        "rating_code": "353129G",
+                        "name": "Rughani, Atul",
+                        "rating": 1495,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123664,
+            "round": 3,
+            "date": "2025-11-04",
+            "time": "19:30",
+            "home_team": "Atherton A",
+            "away_team": "Radcliffe ",
+            "home_score": 4,
+            "away_score": 1,
+            "winner": "home",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 41602,
+                        "rating_code": "109986D",
+                        "name": "Dutton, Ian R",
+                        "rating": 2088,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19496,
+                        "rating_code": "104797J",
+                        "name": "Tyton, Adam",
+                        "rating": 1896,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 84233,
+                        "rating_code": "226372F",
+                        "name": "Bak, Andrew",
+                        "rating": 2060,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19575,
+                        "rating_code": "270788D",
+                        "name": "Hutchinson, Steve",
+                        "rating": 1589,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 71694,
+                        "rating_code": "230117K",
+                        "name": "McCarthy, Damian M",
+                        "rating": 1942,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19574,
+                        "rating_code": "166521C",
+                        "name": "Baron, Lee",
+                        "rating": 1351,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 121903,
+                        "rating_code": "152387K",
+                        "name": "Edwards, John",
+                        "rating": null,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 123748,
+                        "rating_code": "381310B",
+                        "name": "Hamid, Imran",
+                        "rating": 1350,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "B",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 125954,
+                        "rating_code": "382351K",
+                        "name": "Johnson, John ",
+                        "rating": 1200,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 20086,
+                        "rating_code": "295529F",
+                        "name": "Peters, Graham",
+                        "rating": 1308,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 6,
+                    "home_colour": "W",
+                    "result": "double_default",
+                    "home_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123665,
+            "round": 4,
+            "date": "2025-11-20",
+            "time": "19:30",
+            "home_team": "Great Lever",
+            "away_team": "Swinton \u0026 Worsley A",
+            "home_score": 4,
+            "away_score": 1,
+            "winner": "home",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19564,
+                        "rating_code": "119904D",
+                        "name": "Surtees, Mike J",
+                        "rating": 2152,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 41533,
+                        "rating_code": "244471K",
+                        "name": "Hodgson, Christopher",
+                        "rating": 1887,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "B",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 19567,
+                        "rating_code": "127696H",
+                        "name": "Kobryn, Peter J",
+                        "rating": 1889,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 57221,
+                        "rating_code": "345643C",
+                        "name": "Chalupa, Ondrej",
+                        "rating": 1798,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "W",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 19570,
+                        "rating_code": "143105F",
+                        "name": "Lonsdale, Jon I",
+                        "rating": 1813,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 83243,
+                        "rating_code": "345611A",
+                        "name": "Maheshwari, Shlok",
+                        "rating": 1733,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 122642,
+                        "rating_code": "344374H",
+                        "name": "Marsh, Aram",
+                        "rating": 1708,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 121631,
+                        "rating_code": "354952F",
+                        "name": "Sharma, Vehant",
+                        "rating": 1436,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19569,
+                        "rating_code": "136971E",
+                        "name": "Jardine, Chris",
+                        "rating": 1860,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123666,
+            "round": 4,
+            "date": "2025-11-19",
+            "time": "19:30",
+            "home_team": "Radcliffe ",
+            "away_team": "Bolton A",
+            "home_score": 0,
+            "away_score": 0,
+            "winner": "unknown",
+            "board_count": 6,
+            "games": []
+        },
+        {
+            "fixture_id": 123667,
+            "round": 4,
+            "date": "2026-04-13",
+            "time": "19:30",
+            "home_team": "Bolton B",
+            "away_team": "Atherton A",
+            "home_score": 3,
+            "away_score": 2,
+            "winner": "home",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 64732,
+                        "rating_code": "348483L",
+                        "name": "Agyemang, David",
+                        "rating": 1802,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 49712,
+                        "rating_code": "282176L",
+                        "name": "Hilton, Tim",
+                        "rating": 1989,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 100766,
+                        "rating_code": "283645C",
+                        "name": "Storrie-Baxter, James",
+                        "rating": 1626,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 90659,
+                        "rating_code": "182406F",
+                        "name": "Shortt, John",
+                        "rating": 1516,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "W",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19508,
+                        "rating_code": "134021K",
+                        "name": "Patel, Parshottambhi D",
+                        "rating": 1306,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 134378,
+                        "rating_code": "294498E",
+                        "name": "Coghlan, Nick",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 130909,
+                        "rating_code": "120726L",
+                        "name": "Twinn, Brian T",
+                        "rating": 1440,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 134379,
+                        "rating_code": "385823G",
+                        "name": "Swift, David",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 58747,
+                        "rating_code": "345821A",
+                        "name": "Swallow, Geoff",
+                        "rating": 1550,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 134380,
+                        "rating_code": "381729F",
+                        "name": "Lloyd, Sean",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 6,
+                    "home_colour": "B",
+                    "result": "double_default",
+                    "home_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123668,
+            "round": 5,
+            "date": "2025-12-02",
+            "time": "19:30",
+            "home_team": "Atherton A",
+            "away_team": "Great Lever",
+            "home_score": 3.5,
+            "away_score": 1.5,
+            "winner": "home",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 113824,
+                        "rating_code": "376312C",
+                        "name": "Barnes, Jamie",
+                        "rating": 1967,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19564,
+                        "rating_code": "119904D",
+                        "name": "Surtees, Mike J",
+                        "rating": 2152,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 41602,
+                        "rating_code": "109986D",
+                        "name": "Dutton, Ian R",
+                        "rating": 2088,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19567,
+                        "rating_code": "127696H",
+                        "name": "Kobryn, Peter J",
+                        "rating": 1889,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 41610,
+                        "rating_code": "127340B",
+                        "name": "Kay, Lee P",
+                        "rating": 1960,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19569,
+                        "rating_code": "136971E",
+                        "name": "Jardine, Chris",
+                        "rating": 1860,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 19561,
+                        "rating_code": "108722J",
+                        "name": "Connor, Michael I",
+                        "rating": 1757,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19570,
+                        "rating_code": "143105F",
+                        "name": "Lonsdale, Jon I",
+                        "rating": 1813,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "B",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 41619,
+                        "rating_code": "341416E",
+                        "name": "Barnett, Elliott",
+                        "rating": 1702,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19560,
+                        "rating_code": "104991E",
+                        "name": "Crowther, Andrew",
+                        "rating": 1668,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123669,
+            "round": 5,
+            "date": "2025-12-01",
+            "time": "19:30",
+            "home_team": "Bolton A",
+            "away_team": "Bolton B",
+            "home_score": 4,
+            "away_score": 1,
+            "winner": "home",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 68016,
+                        "rating_code": "351425A",
+                        "name": "Nkwonta, Kelechukwu  ",
+                        "rating": 1862,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 100766,
+                        "rating_code": "283645C",
+                        "name": "Storrie-Baxter, James",
+                        "rating": 1600,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19499,
+                        "rating_code": "111056B",
+                        "name": "Gardner, Allan",
+                        "rating": 1792,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 58747,
+                        "rating_code": "345821A",
+                        "name": "Swallow, Geoff",
+                        "rating": 1550,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19498,
+                        "rating_code": "108513L",
+                        "name": "Clissold, Julian C",
+                        "rating": 1647,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 125321,
+                        "rating_code": "382102L",
+                        "name": "Taylor, Dianne",
+                        "rating": 1400,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19536,
+                        "rating_code": "312061C",
+                        "name": "Eccleston, Bryony",
+                        "rating": 1698,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19505,
+                        "rating_code": "119099E",
+                        "name": "Skipworth, John C",
+                        "rating": 1447,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19503,
+                        "rating_code": "114007D",
+                        "name": "Lamb, Ian D",
+                        "rating": 1595,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19508,
+                        "rating_code": "134021K",
+                        "name": "Patel, Parshottambhi D",
+                        "rating": 1383,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 6,
+                    "home_colour": "W",
+                    "result": "double_default",
+                    "home_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123670,
+            "round": 5,
+            "date": "2025-12-04",
+            "time": "19:30",
+            "home_team": "Swinton \u0026 Worsley A",
+            "away_team": "Radcliffe ",
+            "home_score": 0,
+            "away_score": 0,
+            "winner": "draw",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "double_default",
+                    "home_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "double_default",
+                    "home_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "double_default",
+                    "home_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "double_default",
+                    "home_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "B",
+                    "result": "double_default",
+                    "home_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 6,
+                    "home_colour": "W",
+                    "result": "double_default",
+                    "home_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123671,
+            "round": 6,
+            "date": "2026-04-23",
+            "time": "19:30",
+            "home_team": "Great Lever",
+            "away_team": "Bolton A",
+            "home_score": 2,
+            "away_score": 3,
+            "winner": "away",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19564,
+                        "rating_code": "119904D",
+                        "name": "Surtees, Mike J",
+                        "rating": 2152,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19499,
+                        "rating_code": "111056B",
+                        "name": "Gardner, Allan",
+                        "rating": 1792,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19567,
+                        "rating_code": "127696H",
+                        "name": "Kobryn, Peter J",
+                        "rating": 1889,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19503,
+                        "rating_code": "114007D",
+                        "name": "Lamb, Ian D",
+                        "rating": 1595,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "W",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19569,
+                        "rating_code": "136971E",
+                        "name": "Jardine, Chris",
+                        "rating": 1860,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19498,
+                        "rating_code": "108513L",
+                        "name": "Clissold, Julian C",
+                        "rating": 1647,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "B",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 19570,
+                        "rating_code": "143105F",
+                        "name": "Lonsdale, Jon I",
+                        "rating": 1813,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 58747,
+                        "rating_code": "345821A",
+                        "name": "Swallow, Geoff",
+                        "rating": 1550,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "W",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 19560,
+                        "rating_code": "104991E",
+                        "name": "Crowther, Andrew",
+                        "rating": 1668,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 130909,
+                        "rating_code": "120726L",
+                        "name": "Twinn, Brian T",
+                        "rating": 1440,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 6,
+                    "home_colour": "B",
+                    "result": "double_default",
+                    "home_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123672,
+            "round": 6,
+            "date": "2026-01-26",
+            "time": "19:30",
+            "home_team": "Bolton B",
+            "away_team": "Radcliffe ",
+            "home_score": 2,
+            "away_score": 3,
+            "winner": "away",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 58747,
+                        "rating_code": "345821A",
+                        "name": "Swallow, Geoff",
+                        "rating": 1550,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19575,
+                        "rating_code": "270788D",
+                        "name": "Hutchinson, Steve",
+                        "rating": 1589,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 114560,
+                        "rating_code": "275063G",
+                        "name": "Manson, Jonathan",
+                        "rating": 1743,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 123748,
+                        "rating_code": "381310B",
+                        "name": "Hamid, Imran",
+                        "rating": 1350,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 19505,
+                        "rating_code": "119099E",
+                        "name": "Skipworth, John C",
+                        "rating": 1447,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 20086,
+                        "rating_code": "295529F",
+                        "name": "Peters, Graham",
+                        "rating": 1308,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19508,
+                        "rating_code": "134021K",
+                        "name": "Patel, Parshottambhi D",
+                        "rating": 1383,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19574,
+                        "rating_code": "166521C",
+                        "name": "Baron, Lee",
+                        "rating": 1351,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 50324,
+                        "rating_code": "343870D",
+                        "name": "Eccleston , Dale ",
+                        "rating": 1324,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 69197,
+                        "rating_code": "327385E",
+                        "name": "Pitchford, Trevor",
+                        "rating": 1423,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 6,
+                    "home_colour": "W",
+                    "result": "double_default",
+                    "home_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123673,
+            "round": 6,
+            "date": "2026-05-26",
+            "time": "19:30",
+            "home_team": "Atherton A",
+            "away_team": "Swinton \u0026 Worsley A",
+            "home_score": 4,
+            "away_score": 1,
+            "winner": "home",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 41610,
+                        "rating_code": "127340B",
+                        "name": "Kay, Lee P",
+                        "rating": 1960,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 51007,
+                        "rating_code": "134031B",
+                        "name": "Wilson, Andrew I",
+                        "rating": 2070,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 49712,
+                        "rating_code": "282176L",
+                        "name": "Hilton, Tim",
+                        "rating": 1989,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 74169,
+                        "rating_code": "210514H",
+                        "name": "Burgess, David",
+                        "rating": 1927,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 103457,
+                        "rating_code": "129586L",
+                        "name": "Brodie, David G",
+                        "rating": 1809,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 83244,
+                        "rating_code": "349067B",
+                        "name": "Cheung, Leo",
+                        "rating": 1907,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19561,
+                        "rating_code": "108722J",
+                        "name": "Connor, Michael I",
+                        "rating": 1757,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 41533,
+                        "rating_code": "244471K",
+                        "name": "Hodgson, Christopher",
+                        "rating": 1887,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "B",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 113882,
+                        "rating_code": "376669L",
+                        "name": "Turner, Ryan",
+                        "rating": 1500,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 83249,
+                        "rating_code": "346407G",
+                        "name": "Otaryan, David",
+                        "rating": 1453,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 6,
+                    "home_colour": "W",
+                    "result": "double_default",
+                    "home_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123674,
+            "round": 7,
+            "date": "2026-02-11",
+            "time": "19:30",
+            "home_team": "Radcliffe ",
+            "away_team": "Great Lever",
+            "home_score": 1,
+            "away_score": 4,
+            "winner": "away",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19496,
+                        "rating_code": "104797J",
+                        "name": "Tyton, Adam",
+                        "rating": 1896,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19564,
+                        "rating_code": "119904D",
+                        "name": "Surtees, Mike J",
+                        "rating": 2152,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19575,
+                        "rating_code": "270788D",
+                        "name": "Hutchinson, Steve",
+                        "rating": 1589,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19569,
+                        "rating_code": "136971E",
+                        "name": "Jardine, Chris",
+                        "rating": 1860,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 123748,
+                        "rating_code": "381310B",
+                        "name": "Hamid, Imran",
+                        "rating": 1350,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19570,
+                        "rating_code": "143105F",
+                        "name": "Lonsdale, Jon I",
+                        "rating": 1813,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 20086,
+                        "rating_code": "295529F",
+                        "name": "Peters, Graham",
+                        "rating": 1308,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19565,
+                        "rating_code": "121658C",
+                        "name": "Wilkinson, Anthony DB",
+                        "rating": 1624,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 69197,
+                        "rating_code": "327385E",
+                        "name": "Pitchford, Trevor",
+                        "rating": 1423,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19572,
+                        "rating_code": "287757A",
+                        "name": "Davies, Brian",
+                        "rating": 1246,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 6,
+                    "home_colour": "W",
+                    "result": "double_default",
+                    "home_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123675,
+            "round": 7,
+            "date": "2026-02-12",
+            "time": "19:30",
+            "home_team": "Swinton \u0026 Worsley A",
+            "away_team": "Bolton B",
+            "home_score": 2,
+            "away_score": 3,
+            "winner": "away",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 114379,
+                        "rating_code": "359821E",
+                        "name": "Goel, Taarush",
+                        "rating": 1463,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19512,
+                        "rating_code": "185739D",
+                        "name": "Beavan, Andrew",
+                        "rating": 1467,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 121629,
+                        "rating_code": "348967L",
+                        "name": "Lewis, Aaron",
+                        "rating": 1226,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 125321,
+                        "rating_code": "382102L",
+                        "name": "Taylor, Dianne",
+                        "rating": 1400,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 131275,
+                        "rating_code": "372437C",
+                        "name": "Ludlow, Windsor",
+                        "rating": 1318,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19508,
+                        "rating_code": "134021K",
+                        "name": "Patel, Parshottambhi D",
+                        "rating": 1383,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 130871,
+                        "rating_code": "360098B",
+                        "name": "Boganadham, Tisha Suvarna",
+                        "rating": null,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19506,
+                        "rating_code": "119961E",
+                        "name": "Swift, Mike",
+                        "rating": 1357,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 129950,
+                        "rating_code": "377700F",
+                        "name": "Yeung, Alex",
+                        "rating": null,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 130909,
+                        "rating_code": "120726L",
+                        "name": "Twinn, Brian T",
+                        "rating": 1440,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123676,
+            "round": 7,
+            "date": "2026-02-16",
+            "time": "19:30",
+            "home_team": "Bolton A",
+            "away_team": "Atherton A",
+            "home_score": 2.5,
+            "away_score": 2.5,
+            "winner": "draw",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 113776,
+                        "rating_code": "160511C",
+                        "name": "Lalic, Bogdan",
+                        "rating": 2399,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 41610,
+                        "rating_code": "127340B",
+                        "name": "Kay, Lee P",
+                        "rating": 1960,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 68016,
+                        "rating_code": "351425A",
+                        "name": "Nkwonta, Kelechukwu  ",
+                        "rating": 1862,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 41604,
+                        "rating_code": "114719F",
+                        "name": "Lythgoe, Martin",
+                        "rating": 1882,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "W",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 19499,
+                        "rating_code": "111056B",
+                        "name": "Gardner, Allan",
+                        "rating": 1792,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 103457,
+                        "rating_code": "129586L",
+                        "name": "Brodie, David G",
+                        "rating": 1809,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 114560,
+                        "rating_code": "275063G",
+                        "name": "Manson, Jonathan",
+                        "rating": 1743,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19561,
+                        "rating_code": "108722J",
+                        "name": "Connor, Michael I",
+                        "rating": 1757,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19503,
+                        "rating_code": "114007D",
+                        "name": "Lamb, Ian D",
+                        "rating": 1595,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 6,
+                    "home_colour": "B",
+                    "result": "double_default",
+                    "home_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123677,
+            "round": 8,
+            "date": "2026-02-26",
+            "time": "19:30",
+            "home_team": "Great Lever",
+            "away_team": "Bolton B",
+            "home_score": 4,
+            "away_score": 1,
+            "winner": "home",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19569,
+                        "rating_code": "136971E",
+                        "name": "Jardine, Chris",
+                        "rating": 1860,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 58747,
+                        "rating_code": "345821A",
+                        "name": "Swallow, Geoff",
+                        "rating": 1550,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19570,
+                        "rating_code": "143105F",
+                        "name": "Lonsdale, Jon I",
+                        "rating": 1813,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19505,
+                        "rating_code": "119099E",
+                        "name": "Skipworth, John C",
+                        "rating": 1447,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19560,
+                        "rating_code": "104991E",
+                        "name": "Crowther, Andrew",
+                        "rating": 1668,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19506,
+                        "rating_code": "119961E",
+                        "name": "Swift, Mike",
+                        "rating": 1357,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 122642,
+                        "rating_code": "344374H",
+                        "name": "Marsh, Aram",
+                        "rating": 1708,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19508,
+                        "rating_code": "134021K",
+                        "name": "Patel, Parshottambhi D",
+                        "rating": 1383,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "W",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19572,
+                        "rating_code": "287757A",
+                        "name": "Davies, Brian",
+                        "rating": 1246,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 130909,
+                        "rating_code": "120726L",
+                        "name": "Twinn, Brian T",
+                        "rating": 1440,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123678,
+            "round": 8,
+            "date": "2026-02-26",
+            "time": "19:30",
+            "home_team": "Swinton \u0026 Worsley A",
+            "away_team": "Bolton A",
+            "home_score": 2.5,
+            "away_score": 2.5,
+            "winner": "draw",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 83244,
+                        "rating_code": "349067B",
+                        "name": "Cheung, Leo",
+                        "rating": 1907,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 113776,
+                        "rating_code": "160511C",
+                        "name": "Lalic, Bogdan",
+                        "rating": 2399,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 83243,
+                        "rating_code": "345611A",
+                        "name": "Maheshwari, Shlok",
+                        "rating": 1733,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19499,
+                        "rating_code": "111056B",
+                        "name": "Gardner, Allan",
+                        "rating": 1792,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 57221,
+                        "rating_code": "345643C",
+                        "name": "Chalupa, Ondrej",
+                        "rating": 1798,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 114560,
+                        "rating_code": "275063G",
+                        "name": "Manson, Jonathan",
+                        "rating": 1743,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 41561,
+                        "rating_code": "331090F",
+                        "name": "Chu, Edward",
+                        "rating": 1601,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19498,
+                        "rating_code": "108513L",
+                        "name": "Clissold, Julian C",
+                        "rating": 1647,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 41562,
+                        "rating_code": "331091H",
+                        "name": "Chu, Yin",
+                        "rating": 1404,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19503,
+                        "rating_code": "114007D",
+                        "name": "Lamb, Ian D",
+                        "rating": 1595,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123679,
+            "round": 8,
+            "date": "2026-02-25",
+            "time": "19:30",
+            "home_team": "Radcliffe ",
+            "away_team": "Atherton A",
+            "home_score": 0,
+            "away_score": 5,
+            "winner": "away",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19496,
+                        "rating_code": "104797J",
+                        "name": "Tyton, Adam",
+                        "rating": 1896,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 56494,
+                        "rating_code": "344961A",
+                        "name": "Norris, Ethan",
+                        "rating": 2186,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19575,
+                        "rating_code": "270788D",
+                        "name": "Hutchinson, Steve",
+                        "rating": 1589,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 113824,
+                        "rating_code": "376312C",
+                        "name": "Barnes, Jamie",
+                        "rating": 1967,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 123748,
+                        "rating_code": "381310B",
+                        "name": "Hamid, Imran",
+                        "rating": 1350,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 49712,
+                        "rating_code": "282176L",
+                        "name": "Hilton, Tim",
+                        "rating": 1989,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 20086,
+                        "rating_code": "295529F",
+                        "name": "Peters, Graham",
+                        "rating": 1308,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 130864,
+                        "rating_code": "378437L",
+                        "name": "Bullock, Joshua",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19574,
+                        "rating_code": "166521C",
+                        "name": "Baron, Lee",
+                        "rating": 1351,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 113882,
+                        "rating_code": "376669L",
+                        "name": "Turner, Ryan",
+                        "rating": 1500,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 6,
+                    "home_colour": "W",
+                    "result": "double_default",
+                    "home_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123680,
+            "round": 9,
+            "date": "2026-03-12",
+            "time": "19:30",
+            "home_team": "Swinton \u0026 Worsley A",
+            "away_team": "Great Lever",
+            "home_score": 3.5,
+            "away_score": 1.5,
+            "winner": "home",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 51007,
+                        "rating_code": "134031B",
+                        "name": "Wilson, Andrew I",
+                        "rating": 2070,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19564,
+                        "rating_code": "119904D",
+                        "name": "Surtees, Mike J",
+                        "rating": 2152,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 83244,
+                        "rating_code": "349067B",
+                        "name": "Cheung, Leo",
+                        "rating": 1907,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19567,
+                        "rating_code": "127696H",
+                        "name": "Kobryn, Peter J",
+                        "rating": 1889,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 83243,
+                        "rating_code": "345611A",
+                        "name": "Maheshwari, Shlok",
+                        "rating": 1733,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19570,
+                        "rating_code": "143105F",
+                        "name": "Lonsdale, Jon I",
+                        "rating": 1813,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 57221,
+                        "rating_code": "345643C",
+                        "name": "Chalupa, Ondrej",
+                        "rating": 1798,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19560,
+                        "rating_code": "104991E",
+                        "name": "Crowther, Andrew",
+                        "rating": 1668,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 41561,
+                        "rating_code": "331090F",
+                        "name": "Chu, Edward",
+                        "rating": 1601,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 122642,
+                        "rating_code": "344374H",
+                        "name": "Marsh, Aram",
+                        "rating": 1708,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123682,
+            "round": 9,
+            "date": "2026-03-09",
+            "time": "19:30",
+            "home_team": "Bolton A",
+            "away_team": "Radcliffe ",
+            "home_score": 4.5,
+            "away_score": 0.5,
+            "winner": "home",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 113776,
+                        "rating_code": "160511C",
+                        "name": "Lalic, Bogdan",
+                        "rating": 2399,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19496,
+                        "rating_code": "104797J",
+                        "name": "Tyton, Adam",
+                        "rating": 1896,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19499,
+                        "rating_code": "111056B",
+                        "name": "Gardner, Allan",
+                        "rating": 1792,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19575,
+                        "rating_code": "270788D",
+                        "name": "Hutchinson, Steve",
+                        "rating": 1589,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 54886,
+                        "rating_code": "344882E",
+                        "name": "Morrissey, Ashton",
+                        "rating": 1798,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 123748,
+                        "rating_code": "381310B",
+                        "name": "Hamid, Imran",
+                        "rating": 1350,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19508,
+                        "rating_code": "134021K",
+                        "name": "Patel, Parshottambhi D",
+                        "rating": 1306,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 20086,
+                        "rating_code": "295529F",
+                        "name": "Peters, Graham",
+                        "rating": 1308,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "W",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 58747,
+                        "rating_code": "345821A",
+                        "name": "Swallow, Geoff",
+                        "rating": 1550,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 69197,
+                        "rating_code": "327385E",
+                        "name": "Pitchford, Trevor",
+                        "rating": 1423,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 6,
+                    "home_colour": "B",
+                    "result": "double_default",
+                    "home_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123683,
+            "round": 9,
+            "date": "2026-03-10",
+            "time": "19:30",
+            "home_team": "Atherton A",
+            "away_team": "Bolton B",
+            "home_score": 4,
+            "away_score": 1,
+            "winner": "home",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 56494,
+                        "rating_code": "344961A",
+                        "name": "Norris, Ethan",
+                        "rating": 2186,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19503,
+                        "rating_code": "114007D",
+                        "name": "Lamb, Ian D",
+                        "rating": 1595,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 49712,
+                        "rating_code": "282176L",
+                        "name": "Hilton, Tim",
+                        "rating": 1989,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 130909,
+                        "rating_code": "120726L",
+                        "name": "Twinn, Brian T",
+                        "rating": 1440,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 41610,
+                        "rating_code": "127340B",
+                        "name": "Kay, Lee P",
+                        "rating": 1960,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 58747,
+                        "rating_code": "345821A",
+                        "name": "Swallow, Geoff",
+                        "rating": 1550,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 41604,
+                        "rating_code": "114719F",
+                        "name": "Lythgoe, Martin",
+                        "rating": 1882,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19512,
+                        "rating_code": "185739D",
+                        "name": "Beavan, Andrew",
+                        "rating": 1467,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 41612,
+                        "rating_code": "170361E",
+                        "name": "Leonard, Paul",
+                        "rating": 1639,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19506,
+                        "rating_code": "119961E",
+                        "name": "Swift, Mike",
+                        "rating": 1357,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 6,
+                    "home_colour": "W",
+                    "result": "double_default",
+                    "home_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123684,
+            "round": 10,
+            "date": "2026-03-26",
+            "time": "19:30",
+            "home_team": "Great Lever",
+            "away_team": "Atherton A",
+            "home_score": 1.5,
+            "away_score": 3.5,
+            "winner": "away",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19564,
+                        "rating_code": "119904D",
+                        "name": "Surtees, Mike J",
+                        "rating": 2152,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 56494,
+                        "rating_code": "344961A",
+                        "name": "Norris, Ethan",
+                        "rating": 2186,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19567,
+                        "rating_code": "127696H",
+                        "name": "Kobryn, Peter J",
+                        "rating": 1889,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 49712,
+                        "rating_code": "282176L",
+                        "name": "Hilton, Tim",
+                        "rating": 1989,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19569,
+                        "rating_code": "136971E",
+                        "name": "Jardine, Chris",
+                        "rating": 1860,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 41610,
+                        "rating_code": "127340B",
+                        "name": "Kay, Lee P",
+                        "rating": 1960,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 19570,
+                        "rating_code": "143105F",
+                        "name": "Lonsdale, Jon I",
+                        "rating": 1813,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 41604,
+                        "rating_code": "114719F",
+                        "name": "Lythgoe, Martin",
+                        "rating": 1882,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19560,
+                        "rating_code": "104991E",
+                        "name": "Crowther, Andrew",
+                        "rating": 1668,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19561,
+                        "rating_code": "108722J",
+                        "name": "Connor, Michael I",
+                        "rating": 1757,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123685,
+            "round": 10,
+            "date": "2026-03-23",
+            "time": "19:30",
+            "home_team": "Bolton B",
+            "away_team": "Bolton A",
+            "home_score": 2,
+            "away_score": 3,
+            "winner": "away",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19536,
+                        "rating_code": "312061C",
+                        "name": "Eccleston, Bryony",
+                        "rating": 1698,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 68016,
+                        "rating_code": "351425A",
+                        "name": "Nkwonta, Kelechukwu  ",
+                        "rating": 1862,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 130909,
+                        "rating_code": "120726L",
+                        "name": "Twinn, Brian T",
+                        "rating": 1440,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19499,
+                        "rating_code": "111056B",
+                        "name": "Gardner, Allan",
+                        "rating": 1792,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19505,
+                        "rating_code": "119099E",
+                        "name": "Skipworth, John C",
+                        "rating": 1428,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 114560,
+                        "rating_code": "275063G",
+                        "name": "Manson, Jonathan",
+                        "rating": 1743,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19508,
+                        "rating_code": "134021K",
+                        "name": "Patel, Parshottambhi D",
+                        "rating": 1306,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19503,
+                        "rating_code": "114007D",
+                        "name": "Lamb, Ian D",
+                        "rating": 1595,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "B",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 19506,
+                        "rating_code": "119961E",
+                        "name": "Swift, Mike",
+                        "rating": 1357,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19544,
+                        "rating_code": "313646C",
+                        "name": "Eccleston, Rowan",
+                        "rating": 1650,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 6,
+                    "home_colour": "W",
+                    "result": "double_default",
+                    "home_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 123686,
+            "round": 10,
+            "date": "2026-03-25",
+            "time": "19:30",
+            "home_team": "Radcliffe ",
+            "away_team": "Swinton \u0026 Worsley A",
+            "home_score": 0,
+            "away_score": 5,
+            "winner": "away",
+            "board_count": 6,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19496,
+                        "rating_code": "104797J",
+                        "name": "Tyton, Adam",
+                        "rating": 1896,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 74169,
+                        "rating_code": "210514H",
+                        "name": "Burgess, David",
+                        "rating": 1927,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19575,
+                        "rating_code": "270788D",
+                        "name": "Hutchinson, Steve",
+                        "rating": 1589,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 57221,
+                        "rating_code": "345643C",
+                        "name": "Chalupa, Ondrej",
+                        "rating": 1798,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 123748,
+                        "rating_code": "381310B",
+                        "name": "Hamid, Imran",
+                        "rating": 1350,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 41561,
+                        "rating_code": "331090F",
+                        "name": "Chu, Edward",
+                        "rating": 1601,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19574,
+                        "rating_code": "166521C",
+                        "name": "Baron, Lee",
+                        "rating": 1351,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 41562,
+                        "rating_code": "331091H",
+                        "name": "Chu, Yin",
+                        "rating": 1404,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 20086,
+                        "rating_code": "295529F",
+                        "name": "Peters, Graham",
+                        "rating": 1308,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 100871,
+                        "rating_code": "357650E",
+                        "name": "Sun, Yihang",
+                        "rating": 1288,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 6,
+                    "home_colour": "W",
+                    "result": "double_default",
+                    "home_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        }
+    ]
+}

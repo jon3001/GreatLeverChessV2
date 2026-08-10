@@ -1,0 +1,199 @@
+{
+    "event_name": "Vaux Cup",
+    "event_type": "knockout_draw_round",
+    "fixtures": [
+        {
+            "fixture_id": 130717,
+            "round": 1,
+            "date": "2025-09-17",
+            "time": null,
+            "home_team": null,
+            "away_team": "Crusaders B",
+            "home_score": 0,
+            "away_score": 0,
+            "winner": "unknown",
+            "board_count": 4,
+            "games": []
+        },
+        {
+            "fixture_id": 130718,
+            "round": 1,
+            "date": "2026-03-17",
+            "time": "19:30",
+            "home_team": "Leyland A",
+            "away_team": "Great Lever B",
+            "home_score": 3,
+            "away_score": 1,
+            "winner": "home",
+            "board_count": 4,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 13923,
+                        "rating_code": "173324C",
+                        "name": "Moffatt, William J",
+                        "rating": 1769,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 11438,
+                        "rating_code": "136971E",
+                        "name": "Jardine, Chris",
+                        "rating": 1860,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 14017,
+                        "rating_code": "318736G",
+                        "name": "Fitzgibbon, Sean",
+                        "rating": 1716,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 11439,
+                        "rating_code": "143105F",
+                        "name": "Lonsdale, Jon I",
+                        "rating": 1813,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 1615,
+                        "rating_code": "215270J",
+                        "name": "Hart, Robert",
+                        "rating": 1680,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 11437,
+                        "rating_code": "134021K",
+                        "name": "Patel, Parshottambhi D",
+                        "rating": 1306,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 75725,
+                        "rating_code": "244361C",
+                        "name": "Treadwell, Neil",
+                        "rating": 1511,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 11443,
+                        "rating_code": "287757A",
+                        "name": "Davies, Brian",
+                        "rating": 1246,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 143966,
+            "round": 2,
+            "date": "2026-05-11",
+            "time": "19:30",
+            "home_team": "Crusaders B",
+            "away_team": "Leyland A",
+            "home_score": 1,
+            "away_score": 3,
+            "winner": "away",
+            "board_count": 4,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 133909,
+                        "rating_code": "356572F",
+                        "name": "Jouher, Adeel",
+                        "rating": 1450,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 13923,
+                        "rating_code": "173324C",
+                        "name": "Moffatt, William J",
+                        "rating": 1769,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 114452,
+                        "rating_code": "327470G",
+                        "name": "Otgonbayar, Davaa",
+                        "rating": 1407,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 14017,
+                        "rating_code": "318736G",
+                        "name": "Fitzgibbon, Sean",
+                        "rating": 1716,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 16002,
+                        "rating_code": "323825J",
+                        "name": "Grounds, Robert",
+                        "rating": 1401,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 72910,
+                        "rating_code": "344303G",
+                        "name": "Ashton, Paul",
+                        "rating": 1599,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 127840,
+                        "rating_code": "383323K",
+                        "name": "Hudson, Lee",
+                        "rating": 1450,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 75725,
+                        "rating_code": "244361C",
+                        "name": "Treadwell, Neil",
+                        "rating": 1511,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        }
+    ]
+}

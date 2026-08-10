@@ -1,0 +1,660 @@
+{
+    "event_name": "Bolton League Cup Div 2",
+    "event_type": "knockout_draw_round",
+    "fixtures": [
+        {
+            "fixture_id": 60571,
+            "round": 1,
+            "date": "2024-09-23",
+            "time": "19:30",
+            "home_team": "Bolton Juniors B",
+            "away_team": "Bolton B",
+            "home_score": 2.5,
+            "away_score": 2.5,
+            "winner": "draw",
+            "board_count": 5,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19536,
+                        "rating_code": "312061C",
+                        "name": "Eccleston, Bryony",
+                        "rating": 1451,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19505,
+                        "rating_code": "119099E",
+                        "name": "Skipworth, John C",
+                        "rating": 1535,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19544,
+                        "rating_code": "313646C",
+                        "name": "Eccleston, Rowan",
+                        "rating": 1240,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19512,
+                        "rating_code": "185739D",
+                        "name": "Beavan, Andrew",
+                        "rating": 1452,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 82635,
+                        "rating_code": "309722F",
+                        "name": "Humphreys, Thomas",
+                        "rating": 1300,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19508,
+                        "rating_code": "134021K",
+                        "name": "Patel, Parshottambhi D",
+                        "rating": 1383,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 82379,
+                        "rating_code": "360720D",
+                        "name": "Earnshaw, William",
+                        "rating": 1047,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19506,
+                        "rating_code": "119961E",
+                        "name": "Swift, Mike",
+                        "rating": 1290,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 24413,
+                        "rating_code": "346430B",
+                        "name": "Shah, Dheer",
+                        "rating": 1361,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 49262,
+                        "rating_code": "328316B",
+                        "name": "Cresswell, Gary",
+                        "rating": 1378,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 60572,
+            "round": 1,
+            "date": "2024-09-26",
+            "time": "19:30",
+            "home_team": "Swinton \u0026 Worsley Community C",
+            "away_team": "Bolton Juniors A",
+            "home_score": 0,
+            "away_score": 5,
+            "winner": "away",
+            "board_count": 5,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 83244,
+                        "rating_code": "349067B",
+                        "name": "Cheung, Leo",
+                        "rating": 1310,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19536,
+                        "rating_code": "312061C",
+                        "name": "Eccleston, Bryony",
+                        "rating": 1451,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 83243,
+                        "rating_code": "345611A",
+                        "name": "Maheshwari, Shlok",
+                        "rating": 1595,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 54886,
+                        "rating_code": "344882E",
+                        "name": "Morrissey, Ashton",
+                        "rating": 1212,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 41561,
+                        "rating_code": "331090F",
+                        "name": "Chu, Edward",
+                        "rating": 1490,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19544,
+                        "rating_code": "313646C",
+                        "name": "Eccleston, Rowan",
+                        "rating": 1240,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 89535,
+                        "rating_code": "348409K",
+                        "name": "Riaz, Ibrahim",
+                        "rating": 1122,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 64738,
+                        "rating_code": "350736B",
+                        "name": "Bailey , Cissy ",
+                        "rating": 1299,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 50324,
+                        "rating_code": "343870D",
+                        "name": "Eccleston , Dale ",
+                        "rating": 1324,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 60573,
+            "round": 1,
+            "date": "2024-10-22",
+            "time": "19:30",
+            "home_team": "Bury A",
+            "away_team": "Horwich ",
+            "home_score": 3,
+            "away_score": 2,
+            "winner": "home",
+            "board_count": 5,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 64214,
+                        "rating_code": "342867K",
+                        "name": "Sherman, David",
+                        "rating": 1383,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 74228,
+                        "rating_code": "303370D",
+                        "name": "Tatlock, Stephen",
+                        "rating": 1523,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 64187,
+                        "rating_code": "110760E",
+                        "name": "Forrest, Brian J",
+                        "rating": 1408,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 67978,
+                        "rating_code": "351073G",
+                        "name": "Moorhouse, John",
+                        "rating": 1442,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 103340,
+                        "rating_code": "209389D",
+                        "name": "Anderson, Jason",
+                        "rating": 1655,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 65266,
+                        "rating_code": "350382D",
+                        "name": "Vernon, John",
+                        "rating": 1300,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 89863,
+                        "rating_code": "364898K",
+                        "name": "Brett, Lewis",
+                        "rating": 1287,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 101625,
+                        "rating_code": "370923B",
+                        "name": "Sherrington, Colin",
+                        "rating": 1300,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 65538,
+                        "rating_code": "351071C",
+                        "name": "Rudkins, Thomas",
+                        "rating": 1200,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 101629,
+                        "rating_code": "370318G",
+                        "name": "Lord, Ethan",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 88912,
+            "round": 2,
+            "date": "2024-12-17",
+            "time": "17:30",
+            "home_team": "Bolton Juniors A",
+            "away_team": "Atherton B",
+            "home_score": 4,
+            "away_score": 1,
+            "winner": "home",
+            "board_count": 5,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 19498,
+                        "rating_code": "108513L",
+                        "name": "Clissold, Julian C",
+                        "rating": 1679,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 41619,
+                        "rating_code": "341416E",
+                        "name": "Barnett, Elliott",
+                        "rating": 1702,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 19536,
+                        "rating_code": "312061C",
+                        "name": "Eccleston, Bryony",
+                        "rating": 1451,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 90659,
+                        "rating_code": "182406F",
+                        "name": "Shortt, John",
+                        "rating": 1457,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19503,
+                        "rating_code": "114007D",
+                        "name": "Lamb, Ian D",
+                        "rating": 1568,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 41618,
+                        "rating_code": "322945C",
+                        "name": "Oldham, Anthony",
+                        "rating": 1471,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19544,
+                        "rating_code": "313646C",
+                        "name": "Eccleston, Rowan",
+                        "rating": 1240,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 108055,
+                        "rating_code": "281864E",
+                        "name": "Clays, Tim",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 82635,
+                        "rating_code": "309722F",
+                        "name": "Humphreys, Thomas",
+                        "rating": 1300,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 82022,
+                        "rating_code": "356053D",
+                        "name": "Littler, Amanda",
+                        "rating": 1123,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 88913,
+            "round": 2,
+            "date": "2024-12-10",
+            "time": "17:30",
+            "home_team": "Bury A",
+            "away_team": "Bolton B",
+            "home_score": 2.5,
+            "away_score": 2.5,
+            "winner": "away",
+            "board_count": 5,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 103340,
+                        "rating_code": "209389D",
+                        "name": "Anderson, Jason",
+                        "rating": 1655,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 58747,
+                        "rating_code": "345821A",
+                        "name": "Swallow, Geoff",
+                        "rating": 1538,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 64187,
+                        "rating_code": "110760E",
+                        "name": "Forrest, Brian J",
+                        "rating": 1408,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19536,
+                        "rating_code": "312061C",
+                        "name": "Eccleston, Bryony",
+                        "rating": 1451,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 64214,
+                        "rating_code": "342867K",
+                        "name": "Sherman, David",
+                        "rating": 1383,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 50324,
+                        "rating_code": "343870D",
+                        "name": "Eccleston , Dale ",
+                        "rating": 1324,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "home_default_win",
+                    "home_player": {
+                        "lms_id": -5,
+                        "rating_code": null,
+                        "name": "Not Named",
+                        "rating": null,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "B",
+                    "result": "home_default_win",
+                    "home_player": {
+                        "lms_id": -5,
+                        "rating_code": null,
+                        "name": "Not Named",
+                        "rating": null,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 89271,
+            "round": 3,
+            "date": "2025-01-13",
+            "time": "19:30",
+            "home_team": "Bolton B",
+            "away_team": "Bolton Juniors A",
+            "home_score": 4,
+            "away_score": 1,
+            "winner": "home",
+            "board_count": 5,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 100766,
+                        "rating_code": "283645C",
+                        "name": "Storrie-Baxter, James",
+                        "rating": 1600,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 84499,
+                        "rating_code": "360398C",
+                        "name": "Yang, Andy",
+                        "rating": 1700,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 58747,
+                        "rating_code": "345821A",
+                        "name": "Swallow, Geoff",
+                        "rating": 1538,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19536,
+                        "rating_code": "312061C",
+                        "name": "Eccleston, Bryony",
+                        "rating": 1451,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19505,
+                        "rating_code": "119099E",
+                        "name": "Skipworth, John C",
+                        "rating": 1535,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": -2,
+                        "rating_code": null,
+                        "name": "Default",
+                        "rating": null,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 19514,
+                        "rating_code": "222007G",
+                        "name": "Houlston, Michael",
+                        "rating": 1425,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 19544,
+                        "rating_code": "313646C",
+                        "name": "Eccleston, Rowan",
+                        "rating": 1240,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 5,
+                    "home_colour": "W",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 19506,
+                        "rating_code": "119961E",
+                        "name": "Swift, Mike",
+                        "rating": 1290,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 24413,
+                        "rating_code": "346430B",
+                        "name": "Shah, Dheer",
+                        "rating": 1361,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,199 @@
+{
+    "event_name": "Vaux Cup",
+    "event_type": "knockout_draw_round",
+    "fixtures": [
+        {
+            "fixture_id": 51253,
+            "round": 1,
+            "date": "2025-03-18",
+            "time": "19:30",
+            "home_team": "Leyland A",
+            "away_team": "Crusaders B",
+            "home_score": 2.5,
+            "away_score": 1.5,
+            "winner": "home",
+            "board_count": 4,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 13923,
+                        "rating_code": "173324C",
+                        "name": "Moffatt, William J",
+                        "rating": 1728,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 1630,
+                        "rating_code": "134030L",
+                        "name": "Whiteside, Ronnie",
+                        "rating": 1723,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 1615,
+                        "rating_code": "215270J",
+                        "name": "Hart, Robert",
+                        "rating": 1674,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 1594,
+                        "rating_code": "256834C",
+                        "name": "Glover, Gordon L",
+                        "rating": 1502,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 72910,
+                        "rating_code": "344303G",
+                        "name": "Ashton, Paul",
+                        "rating": 1600,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 16002,
+                        "rating_code": "323825J",
+                        "name": "Grounds, Robert",
+                        "rating": 1346,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 75725,
+                        "rating_code": "244361C",
+                        "name": "Treadwell, Neil",
+                        "rating": 1479,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 24156,
+                        "rating_code": "271425F",
+                        "name": "Sutton, Ronnie",
+                        "rating": 1039,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 51254,
+            "round": 2,
+            "date": "2025-04-22",
+            "time": "19:30",
+            "home_team": "Leyland A",
+            "away_team": "Great Lever B",
+            "home_score": 2.5,
+            "away_score": 1.5,
+            "winner": "home",
+            "board_count": 4,
+            "games": [
+                {
+                    "board": 1,
+                    "home_colour": "B",
+                    "result": "draw",
+                    "home_player": {
+                        "lms_id": 13923,
+                        "rating_code": "173324C",
+                        "name": "Moffatt, William J",
+                        "rating": 1728,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 11435,
+                        "rating_code": "127696H",
+                        "name": "Kobryn, Peter J",
+                        "rating": 1929,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 2,
+                    "home_colour": "W",
+                    "result": "away_win",
+                    "home_player": {
+                        "lms_id": 1615,
+                        "rating_code": "215270J",
+                        "name": "Hart, Robert",
+                        "rating": 1674,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 11429,
+                        "rating_code": "104991E",
+                        "name": "Crowther, Andrew",
+                        "rating": 1678,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 3,
+                    "home_colour": "B",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 72910,
+                        "rating_code": "344303G",
+                        "name": "Ashton, Paul",
+                        "rating": 1600,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 11437,
+                        "rating_code": "134021K",
+                        "name": "Patel, Parshottambhi D",
+                        "rating": 1335,
+                        "secondary_rating": null
+                    }
+                },
+                {
+                    "board": 4,
+                    "home_colour": "W",
+                    "result": "home_win",
+                    "home_player": {
+                        "lms_id": 75725,
+                        "rating_code": "244361C",
+                        "name": "Treadwell, Neil",
+                        "rating": 1479,
+                        "secondary_rating": null
+                    },
+                    "away_player": {
+                        "lms_id": 11443,
+                        "rating_code": "287757A",
+                        "name": "Davies, Brian",
+                        "rating": 1252,
+                        "secondary_rating": null
+                    }
+                }
+            ]
+        },
+        {
+            "fixture_id": 51255,
+            "round": 1,
+            "date": "2025-04-01",
+            "time": "19:30",
+            "home_team": "Great Lever B",
+            "away_team": null,
+            "home_score": 0,
+            "away_score": 0,
+            "winner": "unknown",
+            "board_count": 4,
+            "games": []
+        }
+    ]
+}

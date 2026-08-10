@@ -1,0 +1,17 @@
+info:
+  name: Get Results - Div A Cup (6828) John Birchall Cup
+  type: http
+  seq: 4
+
+http:
+  method: GET
+  url: "{{baseUrl}}/event/6828/results"
+  auth:
+    type: bearer
+    token: "{{bearerToken}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

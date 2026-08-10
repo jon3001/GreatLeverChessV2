@@ -1,0 +1,7 @@
+info:
+  name: Event 2025 (1750)
+  type: folder
+  seq: 2
+
+request:
+  auth: inherit
