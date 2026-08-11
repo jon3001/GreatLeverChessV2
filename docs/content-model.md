@@ -23,6 +23,14 @@ vocabulary, outside the `source` block) and §3.9 (`event` has no lookup file
 backing its slug, unlike every other normalised field). Still nothing below
 is committed to the repo — Session 3's stop condition hasn't been reached.
 
+**Revised again 11 August 2026, later in Session 3.** A third organisation,
+`great-lever-friendlies` (org 781 — the club's own "Friendly Matches" page,
+distinct from either league), folded into scope after all — see §4. Its
+season slug does not come from the source the way Bolton's and Central
+Lancashire's do; see §2.4. §1.1's `rating_code` claim corrected against real
+data that has since falsified it, and two new data-quality notes recorded
+from spot-checking generated output against the live site (§3.10, §3.11).
+
 ---
 
 ## 1. Fixture front matter
@@ -116,12 +124,41 @@ it's a YAML null literal).
 
 `rating: null` is a genuine unrated-player state and must be preserved as
 `null`, never coerced to `0`. The LMS's own match card renders it as `0000`,
-which is a display convention on ECF's side, not a rating value. Distinguish
-a real unrated player from a placeholder by `rating_code`, not by `rating`: a
-real player always carries a `rating_code` even when `rating` is null; only
-the `-2`/`-5` sentinels have `rating_code: null`. Both cases occur in the same
-captured fixture — `org-1097/season-1758/event-08866.json`, Atherton A v
-Radcliffe — which makes it a useful transform test case.
+which is a display convention on ECF's side, not a rating value.
+
+**Revised 11 August 2026, during Session 3.** `rating_code: null` is not
+exclusive to the `-2`/`-5` sentinels, as originally claimed here — real,
+named opponents can carry it too. Confirmed in org 781's own capture
+(`event-10242.json`, fixture 145288): "Lowden, Paul" and "Harrison, Mark",
+both ordinary positive `lms_id` values, most likely players with no ECF
+rating code on file rather than any kind of placeholder. `lms_id` remains
+the only reliable placeholder test — `rating_code` being null no longer
+implies anything about a board.
+
+The originally-cited test case (`org-1097/season-1758/event-08866.json`,
+Atherton A v Radcliffe) turns out not to be usable as one: neither side is
+Great Lever, so §2.3's per-event skip removes it before it ever reaches the
+transform's output. The null-`rating_code` path is still exercised by other
+boards in the same capture set, and now by org 781's — just not by that
+specific fixture.
+
+**Resolved 11 August 2026.** Root cause confirmed by decompiling
+`YamlDotNet.dll` 18.1.0: `TypeAssigningEventEmitter.Emit` only
+overrides `ScalarStyle` when a property's style is `Any` — a forced
+`ScalarStyle.DoubleQuoted` on a null value survives untouched, so the
+null rendered as an empty double-quoted string rather than a true
+YAML null. Fixed by wrapping `RatingCode` in a small `readonly struct
+RatingCode` (implicit conversion from `string?`, so nothing calling
+into it needed to change) with its own `IYamlTypeConverter` that
+branches explicitly: null emits a real `tag:yaml.org,2002:null`
+scalar, non-null emits the same forced double-quoted scalar as
+before. A bare `string?` can't take this fix — it short-circuits to
+a null scalar before any converter runs, which is exactly why the
+wrapper is necessary. Verified against a full regenerate-from-scratch
+diff: only files with at least one null `rating_code` somewhere in
+their boards changed, and only on that field. The governing rule
+below still stands for any future nullable string field that needs
+forced quoting.
 
 ---
 
@@ -201,6 +238,27 @@ but it *is* retained in `source.season_id` for provenance and link
 construction (§2.6). These are two different jobs: `seasons` is the taxonomy
 term the site groups by, `source.season_id` is the identifier the LMS knows
 the season by.
+
+**Season-slug provenance is not uniform across organisations — clarified
+11 August 2026, during Session 3.** For Bolton & District and Central
+Lancashire, the normalised slug in `seasons` has so far simply mirrored what
+the LMS itself calls the season — both already happened to be
+`2025-26`-shaped in the source. Adding `great-lever-friendlies` (org 781 —
+see §4) broke that coincidence: the LMS names its season `"2026 Season"`,
+not `"2025-26"`. Rather than adopt the source's own name, the slug is
+derived independently by treating a season as running **1 August to
+31 July** and locating the fixture dates within that window (round 1 of
+`event-10242.json`, 9 and 25 June 2026, sits inside 1 Aug 2025–31 Jul 2026,
+giving `2025-26`). This is a deliberate, standing policy, not a one-off
+judgement call, and applies to any future season for this organisation and
+to any other source whose own naming doesn't already match Great Lever's
+year boundary. The August 1st cutoff itself is subject to refinement — it
+hasn't been tested against a fixture near the edge of it — but the
+principle is settled: **the season a source calls it and the slug this
+project assigns are two different things**, and they coincide for Bolton
+and Central Lancashire only because those two happen to line up, not
+because the mapping is source-name-derived. Don't assume a future
+organisation's season slug is readable directly off its API response.
 
 **Revised 11 August 2026, during Session 3.** Both lookups originally lived
 in separate files (`data/organisation.json`, `data/season.json`), each keyed
@@ -413,6 +471,38 @@ No concrete trigger yet — event names have been stable throughout the
 2025/26 capture — but worth a `data/event.json` lookup, mirroring
 `own_team.json`'s shape, the day one actually renames.
 
+**3.10 — A defaulted board doesn't always leave a `games[]` entry.** *(new
+11 August 2026, post-Session-3 spot-check)* `org-1097/season-1758/event-08866.json`
+fixture 123674 (Radcliffe v Great Lever) declares 6 boards and its sixth
+`games[]` entry carries the `-2`/`-5` sentinel pair, producing a `boards[]`
+entry with `result: double_default`. `org-0781/season-2045/event-10242.json`
+fixture 145288 (Wigan 1 v Great Lever 1) also declares 6 boards, but its
+`games[]` array has only five elements — no sixth entry at all, sentinel or
+otherwise. The live site renders an identical "Default v Default" placeholder
+row for both, so the two API-level shapes are indistinguishable from the
+site's own display; only the raw JSON shows the difference.
+`declared_board_count` minus `games.length` already surfaces the gap
+numerically, which is what it's for — but nothing currently records *why* a
+board is missing when it's missing this way. A future "defaults conceded"
+statistic (§1.1) will need to treat "sentinel entry present" and "entry
+entirely absent" as the same signal.
+
+**3.11 — The live site's displayed time doesn't always match the API's
+`time` field.** *(new 11 August 2026, post-Session-3 spot-check)* Two
+knockout fixtures spot-checked against the live site — `145288` (Friendly
+Matches) and `130718` (Vaux Cup, confirmed rearranged by an organiser
+comment on the page itself) — both show `00:00` as the fixture time on
+`lms.englishchess.org.uk`, while the captured API response for both returns
+`"19:30"`, the same constant every other fixture in both leagues carries
+(§3.1). Only two data points, both knockout/cup fixtures, one confirmed
+rearranged — not enough to say whether the cause is rearrangement, event
+type, or something else. The transform correctly passes through whatever
+the API returns, so this isn't a transform defect; it matters because
+Session 8's per-fixture deep link (§2.6) will point at a page that may
+display a different time than the generated site does for the same
+fixture. Worth rechecking once more knockout fixtures are captured, not
+designing around yet.
+
 ---
 
 ## 4. `data/` lookup files
@@ -438,6 +528,9 @@ lettered.
         { "raw_name": "Great Lever A", "slug": "great-lever-a" },
         { "raw_name": "Great Lever B", "slug": "great-lever-b" },
         { "raw_name": "Great Lever C", "slug": "great-lever-c" }
+      ],
+      "great-lever-friendlies": [
+        { "raw_name": "Great Lever 1", "slug": "great-lever-1" }
       ]
     }
 
@@ -446,7 +539,13 @@ incoming API string before comparing (§3.6), so no entry should ever be added
 here with leading or trailing whitespace to "match" a dirty source value.
 
 Manchester's `"Great Lever 1"` variant deliberately not included — out of
-scope until Stage 4 backfill.
+scope until Stage 4 backfill. Worth noting the coincidence now that
+`great-lever-friendlies` uses that exact raw name: this file is keyed per
+organisation specifically so two organisations can use the identical
+display string without needing to be told apart by anything other than
+which block they sit under. When Manchester is eventually added, its own
+`"Great Lever 1"` entry (if that's what it turns out to use) lives under
+`manchester`, unrelated to org 781's.
 
 **Considered and judged safe, 11 August 2026.** Raised during Session 3:
 whether pre-LMS-era imports (a league before it joined the LMS) would strain
@@ -469,7 +568,8 @@ the old `season.json` was, just moved under a namespace).
       "ecflms": {
         "organisations": {
           "1097": "bolton-district",
-          "779": "central-lancashire"
+          "779": "central-lancashire",
+          "781": "great-lever-friendlies"
         },
         "seasons": {
           "bolton-district": {
@@ -477,6 +577,9 @@ the old `season.json` was, just moved under a namespace).
           },
           "central-lancashire": {
             "1805": "2025-26"
+          },
+          "great-lever-friendlies": {
+            "2045": "2025-26"
           }
         }
       }
@@ -511,6 +614,10 @@ close — revisit if the two start drifting out of sync in practice.
 Manchester's `org_id: 1237` deliberately not added yet, mirroring
 `own_team.json`'s own "out of scope until Stage 4 backfill" line above — add
 both together when that day comes, not one ahead of the other.
+`great-lever-friendlies` (org 781) is *not* the same kind of addition — it
+went in during Session 3 itself, not deferred to Stage 4 — see §2.4 for its
+season-slug handling, which differs from every other organisation in this
+file.
 
 ### `data/current_season.json`
 
@@ -519,7 +626,8 @@ Great Lever team; absence means "not playing there this cycle."
 
     {
       "bolton-district": "2025-26",
-      "central-lancashire": "2025-26"
+      "central-lancashire": "2025-26",
+      "great-lever-friendlies": "2025-26"
     }
 
 ### `data/sources.json` — added 11 August 2026

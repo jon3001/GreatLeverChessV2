@@ -6,5 +6,8 @@
     { "raw_name": "Great Lever A", "slug": "great-lever-a" },
     { "raw_name": "Great Lever B", "slug": "great-lever-b" },
     { "raw_name": "Great Lever C", "slug": "great-lever-c" }
+  ],
+  "great-lever-friendlies": [
+    { "raw_name": "Great Lever 1", "slug": "great-lever-1" }
   ]
 }

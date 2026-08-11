@@ -2,7 +2,8 @@
   "ecflms": {
     "organisations": {
       "1097": "bolton-district",
-      "779": "central-lancashire"
+      "779": "central-lancashire",
+      "781": "great-lever-friendlies"
     },
     "seasons": {
       "bolton-district": {
@@ -10,6 +11,9 @@
       },
       "central-lancashire": {
         "1805": "2025-26"
+      },
+      "great-lever-friendlies": {
+        "2045": "2025-26"
       }
     }
   }

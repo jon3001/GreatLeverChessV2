@@ -1,0 +1,7 @@
+info:
+  name: Great Lever (781)
+  type: folder
+  seq: 6
+
+request:
+  auth: inherit

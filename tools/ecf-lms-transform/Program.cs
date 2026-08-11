@@ -13,6 +13,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using YamlDotNet.Core;
+using YamlDotNet.Core.Events;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -20,26 +21,29 @@ const string CapturesRoot = "ecf-captures/lms";
 const string DataRoot = "data";
 const string OutputRoot = "content/fixtures";
 
-// --- org_id -> organisation slug ---------------------------------------
-// own_team.json and season.json are both keyed BY organisation slug, but
-// a capture path only ever gives us the numeric org_id. Promoted from a
-// hardcoded dictionary to a real data/organisation.json lookup on
-// 11 August 2026 — Manchester backfill is a concrete near-term plan, not
-// a hypothetical, so a third row is no longer speculative.
-var organisationSlugs = JsonSerializer.Deserialize<Dictionary<string, string>>(
-    File.ReadAllText(Path.Combine(DataRoot, "organisation.json")))
-    ?? throw new InvalidOperationException("data/organisation.json did not parse");
+// --- org_id -> organisation slug, and season resolution -----------------
+// own_team.json and source_ids.json are both keyed BY organisation slug, but
+// a capture path only ever gives us the numeric org_id. Originally two flat
+// files (data/organisation.json, data/season.json), each keyed directly by
+// a raw source id with no namespace. Consolidated into data/source_ids.json
+// on 11 August 2026, namespaced by source.system — see docs/content-model.md
+// §4. organisationSlugs and seasonLookup below are just the two sub-maps
+// pulled out of that one file; everything downstream that consumes them is
+// unchanged.
+var sourceIds = JsonSerializer.Deserialize<SourceIdsFile>(
+    File.ReadAllText(Path.Combine(DataRoot, "source_ids.json")))
+    ?? throw new InvalidOperationException("data/source_ids.json did not parse");
+
+var organisationSlugs = sourceIds.Ecflms.Organisations;
+var seasonLookup = sourceIds.Ecflms.Seasons;
 
 var ownTeamLookup = JsonSerializer.Deserialize<Dictionary<string, List<OwnTeamEntry>>>(
     File.ReadAllText(Path.Combine(DataRoot, "own_team.json")))
     ?? throw new InvalidOperationException("data/own_team.json did not parse");
 
-var seasonLookup = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(
-    File.ReadAllText(Path.Combine(DataRoot, "season.json")))
-    ?? throw new InvalidOperationException("data/season.json did not parse");
-
 var yamlSerializer = new SerializerBuilder()
     .WithNamingConvention(UnderscoredNamingConvention.Instance)
+    .WithTypeConverter(new RatingCodeConverter())
     .Build();
 
 var captureFiles = Directory.GetFiles(CapturesRoot, "event-*.json", SearchOption.AllDirectories)
@@ -66,7 +70,7 @@ foreach (var captureFile in captureFiles)
         !orgSeasons.TryGetValue(seasonId.ToString(CultureInfo.InvariantCulture), out var seasonSlug))
     {
         throw new InvalidOperationException(
-            $"data/season.json has no entry for organisation '{organisation}', season_id {seasonId}");
+            $"data/source_ids.json has no entry under ecflms.seasons for organisation '{organisation}', season_id {seasonId}");
     }
 
     var payload = JsonSerializer.Deserialize<EventPayload>(File.ReadAllText(captureFile))
@@ -295,11 +299,14 @@ public sealed class BoardFrontMatter
 
 public sealed class PlayerFrontMatter
 {
-    // Quoted so a name like "Null, AJ" can never be misread as a YAML
-    // null literal, and so a code like "0123A" never gets read as a
-    // number with a leading zero dropped.
-    [YamlMember(Order = 1, ScalarStyle = ScalarStyle.DoubleQuoted)]
-    public string? RatingCode { get; set; }
+    // RatingCode is a struct wrapper, not string?, so that a null code
+    // still reaches RatingCodeConverter below instead of being short-
+    // circuited into a plain null scalar by YamlDotNet before the
+    // converter ever runs (a bare string? would skip WriteYaml entirely
+    // when null, and there'd be no way to force quoting back on for the
+    // non-null case from inside the converter).
+    [YamlMember(Order = 1)]
+    public RatingCode RatingCode { get; set; }
 
     [YamlMember(Order = 2)]
     public int LmsId { get; set; }
@@ -315,6 +322,50 @@ public sealed class PlayerFrontMatter
 
     [YamlMember(Order = 5)]
     public int? SecondaryRating { get; set; }
+}
+
+// A null rating_code (sentinel "Default" players, or a real player with no
+// ECF code on file yet) must serialize as a true YAML null — same as
+// Rating above — not as "", which would misrepresent "unknown" as "known
+// to be empty". A plain string? can't do this: forcing ScalarStyle on the
+// YamlMember applies even when the value is null, so YamlDotNet quotes the
+// empty string instead of emitting null. Wrapping in a struct keeps the
+// value non-null at the CLR level, so RatingCodeConverter.WriteYaml always
+// runs and can pick the style itself: quoted for a real code (protecting
+// codes like "0123A" from being misread as numbers), a true null otherwise.
+public readonly struct RatingCode
+{
+    public string? Value { get; }
+
+    public RatingCode(string? value) => Value = value;
+
+    public static implicit operator RatingCode(string? value) => new(value);
+}
+
+public sealed class RatingCodeConverter : IYamlTypeConverter
+{
+    private static readonly TagName NullTag = "tag:yaml.org,2002:null";
+
+    public bool Accepts(Type type) => type == typeof(RatingCode);
+
+    public object ReadYaml(IParser parser, Type type, ObjectDeserializer rootDeserializer) =>
+        throw new NotSupportedException("This transform only ever serializes RatingCode, never reads it back.");
+
+    public void WriteYaml(IEmitter emitter, object? value, Type type, ObjectSerializer serializer)
+    {
+        var ratingCode = (RatingCode)value!;
+        if (ratingCode.Value is null)
+        {
+            // Mirrors the null Scalar YamlDotNet emits internally for a
+            // bare null (tag + IsPlainImplicit=true, no ScalarStyle
+            // forced) so this renders identically to Rating's blank output.
+            emitter.Emit(new Scalar(AnchorName.Empty, NullTag, "", ScalarStyle.Plain, isPlainImplicit: true, isQuotedImplicit: false));
+        }
+        else
+        {
+            emitter.Emit(new Scalar(AnchorName.Empty, TagName.Empty, ratingCode.Value, ScalarStyle.DoubleQuoted, isPlainImplicit: false, isQuotedImplicit: true));
+        }
+    }
 }
 
 public sealed class SourceBlock
@@ -428,4 +479,27 @@ public sealed class OwnTeamEntry
 
     [JsonPropertyName("slug")]
     public string Slug { get; set; } = "";
+}
+
+// --- data/source_ids.json model -------------------------------------------
+// Top-level object is namespaced by source.system. Only "ecflms" exists
+// today (docs/content-model.md §4); a second source gets its own top-level
+// key shaped however that source's ids actually work — this transform only
+// ever reads the ecflms branch.
+
+public sealed class SourceIdsFile
+{
+    [JsonPropertyName("ecflms")]
+    public SourceIdsBlock Ecflms { get; set; } = new();
+}
+
+public sealed class SourceIdsBlock
+{
+    // org_id (string) -> organisation slug
+    [JsonPropertyName("organisations")]
+    public Dictionary<string, string> Organisations { get; set; } = new();
+
+    // organisation slug -> { raw season_id (string) -> normalised season slug }
+    [JsonPropertyName("seasons")]
+    public Dictionary<string, Dictionary<string, string>> Seasons { get; set; } = new();
 }
