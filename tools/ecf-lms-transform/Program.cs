@@ -319,7 +319,7 @@ public sealed class PlayerFrontMatter
 
 public sealed class SourceBlock
 {
-    [YamlMember(Order = 1, Name = "system")]
+    [YamlMember(Order = 1, Alias = "system")]
     public string SourceSystem { get; set; } = "ecflms";
 
     [YamlMember(Order = 2)]
