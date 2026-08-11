@@ -4,3 +4,57 @@ title = 'My New Hugo Project'
 
 [taxonomies]
     season = 'seasons'
+
+[permalinks]
+    taxonomy.seasons = '/archive/'
+    term.seasons = '/archive/:slug/'
+
+[[menus.main]]
+    name = 'Fixtures'
+    pageRef = '/fixtures'
+    weight = 10
+
+[[menus.main]]
+    name = 'Club Nights'
+    pageRef = '/club-nights'
+    weight = 20
+
+[[menus.main]]
+    name = 'Find Us'
+    pageRef = '/find-us'
+    weight = 30
+
+[[menus.main]]
+    name = 'Contact'
+    pageRef = '/contact'
+    weight = 40
+
+[[menus.main]]
+    name = 'Archive'
+    pageRef = '/seasons'
+    weight = 50
+
+[[menus.main]]
+    name = 'Links'
+    pageRef = '/links'
+    weight = 60
+
+[[menus.main]]
+    name = 'News'
+    pageRef = '/news'
+    weight = 70
+
+[[menus.main]]
+    name = 'History'
+    pageRef = '/history'
+    weight = 80
+
+[[menus.main]]
+    name = 'Documents'
+    pageRef = '/documents'
+    weight = 90
+
+[[menus.main]]
+    name = 'Juniors'
+    pageRef = '/juniors'
+    weight = 100

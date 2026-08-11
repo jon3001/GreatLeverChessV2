@@ -1,0 +1,33 @@
+# Top-level nav
+/index.html                 /                    301
+/fixtures.html               /fixtures/            301
+/results.html                 /fixtures/            301
+/club_nights.html           /club-nights/         301
+/find_us.html                 /find-us/             301
+/contact_us.html             /contact/             301
+/contact_us_submitted.html   /contact/             301
+/links.html                   /links/               301
+
+# Archive — not backfilling V1-era seasons; all route to the archive index
+/archive.html                 /archive/             301
+/archive_1415.html           /archive/             301
+/archive_1314.html           /archive/             301
+/archive_1213.html           /archive/             301
+/archive_1112.html           /archive/             301
+/archive_1011.html           /archive/             301
+/archive_0910.html           /archive/             301
+/archive_0809.html           /archive/             301
+/archive_0708.html           /archive/             301
+/archive_0607.html           /archive/             301
+/archive_0506.html           /archive/             301
+
+# Fixtures — per-league filters, consolidated into the single fixtures list
+/fixtures_bolton.html        /fixtures/            301
+/fixtures_manchester1.html   /fixtures/            301
+/fixtures_manchester2.html   /fixtures/            301
+/fixtures_eastlancs.html     /fixtures/            301
+
+# Results — folded into the combined fixtures/results page
+/results_manchester1.html    /fixtures/            301
+/results_manchester2.html    /fixtures/            301
+/results_eastlancs.html      /fixtures/            301

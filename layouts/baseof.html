@@ -5,6 +5,7 @@
   <title>{{ .Title }}</title>
 </head>
 <body>
+  {{ partial "nav.html" . }}
   {{ block "main" . }}{{ end }}
 </body>
 </html>
