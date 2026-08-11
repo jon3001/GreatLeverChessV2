@@ -12,6 +12,17 @@ lookup file added (§4), and two new data-quality notes recorded (§3.6, §3.7).
 All settled before the transform wrote its first file, so no migration is
 implied — but nothing below is committed to the repo yet either.
 
+**Revised again 11 August 2026, during Session 3.** The `own_team`/`opponent`
+fail-loudly rule in §2.3 corrected against real captured data — most
+fixtures in a full event draw aren't Great Lever's, and that's the normal
+case, not an error. `data/organisation.json` (itself only hours old) and
+`data/season.json` both retired in favour of a single `data/source_ids.json`,
+namespaced by `source.system` — see §4. Two things deliberately recorded as
+open questions rather than resolved: §3.8 (`event_type` carries raw LMS
+vocabulary, outside the `source` block) and §3.9 (`event` has no lookup file
+backing its slug, unlike every other normalised field). Still nothing below
+is committed to the repo — Session 3's stop condition hasn't been reached.
+
 ---
 
 ## 1. Fixture front matter
@@ -47,10 +58,10 @@ Three properties the filename must keep, in priority order:
     date: 2025-11-25
     time: "19:30"                      # LMS fixture-level field; CAN BE NULL — see §3.1
     round: 4                           # LMS fixture-level field; meaning varies by event — see §3.2
-    organisation: central-lancashire   # normalised org slug, from data/own_team.json's keys
-    event: division-a                  # normalised event slug
-    event_type: team_league            # team_league | knockout_draw_round
-    seasons: ["2025-26"]               # normalised slug, list-valued — from data/season.json — NOT the raw ECF sid — see §2.5
+    organisation: central-lancashire   # normalised org slug, resolved from source.org_id via data/source_ids.json — see §2.4
+    event: division-a                  # normalised event slug — slugified from event_name, no lookup file — see §3.9
+    event_type: team_league            # team_league | knockout_draw_round — raw LMS vocabulary — see §3.8
+    seasons: ["2025-26"]               # normalised slug, list-valued — from data/source_ids.json — NOT the raw ECF sid — see §2.5
     own_team: great-lever-a            # resolved via data/own_team.json, per organisation
     opponent: Heywood A                # display string, trimmed — no stable ID exists, see §2.3
     venue: home                        # home | away
@@ -156,19 +167,47 @@ becomes `opponent`, stored verbatim otherwise. No `opponent_id` — confirmed
 6 August 2026 that `home_team`/`away_team` are bare strings in every league,
 with no underlying identifier of any kind.
 
-A fixture where **neither** side matches the org's `own_team` entries is a
-transform error, not a silent skip — it means either a new Great Lever team
-variant the lookup doesn't know about, or a capture from an event Great Lever
-doesn't play in. Fail loudly and log the raw strings.
+**Corrected 11 August 2026, during Session 3.** This originally said a
+fixture where neither side matches `own_team` should fail loudly. That was
+written before a full event draw had been inspected end to end.
+`event-08865.json` (Bolton League Cup Div 1) has 7 fixtures and only 1
+involves Great Lever; `event-08866.json` (Division 1, the full round-robin)
+has 30 and only 10 do. A captured event is the *whole* division or cup, not
+a Great-Lever-filtered view of it — most fixtures in any capture are between
+two other clubs entirely, and that's the normal case, not an error.
 
-### 2.4 `season` resolution and the current-season pointer
+**Neither side matching is a counted skip, not a failure.** The transform
+logs a per-event summary (`N written, M skipped`) rather than erring, or
+silently dropping the count — visible without being noisy about it. The
+genuine error conditions are narrower than the original wording implied:
+**both** sides matching (Great Lever can't play itself — a real bug in
+`own_team.json` or a data anomaly worth investigating), and an
+`organisation` with no `own_team.json` entry at all (the lookup has fallen
+out of sync with `source_ids.json`'s organisation list). Both of those still
+fail loudly.
 
-Look up `(organisation, raw season_id)` in `data/season.json` → normalised
-slug. The raw `sid` is not stored under `seasons`, which holds only the
-normalised slug — but it *is* retained in `source.season_id` for provenance
-and link construction (§2.6). These are two different jobs: `seasons` is the
-taxonomy term the site groups by, `source.season_id` is the identifier the
-LMS knows the season by.
+### 2.4 `organisation` and `season` resolution, and the current-season pointer
+
+**`organisation`** — look up the capture path's `org_id` in
+`data/source_ids.json`'s `ecflms.organisations` map → normalised org slug.
+This has to resolve before anything else in the transform: `own_team.json`
+and `source_ids.json`'s own `seasons` map are both keyed by the slug this
+step produces, not by `org_id` directly.
+
+**`season`** — look up `(organisation, raw season_id)` in
+`data/source_ids.json`'s `ecflms.seasons` map → normalised slug. The raw
+`sid` is not stored under `seasons`, which holds only the normalised slug —
+but it *is* retained in `source.season_id` for provenance and link
+construction (§2.6). These are two different jobs: `seasons` is the taxonomy
+term the site groups by, `source.season_id` is the identifier the LMS knows
+the season by.
+
+**Revised 11 August 2026, during Session 3.** Both lookups originally lived
+in separate files (`data/organisation.json`, `data/season.json`), each keyed
+directly by the raw source id with no namespace. Consolidated into
+`data/source_ids.json` once it was clear both were doing the same job —
+translating a source-internal id into project vocabulary — and that job is
+inherently per-source. Full reasoning in §4.
 
 `data/current_season.json` holds the currently-live season slug **per
 organisation** (not per team — a season is an organisational property; all of
@@ -271,7 +310,7 @@ season context anywhere in the response body.
 **URLs are not stored in front matter.** IDs live in the fixture files; URL
 patterns live in `data/sources.json` (§4), keyed by `source.system`; the
 template assembles the link. Same division of labour as `own_team.json` and
-`season.json`. The LMS is Drupal, and Drupal path structures do get
+`data/source_ids.json`. The LMS is Drupal, and Drupal path structures do get
 restructured across major versions — a pattern change should be a one-line
 edit rather than a regeneration and re-commit of every content file. Storing
 IDs also keeps fixture files honest about what the API actually returned.
@@ -348,6 +387,32 @@ result. None of it is in the payload. The generated site therefore cannot
 display whether a result has been verified and **must not imply that it has**
 — which is the practical argument for the per-fixture deep link in §2.6.
 
+**3.8 — `event_type` carries raw LMS vocabulary, outside the `source`
+block.** *(open question, 11 August 2026)* `knockout_draw_round` and
+`team_league` are Drupal content-type names, not chess vocabulary — no
+player would describe a match that way. Strictly, this breaches the rule
+that everything outside `source` stays source-neutral (§2.6). Deliberately
+**not** fixed now: fixing it means inventing neutral terms (`knockout`,
+`league`) against a sample of one source, which is exactly the trap §2.6
+already names for multi-source abstractions in general — a second source
+might need a third term, or a different split entirely. Revisit when a
+second source is real, not before. The same, more mildly, applies to
+`boards[].result` (`double_default` etc.) — but not to
+`boards[].player.lms_id`, which §3.5 already deliberately keeps as raw LMS
+vocabulary, since it means exactly what the API means by it there.
+
+**3.9 — `event` has no lookup file backing it, unlike `organisation`,
+`season` and `own_team`.** *(open question, 11 August 2026)* It's slugified
+directly from the source's `event_name` string at transform time
+(`"Bolton League Cup Div 1"` → `bolton-league-cup-div-1`) — the one
+normalised field where a source's display text flows straight into front
+matter with no translation table governing it. If the LMS renames a
+competition mid-season, or a second source names the same competition
+differently, two slugs result for one competition and nothing catches it.
+No concrete trigger yet — event names have been stable throughout the
+2025/26 capture — but worth a `data/event.json` lookup, mirroring
+`own_team.json`'s shape, the day one actually renames.
+
 ---
 
 ## 4. `data/` lookup files
@@ -383,23 +448,69 @@ here with leading or trailing whitespace to "match" a dirty source value.
 Manchester's `"Great Lever 1"` variant deliberately not included — out of
 scope until Stage 4 backfill.
 
-### `data/season.json`
+**Considered and judged safe, 11 August 2026.** Raised during Session 3:
+whether pre-LMS-era imports (a league before it joined the LMS) would strain
+this file the way `organisation.json`/`season.json` did. They won't — this
+file's job is already "map of display-name aliases to our slug," and a
+pre-LMS source calling the club something else (`"Gt Lever"`, say) is
+handled by adding another alias under the same slug, same as any other
+naming variant. No source-internal id appears anywhere in this file; the
+coupling problem that hit the other two doesn't apply here.
 
-`(organisation, raw ECF season_id)` → normalised slug. Supports many-to-one
-(confirmed necessary for Manchester's COVID-era seasons; not exercised by
-either row below, but the shape already handles it with no change). Only
-current-season rows for tonight's two leagues — historic rows get appended
-in the same shape during Stage 4 backfill, keyed by string since JSON object
-keys are always strings.
+### `data/source_ids.json` — replaces `organisation.json` and `season.json`, 11 August 2026
+
+Namespaced by `source.system`, holding every source-internal id this
+transform needs to translate into project vocabulary. Two sub-maps for
+`ecflms` today: `organisations` (`org_id` → organisation slug) and `seasons`
+(`(organisation, raw season_id)` → normalised slug — nested the same way
+the old `season.json` was, just moved under a namespace).
 
     {
-      "bolton-district": {
-        "1758": "2025-26"
-      },
-      "central-lancashire": {
-        "1805": "2025-26"
+      "ecflms": {
+        "organisations": {
+          "1097": "bolton-district",
+          "779": "central-lancashire"
+        },
+        "seasons": {
+          "bolton-district": {
+            "1758": "2025-26"
+          },
+          "central-lancashire": {
+            "1805": "2025-26"
+          }
+        }
       }
     }
+
+**Why this exists.** `data/organisation.json` was created earlier the same
+day as a hardcoded 2-entry dictionary in the transform, promoted to a real
+lookup file once Manchester backfill turned a third row from hypothetical
+into planned. Almost immediately after, it became clear `organisation.json`
+and `season.json` had the identical problem: both keyed directly by an
+LMS-internal id, with no namespace saying so, sitting in a folder next to
+files (`own_team.json`, `current_season.json`) that are genuinely
+source-neutral. That's the same shape of problem captures already solved —
+`ecf-captures/lms/...` is nested under `lms` specifically because ECF runs
+more than one system (the LMS, and a separate Ratings API), and a flat
+`ecf-captures/` would have hidden that distinction. `source_ids.json` applies
+the same fix to `data/`.
+
+**Not a multi-source abstraction either** — same caveat as §2.6's on the
+`source` block. A second source (SELSL, say) gets its own top-level key
+shaped however *that* source's ids actually work, which may not resemble
+`organisations`/`seasons` at all. The namespacing is the only contract;
+nothing assumes a common shape across sources.
+
+**Deliberately kept separate from `data/sources.json`**, despite both being
+keyed by `source.system` — a judgement call, not a certainty. `sources.json`
+holds URL patterns consumed by *templates* (Session 8); `source_ids.json`
+holds id mappings consumed only by *the transform*. Different consumers and
+different change cadence tipped this towards two files, but it's genuinely
+close — revisit if the two start drifting out of sync in practice.
+
+Manchester's `org_id: 1237` deliberately not added yet, mirroring
+`own_team.json`'s own "out of scope until Stage 4 backfill" line above — add
+both together when that day comes, not one ahead of the other.
 
 ### `data/current_season.json`
 
