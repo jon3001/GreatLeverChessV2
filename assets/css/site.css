@@ -1,0 +1,32 @@
+/*
+  Session 5: readability floor only. Design tokens (colour, spacing scale,
+  type scale) land in a later session — nothing here should be read as
+  a considered visual design.
+*/
+
+/* border-box makes any future width/padding on nav or content blocks
+   predictable instead of fighting the content-box default. */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  /* System font stack: no webfont request, so the page is readable
+     before/without a font load, and it matches each visitor's OS. */
+  font-family: system-ui, sans-serif;
+  /* 1.5 is the WCAG 2.2 1.4.8 reference line-height for body text. */
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Constrain measure so body text isn't full-viewport-width on desktop;
+   45em keeps line length in the ~70-80 character range readers scan best. */
+main, header, footer {
+  max-width: 45em;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+/* Menu <ul> currently renders as a plain bulleted list — acceptable for
+   this session's "not unreadable" bar. Real nav styling (horizontal on
+   desktop, disclosure treatment on mobile) is next session's CSS-only work. */

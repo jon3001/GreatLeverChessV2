@@ -1,7 +1,41 @@
-<nav>
-  <ul>
-    {{ range .Site.Menus.main }}
-    <li><a href="{{ .URL }}">{{ .Name }}</a></li>
-    {{ end }}
-  </ul>
+<nav aria-label="Primary">
+  {{/*
+    Mobile-only zero-JS disclosure. Desktop's hover/focus-reveal
+    treatment is CSS-only and lands in a later session; nothing here
+    needs to change when it does.
+  */}}
+  <details class="nav-toggle">
+    <summary>Menu</summary>
+    <ul>
+      {{ range .Site.Menus.main }}
+      <li>
+        {{ if .HasChildren }}
+        {{/*
+          Nested details/summary for a submenu. No menu entry has
+          children yet (hugo.toml has no `parent` set on any item), so
+          this branch is inert today — shaped now so a future submenu
+          is a hugo.toml change, not a template rewrite.
+
+          The submenu's <summary> is plain text, not a link: the HTML
+          spec forbids interactive-content descendants (an <a>) inside
+          <summary>, since <summary> is already the click/keyboard
+          target that toggles the <details>. If a submenu parent also
+          needs to be a page in its own right, that's a link placed
+          beside the <summary>, not inside it.
+        */}}
+        <details>
+          <summary>{{ .Name }}</summary>
+          <ul>
+            {{ range .Children }}
+            <li><a href="{{ .URL }}"{{ if $.IsMenuCurrent "main" . }} aria-current="page"{{ end }}>{{ .Name }}</a></li>
+            {{ end }}
+          </ul>
+        </details>
+        {{ else }}
+        <a href="{{ .URL }}"{{ if $.IsMenuCurrent "main" . }} aria-current="page"{{ end }}>{{ .Name }}</a>
+        {{ end }}
+      </li>
+      {{ end }}
+    </ul>
+  </details>
 </nav>

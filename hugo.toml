@@ -1,6 +1,6 @@
 baseURL = 'https://example.org/'
-locale = 'en-us'
-title = 'My New Hugo Project'
+locale = 'en-GB'
+title = 'Great Lever Chess Club'
 
 [taxonomies]
     season = 'seasons'

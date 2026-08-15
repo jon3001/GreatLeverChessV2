@@ -1,11 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ .Site.Language.Locale }}">
 <head>
-  <meta charset="utf-8">
-  <title>{{ .Title }}</title>
+  {{ partial "head.html" . }}
 </head>
 <body>
-  {{ partial "nav.html" . }}
-  {{ block "main" . }}{{ end }}
+  {{/*
+    Skip link stays inline here rather than in its own partial: its
+    only job is to point at the #main id defined two lines down in
+    this same file. Splitting it out would put the link and its
+    target in different files with nothing forcing them to stay in
+    sync.
+  */}}
+  <a class="skip-link" href="#main">Skip to main content</a>
+  {{ partial "header.html" . }}
+  <main id="main" tabindex="-1">
+    {{/*
+      tabindex="-1" makes #main focusable without adding it to normal
+      Tab order. Without it, following the skip link scrolls the page
+      but leaves keyboard focus at the top, so a screen reader user's
+      next Tab press starts back at the nav — defeating the skip link.
+    */}}
+    {{ block "main" . }}{{ end }}
+  </main>
+  {{ partial "footer.html" . }}
 </body>
 </html>
