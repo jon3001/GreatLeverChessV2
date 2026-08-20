@@ -1,8 +1,48 @@
 /*
-  Session 5: readability floor only. Design tokens (colour, spacing scale,
-  type scale) land in a later session — nothing here should be read as
-  a considered visual design.
+  Session 5: readability floor (box-sizing reset, body/main width, nav list).
+  Session 6: design tokens (colour, typography, spacing, measure) as CSS
+  custom properties, plus the minimal application needed to see the type
+  scale render. Layout beyond that is still later-session work.
 */
+
+:root {
+  /* Colour */
+  --color-ink:          #1b1a16;
+  --color-paper:        #fbfaf6;
+  --color-muted:        #737373;
+  --color-accent:       #b3521d;
+  --color-accent-tint:  #f5eee8;
+  --color-border:       #e6e2da;
+
+  --radius: 8px;
+  --border-width: 1px;
+
+  /* Typography */
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --font-size-sm:   0.875rem;
+  --font-size-base: 1rem;
+  /* clamp() scales between a floor and ceiling across the viewport width
+     given, so headings grow with the viewport instead of jumping at a
+     breakpoint. */
+  --font-size-h2:   clamp(1.25rem, 1.17rem + 0.42vw, 1.5rem);
+  --font-size-h1:   clamp(1.75rem, 1.5rem + 1.25vw, 2.5rem);
+
+  --line-height-heading: 1.15;
+  --line-height-body:    1.55;
+
+  /* Spacing rhythm — x1.5 geometric progression */
+  --space-1: 0.5rem;
+  --space-2: 0.75rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2rem;
+  --space-6: 3rem;
+  --space-7: 4.5rem;
+
+  /* Measure */
+  --measure: 65ch;
+}
 
 /* border-box makes any future width/padding on nav or content blocks
    predictable instead of fighting the content-box default. */
@@ -13,10 +53,22 @@
 body {
   /* System font stack: no webfont request, so the page is readable
      before/without a font load, and it matches each visitor's OS. */
-  font-family: system-ui, sans-serif;
-  /* 1.5 is the WCAG 2.2 1.4.8 reference line-height for body text. */
-  line-height: 1.5;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  /* 1.55 clears the WCAG 2.2 1.4.8 minimum of 1.5 for body text — kept
+     slightly above the floor rather than exactly on it. */
+  line-height: var(--line-height-body);
   margin: 0;
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+  line-height: var(--line-height-heading);
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  line-height: var(--line-height-heading);
 }
 
 /* Constrain measure so body text isn't full-viewport-width on desktop;
