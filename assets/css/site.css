@@ -134,6 +134,17 @@ h2 {
      the subject isn't. Needs the explicit height above to have a box
      with a different aspect ratio than the source image to crop against. */
   object-fit: cover;
+  /* object-position's second value is the vertical anchor: 0% pins the
+     TOP of the photo to the top of the box (roofline stays, entrance
+     crops away); 100% pins the BOTTOM (entrance stays, roofline crops
+     away). 90% biases hard toward the entrance while leaving a sliver
+     of headroom above it. First value stays "center" — the entrance is
+     already roughly centred horizontally in the source photo, so no
+     horizontal bias is needed. How much this actually crops isn't
+     fixed: the hero's height is clamp()'d (12rem–22rem) but its width
+     is always 100%, so the box's aspect ratio — and therefore how much
+     of the image's height gets cut — changes with the viewport. */
+  object-position: center 90%;
 }
 
 .hero-placeholder {

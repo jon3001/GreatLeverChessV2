@@ -5,11 +5,28 @@
   assets/images/hero-venue.jpg and this switches from placeholder to img
   with no template change. Tentative per CLAUDE.md — expect this whole
   block to move or drop after the demo.
+
+  Responsive srcset: the hero renders full-bleed (width:100% in
+  site.css) at a CSS-constrained height, so without this a phone would
+  download the same ~450KB desktop-resolution JPEG as a wide desktop
+  monitor. .Resize generates each width once at build time; Hugo caches
+  the results under resources/_gen, so repeat builds don't re-pay the
+  cost. 1640 — the source's native width (.Width) — is the largest
+  step, so nothing upscales past what was actually uploaded; sizes is
+  100vw because the hero is deliberately NOT inside .content-column
+  (see site.css) and always spans the full viewport width.
 */}}
 <div class="hero">
   {{ with resources.Get "images/hero-venue.jpg" }}
-  <img src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}"
-       alt="The clubroom at Great Lever Chess Club">
+  {{ $img := . }}
+  {{ $widths := slice 480 800 1200 1640 }}
+  {{ $default := $img.Resize "800x" }}
+  <img
+    src="{{ $default.RelPermalink }}"
+    srcset="{{ range $i, $w := $widths }}{{ if $i }}, {{ end }}{{ ($img.Resize (printf "%dx" $w)).RelPermalink }} {{ $w }}w{{ end }}"
+    sizes="100vw"
+    width="{{ $img.Width }}" height="{{ $img.Height }}"
+    alt="Exterior of the Great Lever Chess Club venue">
   {{ else }}
   <div class="hero-placeholder">
     <p>Venue photo — pending</p>
