@@ -2,7 +2,14 @@
   Session 5: readability floor (box-sizing reset, body/main width, nav list).
   Session 6: design tokens (colour, typography, spacing, measure) as CSS
   custom properties, plus the minimal application needed to see the type
-  scale render. Layout beyond that is still later-session work.
+  scale render.
+  Session 7: page shell + content column (wired into the templates, since
+  every page uses them), plus card grid and stack as primitives. The hero
+  is tentative pending member feedback at the demo — treat its markup and
+  rules as provisional. Card grid and stack are deliberately NOT wired
+  into any listing yet: nav styling and the fixtures/news listing
+  templates are each reserved for their own later session, so there's no
+  real content to hang these on without reaching into that work early.
 */
 
 :root {
@@ -71,14 +78,122 @@ h2 {
   line-height: var(--line-height-heading);
 }
 
-/* Constrain measure so body text isn't full-viewport-width on desktop;
-   45em keeps line length in the ~70-80 character range readers scan best. */
-main, header, footer {
-  max-width: 45em;
-  margin-inline: auto;
-  padding-inline: 1rem;
-}
-
 /* Menu <ul> currently renders as a plain bulleted list — acceptable for
    this session's "not unreadable" bar. Real nav styling (horizontal on
    desktop, disclosure treatment on mobile) is next session's CSS-only work. */
+
+/*
+  Content column — the measure-constrained primitive.
+  Applied per-wrapper (header/main/footer each get one internally) rather
+  than to the tag itself, because the hero has to live inside <main> as a
+  sibling of the constrained content, and a tag selector on `main` can't
+  tell those two children apart. `--measure` (65ch) is the token; this is
+  the only rule allowed to consume it for width.
+*/
+.content-column {
+  max-width: var(--measure);
+  margin-inline: auto;   /* logical: the *inline* axis is left/right in
+                            English's horizontal-ltr writing mode. Physical
+                            margin-left/right would do the same thing
+                            today, but inline/block track the text
+                            direction instead of the screen edge, so they
+                            keep meaning "start and end of a line of text"
+                            if that ever changes. Costs nothing now; the
+                            site.css files that came before this one
+                            already made this call for padding, so this
+                            keeps that convention rather than mixing the
+                            two vocabularies. */
+  padding-inline: var(--space-3);
+}
+
+/*
+  Page shell — hero region.
+  Deliberately NOT wrapped in .content-column: that's the whole point of
+  putting it directly in baseof.html as a sibling of the constrained
+  <main> content rather than inside it. It bleeds to the full width of
+  whatever contains it (currently <body>) by doing nothing at all — an
+  ordinary block box is 100% wide unless something constrains it.
+*/
+.hero img,
+.hero-placeholder {
+  display: block;
+  width: 100%;
+  /* clamp(floor, preferred, ceiling): same tool as the type scale above,
+     used here for a different reason. A fixed px height is too tall on a
+     narrow phone and too short relative to a wide desktop viewport; a
+     bare vw value has no floor/ceiling and can go to zero or huge. clamp
+     picks the vw-scaled value UNLESS it falls outside [12rem, 22rem], in
+     which case it's held at whichever bound it hit. */
+  height: clamp(12rem, 40vw, 22rem);
+}
+
+.hero img {
+  /* object-fit:cover crops the photo to fill the box rather than
+     squashing it (default) or letterboxing it (contain) — right choice
+     for a photo where cropping the edges is acceptable but distorting
+     the subject isn't. Needs the explicit height above to have a box
+     with a different aspect ratio than the source image to crop against. */
+  object-fit: cover;
+}
+
+.hero-placeholder {
+  display: grid;
+  place-items: center;
+  background: var(--color-accent-tint);
+  color: var(--color-muted);
+  /* border-block = border-top + border-bottom, the block-axis pair to
+     margin-inline/padding-inline's inline-axis one above. */
+  border-block: var(--border-width) solid var(--color-border);
+}
+
+/*
+  Card grid.
+  auto-fit, not auto-fill: both repeat tracks at the minmax() size below
+  for as long as they fit the row. auto-fill keeps every track it creates
+  even once there are fewer real cards than tracks — the leftover tracks
+  sit there empty at minimum width, so the real cards do NOT grow to fill
+  the row. auto-fit collapses those empty tracks to zero width and lets
+  the surviving cards' `1fr` maximum stretch to fill the gap instead. A
+  fixture list's card count changes every week, so auto-fill would leave
+  a variable dead gap on light weeks; auto-fit won't.
+*/
+.card-grid {
+  display: grid;
+  --card-min: 16rem;  /* this primitive's one public dial — a listing that
+                         wants narrower or wider cards overrides just this
+                         custom property on its own instance rather than
+                         re-deriving the whole grid-template-columns line */
+  /* min(100%, var(--card-min)) is the fix for a common gotcha in this
+     recipe: minmax()'s lower bound is a hard floor the track can't shrink
+     below. Without the min(), a viewport narrower than --card-min would
+     force the track past 100% of the available width, overflowing the
+     page horizontally. Wrapping the floor in min(100%, ...) caps it at
+     whatever space is actually available, so a single card can still
+     shrink to fit a narrow phone. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--card-min)), 1fr));
+  gap: var(--space-4);
+}
+
+.card {
+  padding: var(--space-3);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius);
+}
+
+/*
+  Stack — consistent vertical rhythm between a set of sibling elements.
+  flex-direction:column + gap rather than the older margin-block-start on
+  `* + *`: gap does not participate in margin collapsing, so a child that
+  already carries its own top margin can never combine with the stack's
+  spacing to produce an inconsistent, larger-than-intended gap — a real
+  gotcha of the margin-based version of this recipe. flex's default
+  align-items:stretch on the cross axis also matches what block children
+  already do (fill the available inline size), so nothing about existing
+  child styling has to change to adopt this.
+*/
+.stack {
+  display: flex;
+  flex-direction: column;
+  --stack-gap: var(--space-3);  /* public dial, same pattern as --card-min */
+  gap: var(--stack-gap);
+}

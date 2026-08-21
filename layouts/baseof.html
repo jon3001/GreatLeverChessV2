@@ -13,6 +13,15 @@
   */}}
   <a class="skip-link" href="#main">Skip to main content</a>
   {{ partial "header.html" . }}
+  {{/*
+    Hero is a sibling of <main>, not a child of it, and deliberately
+    outside .content-column — see site.css. Pages that don't define
+    "hero" get this block's empty default, so it costs nothing on
+    interior pages that never want one. home.html is the only definer
+    today; that's a content decision (which pages get a photo), not a
+    template limitation — any page can define "hero" the same way.
+  */}}
+  {{ block "hero" . }}{{ end }}
   <main id="main" tabindex="-1">
     {{/*
       tabindex="-1" makes #main focusable without adding it to normal
@@ -20,7 +29,9 @@
       but leaves keyboard focus at the top, so a screen reader user's
       next Tab press starts back at the nav — defeating the skip link.
     */}}
-    {{ block "main" . }}{{ end }}
+    <div class="content-column">
+      {{ block "main" . }}{{ end }}
+    </div>
   </main>
   {{ partial "footer.html" . }}
 </body>

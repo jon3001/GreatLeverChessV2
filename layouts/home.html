@@ -1,3 +1,23 @@
+{{ define "hero" }}
+{{/*
+  resources.Get returns nil for a missing path rather than erroring, so
+  `with` doubles as the existence check: drop a real photo at
+  assets/images/hero-venue.jpg and this switches from placeholder to img
+  with no template change. Tentative per CLAUDE.md — expect this whole
+  block to move or drop after the demo.
+*/}}
+<div class="hero">
+  {{ with resources.Get "images/hero-venue.jpg" }}
+  <img src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}"
+       alt="The clubroom at Great Lever Chess Club">
+  {{ else }}
+  <div class="hero-placeholder">
+    <p>Venue photo — pending</p>
+  </div>
+  {{ end }}
+</div>
+{{ end }}
+
 {{ define "main" }}
 <h1>Great Lever Chess Club - V2 coming soon...</h1>
 {{ end }}

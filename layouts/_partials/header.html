@@ -1,4 +1,6 @@
 <header>
-  <p class="site-title"><a href="{{ .Site.Home.RelPermalink }}">{{ .Site.Title }}</a></p>
-  {{ partial "nav.html" . }}
+  <div class="content-column">
+    <p class="site-title"><a href="{{ .Site.Home.RelPermalink }}">{{ .Site.Title }}</a></p>
+    {{ partial "nav.html" . }}
+  </div>
 </header>

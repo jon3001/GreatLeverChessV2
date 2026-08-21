@@ -2,5 +2,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} · {{ .Site.Title }}{{ end }}</title>
 {{ with resources.Get "css/site.css" }}
-<link rel="stylesheet" href="{{ .RelPermalink }}">
+  {{ $css := . }}
+  {{/*
+    hugo.IsProduction is true when the build environment is "production" —
+    which is Hugo's own default for the plain `hugo` build command (what
+    Cloudflare Pages runs), while `hugo server` defaults to "development".
+    So this needs no Cloudflare-specific config: local dev naturally gets
+    unminified, readable CSS; the Pages build naturally gets minified.
+    Fingerprinting runs unconditionally — it only renames the file
+    (content hash in the filename, for cache-busting) and sets the
+    integrity hash below; it doesn't touch readability either way.
+  */}}
+  {{ if hugo.IsProduction }}
+    {{ $css = $css | resources.Minify }}
+  {{ end }}
+  {{ $css = $css | resources.Fingerprint }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
 {{ end }}
