@@ -2,7 +2,8 @@
 title: "Juniors"
 ---
 
-The club is working out what a junior section will look like — coaching,
-age groups and how to join — and this page will explain it once those plans
-are settled. If you're asking on behalf of a young player now, get in touch
-via the contact page and someone will reply directly.
+Great Lever Chess Club welcomes players of all ages. That said, we don't
+currently run junior-specific sessions, coaching, or age-graded competition,
+so if you're a parent looking for that kind of structured activity for your
+child, this club isn't the right fit — but we're happy to point you
+somewhere that is.

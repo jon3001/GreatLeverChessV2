@@ -1,0 +1,7 @@
+{
+  "ecflms": {
+    "label": "ECF LMS",
+    "fixture_url": "https://lms.englishchess.org.uk/lms/fixture/{fixture_id}",
+    "event_url": "https://lms.englishchess.org.uk/lms/event/{event_id}/fixtures"
+  }
+}

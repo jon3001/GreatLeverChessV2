@@ -1,0 +1,93 @@
+{{/*
+  Takes a dict: "pages" (a Pages slice, already filtered to one
+  organisation and one competition/event by the caller), "heading"
+  (the competition's display name), and "id" (a page-unique anchor id
+  for that heading, already org-prefixed by the caller). Renders one
+  chronologically-sorted table — played, upcoming and no-result
+  fixtures together, exactly as the ECF LMS's own event page does it —
+  rather than three separate tables split by status. fixture-item.html
+  classifies each row's own status inline as it renders; there's only
+  one pass over the data now, not three.
+
+  Renders nothing if `pages` is empty — `with` at the top doubles as
+  that existence check (an organisation might field a league team but
+  no cup team, or vice versa).
+
+  ACCESSIBILITY — why a real <table>, not a CSS-Grid-plus-ARIA fake:
+  a native `<details>` element can't be a direct child of `<tr>`
+  (table row content model only accepts `<td>`/`<th>`), so "looks like
+  a table" and "expands like a details element" need reconciling. Two
+  ways considered:
+
+  (a) CSS Grid styled to look tabular, role="table"/"row"/"cell" on
+      the wrapping divs, with each ROW itself a native <details> (the
+      grid row IS the summary; expanding grows it in place). Rejected:
+      role="row" on a <details> element overrides ARIA role onto an
+      element with its own strong native interactive semantics
+      (WAI-ARIA calls this out as unreliable — the spec lets an
+      author's role win, but browsers and screen readers don't agree
+      in practice on what a <details> "acting as" a row should expose).
+      Concretely: a screen reader in table-browse mode might announce
+      cell-by-cell as intended, OR might collapse the whole row to a
+      single "group, collapsed" control and ignore the cell roles
+      entirely — which one happens isn't predictable across NVDA/JAWS/
+      VoiceOver, and "it depends which screen reader" is a bad place to
+      leave an accessibility decision.
+
+  (b) A real <table>: the summary row is genuine <td> cells (Date,
+      Home, Away as plain text; Result holds a <details><summary> whose
+      only content IS the toggle — no nested board content). The
+      actual board detail lives in a SEPARATE sibling <tr> immediately
+      below, normally hidden, revealed by a plain CSS rule keyed off
+      the <details>' own open state:
+      `tr.fixture-row:has(details[open]) + tr.fixture-detail-row`.
+      What a screen reader user hears: entering the table, real table
+      semantics throughout — Date/Home/Away/Result announced as actual
+      cells in table-browse mode, no ambiguity. Reaching the Result
+      cell, a completely standard, unambiguous disclosure control
+      ("4-1, button, collapsed" / "expanded" on activation — the exact
+      textbook <details> pattern, universal across AT). The revealed
+      content is the very next row in reading order, so continuing to
+      navigate forward finds it exactly where a sighted user sees it
+      appear.
+
+  (b) is what's built below. One honest trade-off: the detail row's
+  visibility is driven by :has(), not by the <details> element
+  actually containing that content (it can't — the content needs to
+  span a table row, not live inside one cell). In a browser without
+  :has() support, the toggle would still visually work (native
+  behaviour, unrelated to CSS) but the sibling row would never appear.
+  :has() has shipped in every evergreen browser since 2023 and this
+  project states no legacy-browser requirement, so this is judged an
+  acceptable modern default rather than a gap to build a fallback for.
+
+  The table itself no longer breaks out of .content-column here —
+  fixture-collection.html now wraps its ENTIRE output (headings,
+  anchors, and every table) in one shared .fixture-wide container, so
+  everything measures from the same left edge (see that file's own
+  comment for why: two independently-breaking-out elements is what
+  caused the heading/table misalignment this fix addresses).
+  .fixture-table-wrap here is just a LOCAL horizontal-scroll boundary
+  — overflow-x: auto — for a table whose own content is still too wide
+  even for the already-wide container on a narrow viewport.
+*/}}
+{{ $heading := .heading }}
+{{ $id := .id }}
+{{ with .pages }}
+{{ $sorted := sort . "Date" "asc" }}
+<div class="fixture-type-group" id="{{ $id }}">
+  <h3>{{ $heading }}</h3>
+  <div class="fixture-table-wrap">
+    <table class="fixture-table">
+      <thead>
+        <tr><th scope="col">Date</th><th scope="col">Home</th><th scope="col">Away</th><th scope="col">Result</th></tr>
+      </thead>
+      <tbody>
+        {{ range $i, $page := $sorted }}
+        {{ partial "fixture-item.html" (dict "page" $page "index" $i) }}
+        {{ end }}
+      </tbody>
+    </table>
+  </div>
+</div>
+{{ end }}

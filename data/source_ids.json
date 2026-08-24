@@ -1,9 +1,9 @@
 {
   "ecflms": {
     "organisations": {
-      "1097": "bolton-district",
-      "779": "central-lancashire",
-      "781": "great-lever-friendlies"
+      "1097": { "slug": "bolton-district", "name": "Bolton & District Chess League", "weight": 10 },
+      "779": { "slug": "central-lancashire", "name": "Central Lancashire League", "weight": 20 },
+      "781": { "slug": "great-lever-friendlies", "name": "Great Lever Friendlies", "weight": 30 }
     },
     "seasons": {
       "bolton-district": {

@@ -1,0 +1,117 @@
+{{/*
+  layouts/fixtures/section.html — Hugo's per-section template slot,
+  which takes priority over the generic layouts/section.html for this
+  one section only. This split is the actual fix for a root cause
+  found this round: layouts/section.html is the shared template for
+  EVERY section (every content/{section}/_index.md — Club Nights, Contact,
+  Documents, Find Us, History, Juniors, Links, News, and Fixtures all
+  have one), and this file's fixtures-only logic — current-season
+  filtering, fixture-collection.html, no {{ .Content }} anywhere — had
+  been living directly in the generic layouts/section.html, so it ran
+  for every one of those OTHER sections too. Each rendered title/date/
+  footer chrome only, with its real body markdown silently never
+  printed, since nothing in the shared file ever called {{ .Content }}
+  once fixtures took it over. Moving the fixtures-specific body here
+  and reverting layouts/section.html to the plain title-plus-Content
+  stub restores every other section's body text without fixtures
+  losing anything — Hugo's own template lookup does the routing, no
+  runtime branch needed.
+*/}}
+{{ define "main" }}
+<h1>{{ .Title }}</h1>
+
+{{/*
+  Two ways to gather this section's fixture pages:
+
+  1. .Pages — the section page's own children: exactly the fixture
+     files under content/fixtures/**. Scoped by Hugo for free, no
+     `where` needed to say "only fixtures."
+  2. where site.RegularPages ".Section" "fixtures" — walks every
+     regular page on the whole site and filters by section field.
+     Same result here, but it re-scans everything to reproduce a
+     scope this exact page already has for free. It only earns its
+     keep when you need a mixed-section collection built once and
+     reused somewhere OTHER than the section page itself (a homepage
+     "next fixture" widget, say).
+
+  This template IS the fixtures section page, so .Pages is the right
+  call.
+
+  A `warnf`-based live sanity check comparing the two counts was tried
+  here and pulled again: on this Hugo build, a `warnf` call that reads
+  .Pages on a render:link-cascaded section fires during an internal
+  dependency-discovery pass, before .Pages has actually resolved —
+  logging a spurious "0 vs 40" mismatch even though the real render
+  pass (and the fixtures list below, and .Pages used directly rather
+  than through warnf) is correct throughout. Confirmed by swapping
+  warnf for a plain printf at the same call site, same guard, same
+  values: the printf version never fires (correctly finds no
+  mismatch), only warnf does. A false alarm on every clean build is
+  worse than no check, so it's gone rather than kept and explained
+  away in a comment each time. The exhaustiveness warnf checks in
+  fixture-collection.html don't share this failure mode — they compare
+  already-materialised `where` results, never a section's raw .Pages —
+  and were confirmed to fire correctly when tested against a
+  deliberately corrupted event_type.
+*/}}
+{{ $sectionPages := .Pages }}
+
+{{/*
+  Current-season filter — two steps, not one.
+
+  data/current_season.json is keyed PER ORGANISATION (docs/content-
+  model.md §2.4): an organisation missing from it means Great Lever
+  isn't fielding a team there this cycle. This repo's own content
+  proves that matters — great-lever-friendlies (org 781) has no entry
+  in current_season.json at all, yet its fixtures carry
+  seasons: [2025-26], the same slug the other two organisations are
+  currently live on. A season-slug-only filter would let those
+  friendlies fixtures leak onto this page; scoping to fielding
+  organisations first is what keeps them off it.
+
+  Step 1 — where ... "in", the direction it's actually meant for:
+  .Params.organisation is a scalar field, tested against a slice of
+  candidate org slugs. That's exactly what the "in" operator does.
+
+  Step 2 — where ... "intersect", not "in": .Params.seasons is itself
+  a LIST ("seasons: [2025-26]"). Testing a list field against a slice
+  of candidate values needs "intersect" (does list A share anything
+  with list B) — "in" would compare the whole seasons list as if it
+  were one scalar value and never match.
+
+  Caveat worth knowing: this treats "currently active anywhere" as one
+  pooled set of season slugs, not a strict per-organisation pairing.
+  It's exactly right while every fielding organisation happens to
+  share one current season slug (true today), but if two organisations
+  were ever mid-transition on different slugs at once, a fixture could
+  theoretically match on the wrong organisation's slug. Flagging this
+  now rather than silently building on the assumption — worth a fully
+  per-row check if that ever stops being true.
+*/}}
+{{/*
+  hugo.Data, not site.Data/.Site.Data — this Hugo version (0.164)
+  deprecates the .Site.Data accessor in favour of the global hugo.Data
+  function for reading data/ files. Same content either way, just the
+  non-deprecated spelling.
+*/}}
+{{ $currentOrgs := slice }}
+{{ $currentSeasons := slice }}
+{{ range $org, $season := hugo.Data.current_season }}
+  {{ $currentOrgs = $currentOrgs | append $org }}
+  {{ $currentSeasons = $currentSeasons | append $season }}
+{{ end }}
+{{ $fieldedPages := where $sectionPages "Params.organisation" "in" $currentOrgs }}
+{{ $currentPages := where $fieldedPages "Params.seasons" "intersect" $currentSeasons }}
+
+{{ partial "fixture-collection.html" (dict "pages" $currentPages) }}
+
+<p class="fixtures-updated">
+  {{/*
+    Hardcoded per spec §1's staleness-mitigation requirement — Session
+    9 wires data-last-updated to relative-time JS. Progressive
+    enhancement: the <time> element is a correct, readable date with
+    no JS at all; the data attribute is only a hook for later.
+  */}}
+  Last updated: <time datetime="2026-08-24" data-last-updated>Mon 24 Aug 2026</time>
+</p>
+{{ end }}

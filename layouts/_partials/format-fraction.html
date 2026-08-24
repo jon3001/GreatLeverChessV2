@@ -1,0 +1,20 @@
+{{- /*
+  Chess-style score fraction: a whole number prints bare ("4"); a
+  half-point gets the ½ glyph appended to the whole part ("2½") rather
+  than a decimal ("2.5"). Takes a number as the partial's context,
+  returns the formatted string.
+
+  Not reused from the board-level result mapping in fixture-boards.html
+  — that's a fixed six-value enum (home_win/draw/etc.) looked up
+  against a fixed string table, no arithmetic involved. This is doing
+  real division-derived arithmetic on an open-ended team score
+  (home_score/away_score), which needed writing once rather than
+  being available already.
+*/ -}}
+{{- $n := . -}}
+{{- $whole := math.Floor $n -}}
+{{- if eq (sub $n $whole) 0.5 -}}
+{{- printf "%d½" (int $whole) -}}
+{{- else -}}
+{{- printf "%d" (int $n) -}}
+{{- end -}}

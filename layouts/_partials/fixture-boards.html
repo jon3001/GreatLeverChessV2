@@ -1,0 +1,154 @@
+{{/*
+  Board-by-board detail for one played fixture — the content of the
+  spanning row fixture-item.html reveals via its Result cell's
+  <details>. `.` is the fixture Page. Only ever called for a fixture
+  already known to have played (status "played" in fixture-item.html),
+  but `with .Params.boards` stays as a second, cheap line of defence
+  rather than trusting every future caller to get that right.
+*/}}
+{{ with .Params.boards }}
+{{ $boards := . }}
+{{ $venue := $.Params.venue }}
+{{ $fixture := $ }}
+
+{{/*
+  Home/Away, not Player/Opponent: `player` in front matter is always
+  Great Lever's own side (docs/content-model.md §1.1) — which column
+  that lands in depends on the FIXTURE's venue, not on which side is
+  "ours". venue home -> player is Home; venue away -> player is Away.
+  Getting this backwards is invisible on a home fixture (both readings
+  agree) and wrong on every away one.
+
+  Ratings averages (pass 1) need this same home/away split, computed
+  BEFORE the board list so the average can sit above it — hence two
+  passes over the same boards rather than one. A board counts toward a
+  side's average only when THAT side's own player for that board is a
+  real named player: placeholders (lms_id -2/-5) are excluded, and a
+  null rating is excluded rather than treated as 0 — a board where the
+  other side defaulted still counts for the side that fielded a real,
+  rated player, judged independently per side.
+*/}}
+{{ $homeTotal := 0.0 }}
+{{ $homeCount := 0 }}
+{{ $awayTotal := 0.0 }}
+{{ $awayCount := 0 }}
+{{ range $boards }}
+  {{ $glIsHome := eq $venue "home" }}
+  {{ $homePerson := cond $glIsHome .player .opponent }}
+  {{ $awayPerson := cond $glIsHome .opponent .player }}
+  {{ $homeIsPlaceholder := or (eq $homePerson.lms_id -2) (eq $homePerson.lms_id -5) }}
+  {{ $awayIsPlaceholder := or (eq $awayPerson.lms_id -2) (eq $awayPerson.lms_id -5) }}
+  {{ if not $homeIsPlaceholder }}
+    {{ with $homePerson.rating }}
+      {{ $homeTotal = add $homeTotal . }}
+      {{ $homeCount = add $homeCount 1 }}
+    {{ end }}
+  {{ end }}
+  {{ if not $awayIsPlaceholder }}
+    {{ with $awayPerson.rating }}
+      {{ $awayTotal = add $awayTotal . }}
+      {{ $awayCount = add $awayCount 1 }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ $homeAvg := "—" }}
+{{ if gt $homeCount 0 }}{{ $homeAvg = math.Round (div $homeTotal $homeCount) }}{{ end }}
+{{ $awayAvg := "—" }}
+{{ if gt $awayCount 0 }}{{ $awayAvg = math.Round (div $awayTotal $awayCount) }}{{ end }}
+
+<div class="board-detail-columns">
+  <span>Home <span class="board-avg">avg {{ $homeAvg }}</span></span>
+  <span>Away <span class="board-avg">avg {{ $awayAvg }}</span></span>
+</div>
+
+<ol class="board-list stack">
+  {{ range $boards }}
+  {{ $result := .result }}
+  {{ $glIsHome := eq $venue "home" }}
+  {{ $homePerson := cond $glIsHome .player .opponent }}
+  {{ $awayPerson := cond $glIsHome .opponent .player }}
+  {{ $homeIsPlaceholder := or (eq $homePerson.lms_id -2) (eq $homePerson.lms_id -5) }}
+  {{ $awayIsPlaceholder := or (eq $awayPerson.lms_id -2) (eq $awayPerson.lms_id -5) }}
+
+  {{/*
+    Colour: boards[].colour only records GREAT LEVER's own colour —
+    there's no separate field for the opponent's, because chess
+    alternates by definition, so the other side is simply the
+    inverse. Which COLUMN (home/away) that colour belongs in follows
+    the same venue-based swap as the player names above.
+  */}}
+  {{ $glColour := .colour }}
+  {{ $inverseColour := cond (eq $glColour "W") "B" "W" }}
+  {{ $homeColour := cond $glIsHome $glColour $inverseColour }}
+  {{ $awayColour := cond $glIsHome $inverseColour $glColour }}
+
+  {{/*
+    Notation, not prose — and now genuinely home/away-oriented rather
+    than Great-Lever-relative: boards[].result is already recorded
+    relative to the fixture's home side (docs/content-model.md §1.1),
+    so home_win is always "1-0" regardless of which side is Great
+    Lever. All six values branched explicitly, double_default on its
+    own since it isn't a drawn game — nobody played it — with a warnf
+    safety net rather than a silent fallthrough for anything
+    unrecognised.
+  */}}
+  {{ $notation := "?" }}
+  {{ $note := "" }}
+  {{ if eq $result "home_win" }}
+    {{ $notation = "1-0" }}
+  {{ else if eq $result "home_default_win" }}
+    {{ $notation = "1-0" }}
+    {{ $note = "default" }}
+  {{ else if eq $result "away_win" }}
+    {{ $notation = "0-1" }}
+  {{ else if eq $result "away_default_win" }}
+    {{ $notation = "0-1" }}
+    {{ $note = "default" }}
+  {{ else if eq $result "draw" }}
+    {{ $notation = "½-½" }}
+  {{ else if eq $result "double_default" }}
+    {{ $notation = "0-0" }}
+    {{ $note = "both sides defaulted" }}
+  {{ else }}
+    {{ warnf "fixture-boards: unrecognised board result %q on board %d of %s" $result .board $fixture.RelPermalink }}
+  {{ end }}
+
+  <li class="board-row">
+    <span class="board-number">Bd {{ .board }}</span>
+    <span class="board-side board-side--home">
+      <span class="colour-square colour-square--{{ if eq $homeColour "W" }}white{{ else }}black{{ end }}">
+        <span class="visually-hidden">{{ if eq $homeColour "W" }}White{{ else }}Black{{ end }}</span>
+      </span>
+      {{/* "Default" matches the ECF LMS's own wording for a board
+           nobody fielded a player for — was "No player fielded". */}}
+      {{ if $homeIsPlaceholder }}
+      <span class="board-player board-player--empty">Default</span>
+      {{ else }}
+      <span class="board-player">{{ $homePerson.name }}{{ with $homePerson.rating }} ({{ . }}){{ end }}</span>
+      {{ end }}
+    </span>
+    <span class="board-notation">{{ $notation }}{{ with $note }} <span class="board-note">({{ . }})</span>{{ end }}</span>
+    <span class="board-side board-side--away">
+      <span class="colour-square colour-square--{{ if eq $awayColour "W" }}white{{ else }}black{{ end }}">
+        <span class="visually-hidden">{{ if eq $awayColour "W" }}White{{ else }}Black{{ end }}</span>
+      </span>
+      {{ if $awayIsPlaceholder }}
+      <span class="board-player board-player--empty">Default</span>
+      {{ else }}
+      <span class="board-player">{{ $awayPerson.name }}{{ with $awayPerson.rating }} ({{ . }}){{ end }}</span>
+      {{ end }}
+    </span>
+  </li>
+  {{ end }}
+</ol>
+
+{{/*
+  Now on every played fixture, not gated to no-result as in the first
+  half — the LMS has no verification status the site can show
+  (docs/content-model.md §3.7), so the deep link belongs wherever a
+  result is shown at all.
+*/}}
+{{ with index hugo.Data.sources $fixture.Params.source.system }}
+<p class="board-detail-link"><a href="{{ replace .fixture_url "{fixture_id}" (string $fixture.Params.source.fixture_id) }}">View this fixture on {{ .label }}</a></p>
+{{ end }}
+{{ end }}

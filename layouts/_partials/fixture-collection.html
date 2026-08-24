@@ -1,0 +1,171 @@
+{{/*
+  Shared fixture listing: a two-level jump list, then one section per
+  organisation, each broken down by competition (event) into its own
+  chronological table (via fixture-status-groups.html/fixture-item.html/
+  fixture-boards.html). Called from both layouts/section.html (current
+  season only, at /fixtures/) and layouts/term.html (one archive
+  season, at /archive/<season>/) — same partial, same grouping/table/
+  accordion logic, so a completed season and the in-progress one render
+  with no special-casing between them.
+
+  Takes a dict: "pages" — a Pages slice, already scoped by the caller
+  to whichever season/section it wants.
+*/}}
+{{ $pages := .pages }}
+
+{{/*
+  Organisation display names and display order, both from
+  data/source_ids.json's ecflms.organisations map — keyed by ECF
+  org_id ("1097", "779", "781"), the transform's join key, not
+  something front matter carries (fixtures only have the resolved
+  slug). So this builds slug -> name and slug -> weight lookups once,
+  by ranging the whole (small, 3-entry) map, rather than needing
+  org_id anywhere in a template that only ever sees the slug.
+
+  Order is an explicit numeric "weight" field, not JSON key order:
+  Go's map type has no guaranteed iteration order, so relying on
+  object-key position — even if it looked stable under casual testing
+  — wouldn't actually be a property the format guarantees.
+*/}}
+{{ $orgNames := dict }}
+{{ $orgWeights := dict }}
+{{ range hugo.Data.source_ids.ecflms.organisations }}
+  {{ $orgNames = merge $orgNames (dict .slug .name) }}
+  {{ $orgWeights = merge $orgWeights (dict .slug .weight) }}
+{{ end }}
+
+{{/*
+  Group by organisation, then re-sort the groups by weight (ascending
+  — 10/20/30, gaps left deliberately so a future organisation can be
+  slotted in without renumbering everything). GroupByParam can't sort
+  by an external lookup itself, so this attaches each group's weight
+  as a sibling field and sorts THAT slice — same "attach a field,
+  sort the wrapper" pattern the competition ordering below also uses.
+  An organisation missing a weight (shouldn't happen — every entry in
+  source_ids.json has one today) falls back to 9999, sorting it last
+  rather than erroring.
+*/}}
+{{ $orgGroupsRaw := $pages.GroupByParam "organisation" }}
+{{ $orgGroups := slice }}
+{{ range $orgGroupsRaw }}
+  {{ $weight := 9999 }}
+  {{ with index $orgWeights .Key }}{{ $weight = . }}{{ end }}
+  {{ $orgGroups = $orgGroups | append (dict "group" . "weight" $weight) }}
+{{ end }}
+{{ $orgGroups = sort $orgGroups "weight" "asc" }}
+
+{{/*
+  Everything below — the jump list, every organisation heading, every
+  competition heading and anchor, and every table — renders inside
+  ONE shared .fixture-wide wrapper, opened here and closed at the end
+  of this file. Diagnosed this round: headings/anchor links previously
+  rendered directly in the page's ordinary .content-column (~65ch),
+  while only .fixture-table-wrap (nested several levels deeper, inside
+  fixture-status-groups.html) had any width/centring CSS of its own —
+  confirmed by inspecting the built DOM, not assumed. Two independently
+  -computed left edges for visually-related content is what put the
+  table out of alignment with everything above it. Sharing one wrapper
+  makes that impossible by construction: every heading and every table
+  now measures from the exact same edge, because there's only one edge
+  to measure from. See .fixture-wide in site.css for the width/centring
+  rule itself and why it's still the explicit calc() formula rather
+  than plain margin-inline: auto.
+*/}}
+<div class="fixture-wide">
+{{ if gt (len $orgGroups) 1 }}
+<nav class="fixture-jump-nav" aria-label="Jump to organisation">
+  <ul>
+    {{ range $orgGroups }}
+    {{ $orgName := title (replace .group.Key "-" " ") }}
+    {{ with index $orgNames .group.Key }}{{ $orgName = . }}{{ end }}
+    <li><a href="#org-{{ .group.Key }}">{{ $orgName }}</a></li>
+    {{ end }}
+  </ul>
+</nav>
+{{ end }}
+
+{{ range $orgGroups }}
+{{ $orgKey := .group.Key }}
+{{ $orgPages := .group.Pages }}
+{{ $orgName := title (replace $orgKey "-" " ") }}
+{{ with index $orgNames $orgKey }}{{ $orgName = . }}{{ end }}
+
+{{/*
+  Competition (event) groups within this organisation, ordered by
+  data/competition_order.json's per-organisation array when the
+  organisation has one, falling back to source.event_id order (checked
+  earlier against both Bolton and Central Lancashire as reading
+  sensibly as "however the LMS set the competitions up") for any
+  competition not named in that array. The array holds display
+  NAMES ("Division 1"), not slugs — matched against the same
+  title-cased-slug string used for the heading text below, which
+  reproduces the LMS's original event_name exactly for every
+  competition in this dataset (docs/content-model.md §3.9: `event` is
+  slugified straight from event_name with no lookup table, so
+  title-casing it back is a real inverse here, not a coincidence
+  papered over).
+
+  Graceful fallback, not a drop: a competition whose name isn't in the
+  array (new next season, or renamed on the LMS side) still renders —
+  its "not found" position is len($order), i.e. sorted after every
+  named entry — rather than being silently excluded. Same pattern as
+  the organisation allowlist elsewhere in this project: missing means
+  "no explicit position," never "missing means excluded."
+
+  The combined sort key (orderIndex * 10,000,000 + eventId) simulates
+  a two-level sort (named position first, event_id as tiebreak) with
+  Hugo's single-field `sort` — 10,000,000 comfortably clears any
+  realistic event_id (currently five digits) with room to spare, so
+  the event_id component can never carry into the order-index digit.
+*/}}
+{{ $order := slice }}
+{{ with index hugo.Data.competition_order $orgKey }}{{ $order = . }}{{ end }}
+
+{{ $eventGroups := $orgPages.GroupByParam "event" }}
+{{ $eventGroupsOrdered := slice }}
+{{ range $eventGroups }}
+  {{ $displayName := title (replace .Key "-" " ") }}
+  {{ $eventId := (index .Pages 0).Params.source.event_id }}
+  {{ $orderIndex := len $order }}
+  {{ range $i, $name := $order }}
+    {{ if eq $name $displayName }}{{ $orderIndex = $i }}{{ end }}
+  {{ end }}
+  {{ $sortKey := add (mul $orderIndex 10000000) $eventId }}
+  {{ $eventGroupsOrdered = $eventGroupsOrdered | append (dict "group" . "sortKey" $sortKey) }}
+{{ end }}
+{{ $eventGroupsOrdered = sort $eventGroupsOrdered "sortKey" "asc" }}
+
+{{/*
+  Exhaustiveness check — carried over in spirit from the old event_type
+  split, though GroupByParam can't actually drop a page the way two
+  separate `where` calls could (every page has SOME event value, so it
+  lands in exactly one group). Kept as a live check anyway rather than
+  an assumption that never gets exercised — it would still catch, say,
+  a future fixture with a blank event string quietly forming its own
+  unlabelled group.
+*/}}
+{{ $eventTotal := 0 }}
+{{ range $eventGroupsOrdered }}{{ $eventTotal = add $eventTotal (len .group.Pages) }}{{ end }}
+{{ if ne $eventTotal (len $orgPages) }}
+  {{ warnf "fixture-collection: event split lost fixtures under organisation %q — %d in, %d out" $orgKey (len $orgPages) $eventTotal }}
+{{ end }}
+
+<section class="fixture-org-group stack" id="org-{{ $orgKey }}">
+  <h2>{{ $orgName }}</h2>
+
+  {{ if gt (len $eventGroupsOrdered) 1 }}
+  <nav class="fixture-jump-nav fixture-jump-nav--competitions" aria-label="Jump to competition within {{ $orgName }}">
+    <ul>
+      {{ range $eventGroupsOrdered }}
+      <li><a href="#event-{{ $orgKey }}-{{ .group.Key }}">{{ title (replace .group.Key "-" " ") }}</a></li>
+      {{ end }}
+    </ul>
+  </nav>
+  {{ end }}
+
+  {{ range $eventGroupsOrdered }}
+  {{ partial "fixture-status-groups.html" (dict "pages" .group.Pages "heading" (title (replace .group.Key "-" " ")) "id" (printf "event-%s-%s" $orgKey .group.Key)) }}
+  {{ end }}
+</section>
+{{ end }}
+</div>{{/* .fixture-wide */}}

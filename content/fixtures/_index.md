@@ -1,7 +1,9 @@
 ---
 title: "Fixtures"
 cascade:
-  - build:
+  - target:
+      kind: page
+    build:
       render: link
       list: always
 ---

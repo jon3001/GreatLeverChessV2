@@ -1,0 +1,107 @@
+{{/*
+  One fixture as table row(s). Takes a dict: "page" (the fixture Page)
+  and "index" (this fixture's position within its competition's
+  chronological table, 0-based — used only for zebra striping).
+
+  Status (played / upcoming / no-result) is classified HERE, inline,
+  rather than pre-split into three slices by the caller: this table is
+  one flat chronological list now (played, upcoming and no-result
+  together, matching the ECF LMS's own event page), so there's one
+  render pass over one sorted list, not three. The three checks are
+  independent booleans rather than an if/else-if chain, so "matches
+  none of them" is a real (if currently unreachable) condition the
+  warnf can actually guard — boards-non-empty and the date/now compare
+  are each a strict either/or, so the three together are exhaustive by
+  construction, but that's worth a live check rather than an assumption
+  that's never exercised.
+
+  A played fixture emits TWO <tr>s — the summary row plus a normally-
+  hidden detail row revealed by the Result cell's <details> via CSS
+  :has() (see the accessibility note in fixture-status-groups.html).
+  The other two statuses have nothing to expand, so they're one row,
+  with the Result cell left empty except for a small LMS deep-link
+  icon — no other visual distinction between "upcoming" and "no result
+  recorded" (the date itself already tells the reader which is which,
+  per docs/content-model.md rule 2).
+*/}}
+{{ $page := .page }}
+{{ $index := .index }}
+
+{{ $isPlayed := ne (len $page.Params.boards) 0 }}
+{{ $isUpcoming := and (not $isPlayed) (ge $page.Date now) }}
+{{ $isNoResult := and (not $isPlayed) (lt $page.Date now) }}
+{{ if not (or $isPlayed $isUpcoming $isNoResult) }}
+  {{ warnf "fixture-item: %s matched no play-status (played/upcoming/no-result) — check .Params.boards and .Date" $page.RelPermalink }}
+{{ end }}
+
+{{/*
+  Home/Away team names — home_score/away_score and this ordering are
+  already home/away-oriented in front matter (docs/content-model.md
+  §2.2), unlike score_for/score_against which are Great-Lever-relative.
+  own_team is a slug ("great-lever-a"); title-casing it happens to
+  reproduce data/own_team.json's raw_name exactly for every entry
+  today ("great-lever-a" -> "Great Lever A"), so it's used directly
+  rather than adding a lookup — would need revisiting only if a future
+  raw_name stops title-casing back to itself.
+*/}}
+{{ $ownTeamName := title (replace $page.Params.own_team "-" " ") }}
+{{ $homeTeamName := $page.Params.opponent }}
+{{ $awayTeamName := $page.Params.opponent }}
+{{ if eq $page.Params.venue "home" }}
+  {{ $homeTeamName = $ownTeamName }}
+{{ else }}
+  {{ $awayTeamName = $ownTeamName }}
+{{ end }}
+
+<tr class="fixture-row {{ if eq (mod $index 2) 1 }}fixture-row--odd{{ else }}fixture-row--even{{ end }}">
+  <td><time datetime="{{ $page.Date.Format "2006-01-02" }}">{{ $page.Date.Format "Mon 02 Jan 2006" }}</time></td>
+  <td>{{ $homeTeamName }}</td>
+  <td>{{ $awayTeamName }}</td>
+  <td class="fixture-result">
+    {{ if $isPlayed }}
+    {{/*
+      Rule 3 (docs/content-model.md §2.1/§1, unchanged): a score is
+      only ever shown for a fixture whose boards[] is populated —
+      home_score/away_score are present and 0 on an unplayed fixture
+      too. format-fraction.html turns a decimal team score into chess
+      notation (2.5 -> "2½") rather than printing the raw decimal. The
+      trailing chevron is pure CSS (summary::after, rotated on [open])
+      so it needs nothing here beyond the plain score text.
+    */}}
+    <details><summary>{{ partial "format-fraction.html" $page.Params.home_score }}-{{ partial "format-fraction.html" $page.Params.away_score }}</summary></details>
+    {{ else }}
+    {{/*
+      Upcoming and no-result both render blank here — rule 2
+      (docs/content-model.md §2.1): boards[] empty + a past date is a
+      result the LMS never recorded (postponed, withdrawn, or a team
+      that never fielded players — the API can't tell these apart),
+      not "upcoming" with a stale date; but the two states get
+      IDENTICAL treatment in this cell, since the date column already
+      disambiguates them and repeating that distinction here would be
+      redundant. The icon's visually-hidden text is the same for both,
+      deliberately not saying "no result" vs "upcoming" — it just
+      names what the link does (view the fixture on the LMS), which is
+      true either way.
+    */}}
+    {{ with index hugo.Data.sources $page.Params.source.system }}
+    {{/*
+      title is additive — a mouse-hover convenience on top of the
+      visually-hidden text and aria-hidden SVG below, not a
+      replacement for either: a title attribute alone is hover-only
+      and isn't reliably announced by screen readers or reachable on
+      touch, which is exactly why the accessible label already lives
+      in visibly-hidden text rather than here.
+    */}}
+    <a class="fixture-lms-link" href="{{ replace .fixture_url "{fixture_id}" (string $page.Params.source.fixture_id) }}" title="View this fixture on {{ .label }}">
+      <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><path d="M6.5 2.5h7v7M13.5 2.5l-7.8 7.8M3.5 5.5h-1v8h8v-1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="visually-hidden">View this fixture on {{ .label }}</span>
+    </a>
+    {{ end }}
+    {{ end }}
+  </td>
+</tr>
+{{ if $isPlayed }}
+<tr class="fixture-detail-row">
+  <td colspan="4">{{ partial "fixture-boards.html" $page }}</td>
+</tr>
+{{ end }}
