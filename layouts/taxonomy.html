@@ -1,8 +1,78 @@
 {{ define "main" }}
 <h1>{{ .Title }}</h1>
-<ul>
-  {{ range .Pages }}
-  <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+
+{{/*
+  Two ways to list the seasons this taxonomy tracks:
+
+  1. .Data.Terms — the taxonomy's own term index: one entry per
+     distinct season value, each carrying .Term (the slug, "2025-26"),
+     .Count (how many fixtures carry it) and .Page (the term page
+     itself, e.g. /archive/2025-26/).
+  2. .Pages — on a TAXONOMY-kind page (this one), .Pages returns every
+     page that carries ANY term in this taxonomy at all — i.e. every
+     fixture across every season, unioned together, not the seasons
+     themselves. Fixtures render:link and have no browsable page of
+     their own (docs/content-model.md §2.5), so a .Pages-based list
+     here would try to link to 40-odd fixture URLs that all 404 —
+     visibly wrong, not just the semantically wrong collection.
+
+  .Data.Terms is the only one that actually answers "what seasons
+  exist" rather than "what fixtures exist somewhere, across all of
+  them". .Alphabetical sorts ascending by term name ("2024-25" before
+  "2025-26" once a second season exists) — reversed explicitly for
+  newest-first, since nothing about an archive implies the default
+  oldest-first order is the one wanted here.
+*/}}
+{{/*
+  DELIBERATE REVERSAL of the original plan for this page — flagged
+  explicitly per the request that added this filter, so a future
+  reader doesn't mistake it for a missed case. The original brief said
+  "a completed season and the in-progress season both render through
+  the exact same template with no special-casing" — true, and still
+  true of layouts/term.html (an individual /archive/{season}/ page is
+  completely unaffected by this file; nothing here blocks or 404s one
+  if something links to it directly). What changed, after seeing it
+  rendered, is that /archive/ itself shouldn't LIST a season that's
+  still being played — an "archive" of one live, incomplete season
+  read as premature, not useful.
+
+  "Current" is cross-referenced against data/current_season.json —
+  the same file /fixtures/ reads — rather than hardcoded: a season
+  term is excluded if ANY organisation's entry there matches it. This
+  is why a plain slice-membership check (`in`) is enough and no
+  per-organisation bookkeeping is needed: a season only stops being
+  excluded once EVERY organisation has moved past it, which falls out
+  naturally from "is this slug still anyone's current value" — once
+  the last organisation still on 2025-26 rolls over to 2026-27,
+  2025-26 stops appearing in current_season.json's values at all, and
+  this filter stops excluding it with no further change needed here.
+*/}}
+{{ $currentSeasons := slice }}
+{{ range hugo.Data.current_season }}
+  {{ $currentSeasons = $currentSeasons | append . }}
+{{ end }}
+{{ $archivedTerms := slice }}
+{{ range .Data.Terms.Alphabetical.Reverse }}
+  {{ if not (in $currentSeasons .Term) }}
+    {{ $archivedTerms = $archivedTerms | append . }}
+  {{ end }}
+{{ end }}
+
+{{ if $archivedTerms }}
+<ul class="stack">
+  {{ range $archivedTerms }}
+  <li><a href="{{ .Page.RelPermalink }}">{{ .Page.Title }}</a> — {{ .Count }} fixture{{ if ne .Count 1 }}s{{ end }}</li>
   {{ end }}
 </ul>
+{{ else }}
+{{/*
+  Not a hypothetical today — the whole site currently has exactly one
+  season (2025-26) and it's everyone's current one, so this branch is
+  what actually renders right now, not a defensive case for later.
+  Stops appearing on its own once Stage 4 backfills real historic
+  seasons, or once the current season rolls over — no further change
+  needed here either way.
+*/}}
+<p>No completed seasons yet — check back once the current season wraps.</p>
+{{ end }}
 {{ end }}

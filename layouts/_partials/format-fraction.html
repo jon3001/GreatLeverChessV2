@@ -10,11 +10,19 @@
   real division-derived arithmetic on an open-ended team score
   (home_score/away_score), which needed writing once rather than
   being available already.
+
+  Zero whole part is a special case: "0½" reads as a leading zero
+  ("4½-0½"), not as chess notation, which never writes one — a bare
+  "½" is the correct form for exactly half a point ("4½-½").
 */ -}}
 {{- $n := . -}}
 {{- $whole := math.Floor $n -}}
 {{- if eq (sub $n $whole) 0.5 -}}
-{{- printf "%d½" (int $whole) -}}
+  {{- if eq $whole 0.0 -}}
+  {{- "½" -}}
+  {{- else -}}
+  {{- printf "%d½" (int $whole) -}}
+  {{- end -}}
 {{- else -}}
 {{- printf "%d" (int $n) -}}
 {{- end -}}

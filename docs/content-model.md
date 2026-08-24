@@ -31,6 +31,20 @@ Lancashire's do; see §2.4. §1.1's `rating_code` claim corrected against real
 data that has since falsified it, and two new data-quality notes recorded
 from spot-checking generated output against the live site (§3.10, §3.11).
 
+**Revised 24 August 2026, during Session 8's fixtures templating.** Two
+display-ordering needs surfaced only once real output was rendered and
+reviewed against the LMS, neither anticipated when §4 was written: an
+organisation-level heading needed a human name (org_id alone isn't
+presentable), and both organisations and their competitions needed an
+explicit, hand-maintained display order rather than whatever order
+`GroupByParam`/JSON traversal happened to produce. `data/source_ids.json`'s
+`ecflms.organisations` entries gained `name` and `weight` fields alongside
+the existing `slug` (§4) — the slug itself is unchanged and nothing keyed
+by it needed migrating. A new file, `data/competition_order.json` (§4),
+was added for the second need, since competition order is per-organisation
+and array-shaped in a way that doesn't fit naturally into
+`source_ids.json`'s existing id-translation job.
+
 ---
 
 ## 1. Fixture front matter
@@ -560,16 +574,17 @@ coupling problem that hit the other two doesn't apply here.
 
 Namespaced by `source.system`, holding every source-internal id this
 transform needs to translate into project vocabulary. Two sub-maps for
-`ecflms` today: `organisations` (`org_id` → organisation slug) and `seasons`
-(`(organisation, raw season_id)` → normalised slug — nested the same way
-the old `season.json` was, just moved under a namespace).
+`ecflms` today: `organisations` (`org_id` → organisation slug, plus display
+metadata — see below) and `seasons` (`(organisation, raw season_id)` →
+normalised slug — nested the same way the old `season.json` was, just moved
+under a namespace).
 
     {
       "ecflms": {
         "organisations": {
-          "1097": "bolton-district",
-          "779": "central-lancashire",
-          "781": "great-lever-friendlies"
+          "1097": { "slug": "bolton-district", "name": "Bolton & District Chess League", "weight": 10 },
+          "779": { "slug": "central-lancashire", "name": "Central Lancashire League", "weight": 20 },
+          "781": { "slug": "great-lever-friendlies", "name": "Great Lever Friendlies", "weight": 30 }
         },
         "seasons": {
           "bolton-district": {
@@ -584,6 +599,21 @@ the old `season.json` was, just moved under a namespace).
         }
       }
     }
+
+**`organisations`' entries revised 24 August 2026, Session 8.** Each was a
+bare slug string until the fixtures templates needed a presentable heading
+and a display order, neither derivable from the slug alone. `name` is the
+organisation's full display name (org_id still the key, slug still the
+join value templates read front matter's `organisation` field against — an
+existing fixture file needs no migration). `weight` is a hand-maintained
+sort key, ascending, with gaps deliberately left (10/20/30) so a future
+organisation can be slotted in without renumbering the others — the same
+reasoning as `declared_board_count` or any other "leave room" decision
+elsewhere in this project. Templates sort by `weight` explicitly rather
+than trusting the order these entries happen to appear in the JSON object,
+since Go's map type (what this deserialises into) has no guaranteed
+iteration order — even if a particular order looks stable under casual
+testing, it isn't a property the format actually guarantees.
 
 **Why this exists.** `data/organisation.json` was created earlier the same
 day as a hardcoded 2-entry dictionary in the transform, promoted to a real
@@ -648,6 +678,35 @@ No template consumes this until Session 8. It lands in Session 3 because it
 is part of the same decision as the `source` block, and splitting the two
 invites the URL patterns being hard-coded into a template later "just for
 now."
+
+### `data/competition_order.json` — added 24 August 2026, Session 8
+
+Keyed by organisation slug, each value an ARRAY (not a map) of competition
+display names in the order they should render:
+
+    {
+      "bolton-district": ["Division 1", "Bolton League Cup Div 1"],
+      "central-lancashire": ["Division A", "John Birchall Cup", "Division B", "Vaux Cup", "Friendly Development League"],
+      "great-lever-friendlies": ["Friendly Matches"]
+    }
+
+Array-shaped deliberately, unlike `source_ids.json`'s organisation `weight`
+field above: order here is a full per-organisation sequence, not a single
+sortable number, and a JSON array is the one shape that reliably preserves
+a sequence — the same reasoning that rules out relying on object-key order
+anywhere else in this file.
+
+The strings are display NAMES ("Division 1"), not slugs, matched at
+render time against the same title-cased-slug string templates already use
+for the competition heading — which reproduces the LMS's original
+`event_name` exactly for every competition captured so far, since `event`
+is slugified straight from it with no lookup table in between (§3.9). A
+competition absent from its organisation's array (a new one next season,
+or a rename on the LMS side) still renders — it sorts after every named
+entry, by `source.event_id`, the same rule used when an organisation has
+no array here at all — rather than being silently dropped. Same
+missing-means-no-explicit-position pattern as `current_season.json`'s
+"organisation absent = not fielding this cycle" above, not a new one.
 
 ---
 

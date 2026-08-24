@@ -1,8 +1,27 @@
 {{ define "main" }}
-<h1>{{ .Title }}</h1>
-<ul>
-  {{ range .Pages }}
-  <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
-  {{ end }}
-</ul>
+<h1>{{ .Title }} season</h1>
+
+{{/*
+  .Pages here already gives exactly this season's fixtures — no
+  `where` needed, unlike /fixtures/'s current-season filter (which has
+  to reason about which ORGANISATIONS are currently fielding a team,
+  docs/content-model.md §2.4, before it can trust a season slug match).
+  A term page's .Pages is simply "every page carrying this specific
+  term value", which is exactly what a season archive wants: every
+  fixture tagged seasons: [2025-26], full stop.
+
+  No sort applied before handing off, unlike the original plan for
+  this page — fixture-collection.html now does its own ordering
+  internally (organisation weight, competition order, then
+  chronological within each competition's table) regardless of what
+  order its `pages` argument arrives in, so there's nothing left for
+  this template to pre-sort.
+
+  Same partial as /fixtures/, unconditionally — a completed season and
+  the in-progress one both reach this exact call with no branch
+  between them; whatever renders for 2025-26 today (still being
+  played) is the same template that'll render a fully-finished season
+  once one exists, not a different code path swapped in retroactively.
+*/}}
+{{ partial "fixture-collection.html" (dict "pages" .Pages) }}
 {{ end }}
