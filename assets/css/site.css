@@ -417,6 +417,27 @@ h2 {
   transform: rotate(90deg);
 }
 
+/*
+  Whole-row click-to-expand (site.js) is a hint here only — the actual
+  toggle stays native <details>/<summary> either way. Scoped to
+  .fixture-row:has(details), not every <tr> in the table: a played
+  fixture's summary row is the only row that has anything to toggle.
+  Deliberately NOT the naive "every <tr> gets pointer, then reset it
+  inside details for everything but summary" version — that doesn't
+  fit this markup. The revealed board detail
+  (.fixture-detail-row, below) is a separate SIBLING <tr>, not content
+  nested inside the summary row's own <details> — so a reset scoped to
+  "inside details" would never reach it, and it would be left showing
+  a pointer cursor over space a click does nothing to (site.js's
+  querySelector finds no <details> inside that row). Upcoming/
+  no-result rows have no <details> at all, so :has(details) correctly
+  leaves them with the ordinary cursor too — there's nothing there for
+  a whole-row click to do.
+*/
+.fixture-row:has(details) {
+  cursor: pointer;
+}
+
 /* Mobile-first, same pairing as .board-row below it: home score above
    away score, no visible hyphen, below the 40rem breakpoint where a
    long fixture's board-by-board detail also switches to stacked. The

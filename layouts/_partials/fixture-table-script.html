@@ -1,0 +1,29 @@
+{{/*
+  Loads assets/js/site.js for a page that actually renders at least
+  one .fixture-table — called from layouts/fixtures/section.html and
+  layouts/term.html only, not baseof.html: the site is zero-JS by
+  default everywhere else (see CLAUDE.md), and this script has
+  nothing to do on a page with no fixture rows to delegate from.
+
+  Same resources.Get -> conditional Minify -> Fingerprint pipeline
+  head.html already uses for site.css, for the same reason:
+  hugo.IsProduction is Hugo's own default for a plain `hugo` build
+  (what Cloudflare Pages runs), so local `hugo server` stays
+  unminified and readable while the deployed build is minified, with
+  no environment-specific config needed either way. No js.Build here
+  — there is nothing to bundle or transpile (one file, no imports),
+  and CLAUDE.md rules out a bundler even where one's available.
+
+  defer, not an inline <script> or a DOMContentLoaded listener: the
+  script queries .fixture-table tbody elements that must already
+  exist in the DOM, and defer guarantees it runs after parsing
+  without needing to wait on an event itself.
+*/}}
+{{ with resources.Get "js/site.js" }}
+  {{ $js := . }}
+  {{ if hugo.IsProduction }}
+    {{ $js = $js | resources.Minify }}
+  {{ end }}
+  {{ $js = $js | resources.Fingerprint }}
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
+{{ end }}
