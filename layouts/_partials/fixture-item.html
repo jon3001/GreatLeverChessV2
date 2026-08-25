@@ -55,13 +55,16 @@
 
 <tr class="fixture-row {{ if eq (mod $index 2) 1 }}fixture-row--odd{{ else }}fixture-row--even{{ end }}">
   {{/*
-    date-main wraps only "Tue 14 Apr" in a non-breaking span; the year
-    follows as a plain text node after an ordinary space, the one
-    break opportunity left in the cell. A too-narrow column wraps
-    there on its own — no media query needed, and desktop with room to
-    spare keeps the full date on one line. See .date-main in site.css.
+    Three deliberately stacked lines (day / day+month / year) instead of
+    one string with an accidental wrap point — the Date column now has a
+    fixed width (see .fixture-col-date in site.css) sized to the widest
+    of the three, so the browser never has to pick where to break. The
+    outer element stays <time> (kept from the previous markup) rather
+    than the plain <span> a mobile mock might suggest, so the
+    machine-readable datetime attribute has a real date-bearing element
+    to sit on.
   */}}
-  <td><time datetime="{{ $page.Date.Format "2006-01-02" }}"><span class="date-main">{{ $page.Date.Format "Mon 02 Jan" }}</span> {{ $page.Date.Format "2006" }}</time></td>
+  <td><time datetime="{{ $page.Date.Format "2006-01-02" }}" class="fixture-date"><span class="fixture-date__day">{{ $page.Date.Format "Mon" }}</span><span class="fixture-date__daymonth">{{ $page.Date.Format "02 Jan" }}</span><span class="fixture-date__year">{{ $page.Date.Format "2006" }}</span></time></td>
   <td>{{ $homeTeamName }}</td>
   <td>{{ $awayTeamName }}</td>
   <td class="fixture-result">

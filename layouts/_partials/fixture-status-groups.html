@@ -79,8 +79,33 @@
   <h3>{{ $heading }}</h3>
   <div class="fixture-table-wrap" role="region" tabindex="0" aria-label="{{ $heading }} fixtures, scroll to see all columns">
     <table class="fixture-table">
+      {{/*
+        Explicit column widths (see .fixture-col-* in site.css) are what
+        actually stop the row overflowing on a narrow phone — a long
+        team name can no longer push the row wider than its container,
+        because table-layout: fixed makes every column's width come from
+        here rather than from its content. Date and Result stay fixed/
+        narrow; Home and Away (no width set) split whatever's left
+        equally, table-layout: fixed's own behaviour for un-sized
+        columns — the table equivalent of two 1fr grid tracks.
+      */}}
+      <colgroup>
+        <col class="fixture-col-date">
+        <col class="fixture-col-team">
+        <col class="fixture-col-team">
+        <col class="fixture-col-result">
+      </colgroup>
       <thead>
-        <tr><th scope="col">Date</th><th scope="col">Home</th><th scope="col">Away</th><th scope="col">Result</th></tr>
+        {{/*
+          Result gets two text nodes, not one — the 3.5rem mobile column
+          is too narrow for "Result" to sit on one line (it's a single
+          word with no space to wrap at), but "Res." would look stingy
+          on desktop where the column has room. CSS toggles which one is
+          visible (see .result-full/.result-abbr in site.css); display:
+          none takes the hidden one out of the accessibility tree on its
+          own, so only one of the two is ever announced.
+        */}}
+        <tr><th scope="col">Date</th><th scope="col">Home</th><th scope="col">Away</th><th scope="col" class="fixture-col-result"><span class="result-full">Result</span><span class="result-abbr">Res.</span></th></tr>
       </thead>
       <tbody>
         {{ range $i, $page := $sorted }}

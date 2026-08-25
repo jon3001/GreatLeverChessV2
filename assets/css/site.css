@@ -343,8 +343,20 @@ h2 {
   overflow-x: auto;
 }
 
+/*
+  table-layout: fixed is the actual overflow fix — without it, a table
+  sizes each column from its widest cell's content, so one long team
+  name ("Swinton & Worsley A") can push the whole row past 100% and off
+  the right edge of the viewport, which is exactly the bug reported.
+  Fixed layout instead takes column widths ONLY from the colgroup below
+  (or the first row, if a column has no col width) — content then wraps
+  to fit the column instead of growing it. This requires .fixture-table
+  itself to have a definite width, which it already does (100%, of its
+  .fixture-table-wrap parent).
+*/
 .fixture-table {
   width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
   margin-block-end: var(--space-3);
 }
@@ -357,32 +369,97 @@ h2 {
   vertical-align: baseline;
 }
 
-/* No cell-level nowrap any more — that would stop the browser
-   wrapping at all, including at the one break point .date-main below
-   is deliberately designed to allow. min-width is a floor sized to
-   "Mon 13 Oct" (three-letter day + two-digit date + three-letter
-   month, the longest .date-main ever gets), not measured on a real
-   render — recheck against actual fixture dates on a phone. */
-.fixture-table td:first-child {
-  min-width: 6.5rem;
+/*
+  Column widths, keyed to the <colgroup> in fixture-status-groups.html.
+  Date and Result are fixed and narrow; Home/Away carry no width of
+  their own, so table-layout: fixed's own rule for un-sized columns
+  splits whatever's left between them equally — the table-layout
+  equivalent of grid-template-columns: 1fr 1fr, without needing to
+  abandon <table> semantics to get it (see the accessibility note in
+  fixture-status-groups.html for why this stays a real table).
+
+  4.5rem for Date is sized to its widest stacked line, "08 Dec" (six
+  glyphs including the space), plus the cell's own inline padding
+  (2 × var(--space-2)) — not measured on a real render, recheck against
+  actual fixture dates on a phone. 3.5rem for Result covers a two-digit
+  score plus a possible ½ glyph ("10½") the same way; the trailing
+  chevron (.fixture-result summary::after) stacks BELOW the score in
+  this narrow layout (.result-cell is flex-direction: column down to
+  40rem) rather than beside it, so it costs no extra column width here.
+
+  Mobile-only despite being unqueried here: table-layout: auto (the
+  min-width: 40rem override, below) still reads a <col>'s width as a
+  preferred size even outside fixed layout, so leaving these two rules
+  in force at desktop was quietly starving Date/Result and bloating
+  Home/Away — not a redesign, a scoping bug. Reset to width: auto in
+  that same block restores the pre-this-thread desktop table, which
+  had no colgroup — and so no column constraints — at all.
+*/
+.fixture-col-date {
+  width: 4.5rem;
 }
 
-/* Wraps only "Tue 14 Apr" as one unbreakable run inside the <time>
-   element; the year that follows is a plain text node after an
-   ordinary space, so that space is the only place the date can break.
-   A column with room keeps the whole date on one line for free —
-   nothing here forces the break, it just stops the wrong part
-   breaking. No media query: this is the browser's own line-wrapping
-   deciding, keyed off the column's actual available width rather than
-   a guessed viewport number. */
-.date-main {
-  white-space: nowrap;
+.fixture-col-result {
+  width: 3.5rem;
+}
+
+/*
+  Stacked day / day+month / year, replacing the old single-string date
+  with one deliberate break per line instead of an accidental wrap.
+  display: block on each span is what forces the stacking — inline
+  spans with no wrap-worthy content between them would just sit
+  side by side.
+
+  Meta-scale font-size, mobile-only: correct for a dense 3-line stack,
+  but this rule has no breakpoint guard of its own, so — same failure
+  mode as the colour split below — it was also leaking into the
+  desktop single-line date, sizing it smaller than Home/Away/Result
+  instead of matching them. Reset to font-size-base in the
+  min-width: 40rem block.
+
+  No colour rule here any more. The previous version muted day/year to
+  let day+month read as the primary line — flagged in that same
+  comment, verbatim, as "a small aesthetic call, not part of the
+  brief, easy to drop... if a flatter three-line block is preferred
+  instead." That's exactly what happened here: no design-system
+  precedent documents a muted/ink split within one date, it was never
+  asked for, and it was already conceded as droppable — so it's
+  dropped, at every width, rather than kept as a mobile-only special
+  case. All three spans now inherit whatever colour the row's other
+  cells use, same as the original pre-this-thread date did.
+*/
+.fixture-date {
+  font-size: var(--font-size-sm);
+}
+
+.fixture-date__day,
+.fixture-date__daymonth,
+.fixture-date__year {
+  display: block;
 }
 
 .fixture-table th {
   font-size: var(--font-size-sm);
   color: var(--color-muted);
   font-weight: 600;
+}
+
+/*
+  Result header: two text nodes, one CSS-toggled visible at a time —
+  "Result" is a single unbroken word with no space to wrap at, so it
+  doesn't fit the fixed 3.5rem mobile column without wrapping ugly
+  mid-word; "Res." is what that column gets instead below 40rem, with
+  the full word restored once the min-width: 40rem breakpoint (below)
+  hands the header back a roomy auto-sized column. display: none takes
+  the hidden span out of the accessibility tree on its own, so only one
+  of the two is ever announced — no aria-hidden needed either side.
+*/
+.result-abbr {
+  display: inline;
+}
+
+.result-full {
+  display: none;
 }
 
 /*
@@ -620,6 +697,88 @@ h2 {
   here rather than shared from one definition.
 */
 @media (min-width: 40rem) {
+  /*
+    Fixed layout + colgroup widths (above) exist to stop a long team
+    name overflowing a narrow phone row — table-layout: fixed also
+    forces Home/Away into two equal, container-wide columns, which is
+    right when the row is ~320-390px wide but leaves large empty gaps
+    either side of a short team name once there's real room to spare.
+    Reverting to auto here restores content-based sizing for every
+    column at desktop widths. Folded into the same min-width: 40rem
+    block as everything below for the reason given in the comment
+    above it — one breakpoint value, not two.
+  */
+  .fixture-table {
+    table-layout: auto;
+  }
+
+  /*
+    table-layout: auto still treats a <col>'s width as a preferred
+    size, not just a fixed-layout-only setting — so without this,
+    .fixture-col-date/-result (above) went on constraining Date/Result
+    to their mobile widths at desktop too, starving those two columns
+    and pushing the freed space into Home/Away. width: auto removes
+    that constraint entirely, restoring the pre-this-thread desktop
+    table (which had no colgroup, and so no column widths, at all) —
+    full content-driven sizing for every column.
+  */
+  .fixture-col-date,
+  .fixture-col-result {
+    width: auto;
+  }
+
+  /*
+    Date: back to one inline line now there's room — the three spans
+    stay in source order, so switching all three from block to inline
+    is enough to un-stack them; the ::after content is the ONLY space
+    between them, deliberately not relying on Hugo's own whitespace
+    trimming between the template's adjacent <span> tags. Only day and
+    daymonth get a following space — year is the last piece, nothing
+    follows it.
+
+    white-space: nowrap on the parent is what actually forces "one
+    line": display: inline alone still leaves the ::after spaces as
+    legal break points, and a browser WILL use one of them — between
+    daymonth and year, in testing — the moment the auto-sized column
+    is even slightly tighter than the full string needs. nowrap turns
+    the whole string into a single unbreakable run, so auto table
+    layout has no choice but to size the column to fit it (this also
+    makes an explicit min-width on the column redundant — nowrap's own
+    minimum content width already covers it, so there's nothing left
+    for a separate floor to guard against).
+  */
+  .fixture-date {
+    white-space: nowrap;
+    /* The base rule's meta-scale font-size has no breakpoint guard of
+       its own, so without this it kept sizing the desktop date smaller
+       than Home/Away/Result — set explicitly, not left to inheritance,
+       same as the brief asks. font-size-base is what an ordinary
+       .fixture-table td renders at (no cell-level override exists for
+       it), so this is "match the row," not a new size choice. */
+    font-size: var(--font-size-base);
+  }
+
+  .fixture-date__day,
+  .fixture-date__daymonth,
+  .fixture-date__year {
+    display: inline;
+  }
+
+  .fixture-date__day::after,
+  .fixture-date__daymonth::after {
+    content: " ";
+  }
+
+  /* Result header: full word back, same breakpoint as the abbreviation
+     it replaces (see .result-abbr/.result-full above). */
+  .result-abbr {
+    display: none;
+  }
+
+  .result-full {
+    display: inline;
+  }
+
   .board-detail-columns {
     flex-direction: row;
     justify-content: space-between;
@@ -711,9 +870,16 @@ h2 {
   background: var(--color-ink);
 }
 
+/*
+  Right-aligned per the brief: text-align on the wrapping <p>, not on
+  the <a> itself, and not any width/margin change on the link — the
+  link keeps its natural inline size (and tap target) either way, only
+  its position within the full-width row shifts.
+*/
 .board-detail-link {
   margin-block-start: var(--space-2);
   font-size: var(--font-size-sm);
+  text-align: right;
 }
 
 .board-detail-link a {
