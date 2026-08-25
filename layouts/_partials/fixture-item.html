@@ -54,7 +54,14 @@
 {{ end }}
 
 <tr class="fixture-row {{ if eq (mod $index 2) 1 }}fixture-row--odd{{ else }}fixture-row--even{{ end }}">
-  <td><time datetime="{{ $page.Date.Format "2006-01-02" }}">{{ $page.Date.Format "Mon 02 Jan" }}<br>{{ $page.Date.Format "2006" }}</time></td>
+  {{/*
+    date-main wraps only "Tue 14 Apr" in a non-breaking span; the year
+    follows as a plain text node after an ordinary space, the one
+    break opportunity left in the cell. A too-narrow column wraps
+    there on its own — no media query needed, and desktop with room to
+    spare keeps the full date on one line. See .date-main in site.css.
+  */}}
+  <td><time datetime="{{ $page.Date.Format "2006-01-02" }}"><span class="date-main">{{ $page.Date.Format "Mon 02 Jan" }}</span> {{ $page.Date.Format "2006" }}</time></td>
   <td>{{ $homeTeamName }}</td>
   <td>{{ $awayTeamName }}</td>
   <td class="fixture-result">
@@ -66,9 +73,16 @@
       too. format-fraction.html turns a decimal team score into chess
       notation (2.5 -> "2½") rather than printing the raw decimal. The
       trailing chevron is pure CSS (summary::after, rotated on [open])
-      so it needs nothing here beyond the plain score text.
+      so it needs nothing here beyond the score markup.
+
+      home/away/sep are three separate spans, not one templated
+      string, because .result-cell stacks them (home above away, no
+      hyphen) below the .board-row breakpoint and lays them back out
+      inline with the hyphen above it — CSS alone can't split "3½-7½"
+      into two independently-positionable pieces after the fact, that
+      has to happen here.
     */}}
-    <details><summary>{{ partial "format-fraction.html" $page.Params.home_score }}-{{ partial "format-fraction.html" $page.Params.away_score }}</summary></details>
+    <details><summary class="result-cell"><span class="score-home">{{ partial "format-fraction.html" $page.Params.home_score }}</span><span class="score-sep">-</span><span class="score-away">{{ partial "format-fraction.html" $page.Params.away_score }}</span></summary></details>
     {{ else }}
     {{/*
       Upcoming and no-result both render blank here — rule 2

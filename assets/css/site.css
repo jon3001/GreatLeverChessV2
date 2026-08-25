@@ -357,17 +357,26 @@ h2 {
   vertical-align: baseline;
 }
 
-/* Date now renders on two lines ("Mon 02 Jan" / "2006" — see
-   fixture-item.html) rather than one, so the column only needs to be
-   as wide as the longer of those two lines, not the full
-   "Mon 06 Oct 2025" string. 6.5rem is sized to "Mon 13 Oct" (the
-   longest first line: three-letter day + two-digit date + three-
-   letter month), not measured on a real render — recheck against
-   actual fixture dates on a phone. white-space: nowrap now guards
-   each line individually (via the <br>) rather than the whole cell. */
+/* No cell-level nowrap any more — that would stop the browser
+   wrapping at all, including at the one break point .date-main below
+   is deliberately designed to allow. min-width is a floor sized to
+   "Mon 13 Oct" (three-letter day + two-digit date + three-letter
+   month, the longest .date-main ever gets), not measured on a real
+   render — recheck against actual fixture dates on a phone. */
 .fixture-table td:first-child {
-  white-space: nowrap;
   min-width: 6.5rem;
+}
+
+/* Wraps only "Tue 14 Apr" as one unbreakable run inside the <time>
+   element; the year that follows is a plain text node after an
+   ordinary space, so that space is the only place the date can break.
+   A column with room keeps the whole date on one line for free —
+   nothing here forces the break, it just stops the wrong part
+   breaking. No media query: this is the browser's own line-wrapping
+   deciding, keyed off the column's actual available width rather than
+   a guessed viewport number. */
+.date-main {
+  white-space: nowrap;
 }
 
 .fixture-table th {
@@ -406,6 +415,25 @@ h2 {
 
 .fixture-result details[open] summary::after {
   transform: rotate(90deg);
+}
+
+/* Mobile-first, same pairing as .board-row below it: home score above
+   away score, no visible hyphen, below the 40rem breakpoint where a
+   long fixture's board-by-board detail also switches to stacked. The
+   trailing chevron (summary::after, above) still appends after this
+   flex container's own last child either way. tabular-nums keeps the
+   two stacked figures numerically aligned even with a ½ glyph in one
+   and not the other — worth checking on a real render, half-point
+   glyphs aren't always drawn to the same advance width as a digit in
+   every font. */
+.result-cell {
+  display: flex;
+  flex-direction: column;
+  font-variant-numeric: tabular-nums;
+}
+
+.score-sep {
+  display: none;
 }
 
 /* Hidden by default; revealed purely by the summary row's own
@@ -562,6 +590,13 @@ h2 {
   over auto-flow, and persists across the breakpoint unless explicitly
   reset here — grid-template-rows: none on its own would not undo a
   child's explicit grid-row).
+
+  .result-cell/.score-sep are folded into this same block rather than
+  a second @media (min-width: 40rem) — deliberately the same 40rem
+  value as .board-row, so the table doesn't flip to "mobile mode" at
+  two unrelated widths, and a custom property can't be substituted
+  into a @media condition, so the literal value has to be repeated
+  here rather than shared from one definition.
 */
 @media (min-width: 40rem) {
   .board-detail-columns {
@@ -610,6 +645,16 @@ h2 {
     grid-column: 3;
     grid-row: auto;
     align-self: auto;
+  }
+
+  .result-cell {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.15em;
+  }
+
+  .score-sep {
+    display: inline;
   }
 }
 
