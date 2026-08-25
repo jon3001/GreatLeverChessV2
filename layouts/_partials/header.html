@@ -1,6 +1,21 @@
 <header>
   <div class="content-column">
-    <p class="site-title"><a href="{{ .Site.Home.RelPermalink }}">{{ .Site.Title }}</a></p>
+    {{/*
+      "Great Lever" / "Chess Club" is a hardcoded two-line split, not a
+      derivation of .Site.Title — this is a wordmark treatment (a
+      presentation decision), not a re-display of the site's title
+      metadata, same reasoning as footer.html's already-hardcoded club
+      name and address.
+    */}}
+    <p class="site-title">
+      <a href="{{ .Site.Home.RelPermalink }}" class="site-brand">
+        <span class="site-logomark" aria-hidden="true"></span>
+        <span class="site-wordmark">
+          <span class="site-wordmark__primary">Great Lever</span>
+          <span class="site-wordmark__secondary">Chess Club</span>
+        </span>
+      </a>
+    </p>
     {{ partial "nav.html" . }}
   </div>
 </header>

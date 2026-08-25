@@ -10,6 +10,10 @@
   into any listing yet: nav styling and the fixtures/news listing
   templates are each reserved for their own later session, so there's no
   real content to hang these on without reaching into that work early.
+  Session 10 (second half): page chrome — skip link, header (logo mark +
+  wordmark), nav (mobile disclosure accordion / desktop CSS-only
+  hover+focus-within dropdown, same markup both ways), footer (grouped
+  columns, accent-tint background).
 */
 
 :root {
@@ -78,9 +82,494 @@ h2 {
   line-height: var(--line-height-heading);
 }
 
-/* Menu <ul> currently renders as a plain bulleted list — acceptable for
-   this session's "not unreadable" bar. Real nav styling (horizontal on
-   desktop, disclosure treatment on mobile) is next session's CSS-only work. */
+/*
+  Skip link.
+  Same off-screen-clip technique as .visually-hidden further down this
+  file, written out separately rather than sharing that class in markup:
+  this one needs a :focus state that UNDOES the clip, and .visually-hidden
+  has no such escape hatch (nor should it gain one just for this single
+  caller). display:none would pull it from the accessibility tree
+  entirely, defeating the point of a skip link existing at all — the
+  clip+1px approach hides it visually while it stays reachable by a
+  screen reader or a sighted keyboard user's first Tab press.
+*/
+.skip-link {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link:focus {
+  position: fixed;
+  top: var(--space-2);
+  left: var(--space-2);
+  width: auto;
+  height: auto;
+  padding: var(--space-2) var(--space-3);
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+  z-index: 100;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius);
+  font-weight: 600;
+}
+
+/*
+  Header — logo mark + wordmark.
+  The mark is two small accent-coloured squares built from a single empty
+  span's ::before/::after rather than an image: nothing to source, crop,
+  optimise or serve, and it tracks --color-accent automatically if that
+  token is ever revisited. Offset diagonally (top-left / bottom-right)
+  rather than stacked, so it reads as a mark rather than one fused block
+  at 1.5rem.
+*/
+.site-title {
+  margin: 0;
+}
+
+.site-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+.site-logomark {
+  position: relative;
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+}
+
+.site-logomark::before,
+.site-logomark::after {
+  content: "";
+  position: absolute;
+  width: 0.65rem;
+  height: 0.65rem;
+  background: var(--color-accent);
+  border-radius: 2px;
+}
+
+.site-logomark::before {
+  top: 0;
+  left: 0;
+}
+
+.site-logomark::after {
+  bottom: 0;
+  right: 0;
+}
+
+.site-wordmark {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.site-wordmark__primary {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.site-wordmark__secondary {
+  font-size: var(--font-size-sm);
+  color: var(--color-muted);
+}
+
+header .content-column {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+  padding-block: var(--space-3);
+}
+
+/*
+  Mobile header — brand and nav share one compact row again (nav's
+  in-flow content is just the "Menu" trigger, a fixed small size), and
+  the opened list becomes an absolutely-positioned overlay rather than
+  a block pushed into normal flow.
+
+  This replaces an earlier version that stacked brand and nav as two
+  full-width blocks specifically to stop the open list's width from
+  drifting (see the two bugs below) — at the cost of a "Menu" row that
+  sits mostly empty while closed. Positioning the OPEN LIST itself
+  (not nav as a whole) keeps both fixes and reclaims the row:
+
+  - "menu pushes left as it expands": nav used to be a shrink-to-fit
+    flex item sized to its own widest visible line, so every reveal
+    grew nav's box, and space-between (pinning the right edge) meant
+    growing wider moved the left edge left each time. An absolutely
+    positioned element doesn't contribute to its ORIGINAL parent's
+    size at all — so nav's in-flow box, when closed, is just "Menu"'s
+    width, stable regardless of what's revealed once open.
+  - "confined narrow column vs BBC's edge-to-edge": the panel's width
+    is fixed by explicit left/right below, not shrink-to-fit around
+    its content — full content-column width either way.
+
+  Rejoined with the desktop dropdown's own positioning at the 40rem
+  breakpoint below, where the list goes back to sitting in-flow as a
+  horizontal bar rather than an overlay.
+*/
+.nav-toggle > ul {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--color-paper);
+  border-block: var(--border-width) solid var(--color-border);
+  z-index: 30;
+}
+
+/*
+  Row dividers — the thing that actually reads as "modern full-width
+  list" (BBC's mobile menu, and most others like it), more than any
+  particular colour treatment. Scoped to `nav li` generally so nested
+  submenu items (FAQ, Find Us, Juniors…) get the same row treatment as
+  top-level ones; :last-child removes the trailing line per list so
+  each list closes cleanly rather than double-bordering against the
+  next thing (the overlay's own border-block above, or the next
+  top-level row).
+*/
+.nav-toggle li {
+  border-block-end: var(--border-width) solid var(--color-border);
+}
+
+.nav-toggle li:last-child {
+  border-block-end: none;
+}
+
+/*
+  Nav — mobile-first base.
+  .nav-toggle is the OUTER <details> from Session 5 (the "Menu"
+  disclosure wrapping the whole list); the <details> nested inside its
+  <ul> are the per-item submenus (About, Club). Both share one chevron
+  treatment — same glyph, same rotate-on-open — as .fixture-result's
+  summary further down this file, so the site has one disclosure
+  affordance rather than two different ones.
+*/
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-toggle > summary,
+.nav-toggle details summary {
+  cursor: pointer;
+  list-style: none;
+  font-weight: 600;
+  padding-block: var(--space-2);
+}
+
+/* Outer trigger ("Menu"): label + chevron together, right-aligned as
+   one unit — see the mobile header comment above for why. Nested
+   triggers (About, Club): label stays left (consistent with sibling
+   links like News/Fixtures), chevron pushed to the row's right edge —
+   the standard accordion convention, and consistent with the full-width
+   row treatment the rest of the list just got. */
+.nav-toggle > summary {
+  display: flex;
+  justify-content: flex-end;
+  padding-inline: var(--space-2);
+}
+
+.nav-toggle details summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline-end: var(--space-2);
+}
+
+.nav-toggle > summary::-webkit-details-marker,
+.nav-toggle details summary::-webkit-details-marker {
+  display: none;
+}
+
+.nav-toggle > summary::after,
+.nav-toggle details summary::after {
+  content: "\203A";
+  display: inline-block;
+  margin-inline-start: 0.35em;
+  color: var(--color-muted);
+  transition: transform 0.15s ease;
+}
+
+.nav-toggle[open] > summary::after,
+.nav-toggle details[open] summary::after {
+  transform: rotate(90deg);
+}
+
+/* Indents a submenu's own items under its trigger in the accordion.
+   Reset to 0 at the desktop breakpoint below, where the same <details>
+   becomes a positioned dropdown instead. */
+.nav-toggle details {
+  padding-inline-start: var(--space-3);
+}
+
+nav a {
+  display: inline-block;
+  padding-block: var(--space-1);
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+/* Touch-target padding for the primary nav's full-width rows,
+   specifically — not the generic `nav a` above, which the footer's
+   link groups also match and which don't want this much padding. */
+.nav-toggle a {
+  padding-block: var(--space-2);
+  padding-inline: var(--space-2);
+}
+
+nav a:hover,
+nav a:focus-visible {
+  text-decoration: underline;
+}
+
+nav a[aria-current="page"] {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+/*
+  Footer — grouped columns.
+  Site.Menus.footer's top-level entries (Site, Governance) each render as
+  a .footer-nav-group; flex-wrap turns them into side-by-side columns
+  where there's room and lets them stack instead of needing a separate
+  narrow-viewport rule. accent-tint + ink text is the same pairing the
+  WCAG audit already settled on for the hero placeholder — ink reads
+  correctly on accent-tint, accent text does not — so footer links stay
+  ink at rest rather than picking up their own colour. Footer's links
+  live inside a <nav aria-label="Footer">, so the `nav a` rules above
+  already cover their colour and hover/focus state; nothing
+  footer-specific needed for that here.
+*/
+footer {
+  background: var(--color-accent-tint);
+  border-block-start: var(--border-width) solid var(--color-border);
+  margin-block-start: var(--space-6);
+}
+
+footer .content-column {
+  padding-block: var(--space-5);
+}
+
+footer address {
+  font-style: normal;
+}
+
+footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  margin-block: var(--space-4);
+}
+
+.footer-nav-group h2 {
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+  margin-block: 0 var(--space-2);
+}
+
+.footer-nav-group ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+footer small {
+  display: block;
+  color: var(--color-muted);
+}
+
+/*
+  Nav — desktop dropdown (min-width: 40rem, this file's one deliberate
+  breakpoint — see the fixture-table/board-row rules for the same value
+  reused elsewhere).
+
+  The trick both rules below lean on: a <details> without an [open]
+  attribute hides its non-summary children via the UA stylesheet's
+  `details:not([open]) > *:not(summary) { display: none }`. That's a
+  normal-priority UA-origin rule, and normal-priority AUTHOR-origin rules
+  beat it regardless of selector specificity — so an ordinary `display:
+  flex` / `display: block` here overrides it with no !important, and
+  works whether or not [open] happens to be present underneath.
+
+  Known, accepted gap: aria-expanded won't track the visual open/closed
+  state here, since neither :hover nor :focus-within touches the native
+  open attribute. Left as-is — not fixed with JS.
+*/
+@media (min-width: 40rem) {
+  /* Base rule above already sets display: flex, align-items: center,
+     justify-content: space-between — only flex-wrap needs adding here:
+     right at 40rem, brand + all five nav items may not quite fit one
+     row, and wrap lets nav drop to its own full row under the brand
+     instead of overflowing or squeezing text. Mobile never needed this
+     (nav's in-flow content there is just the compact "Menu" trigger). */
+  header .content-column {
+    flex-wrap: wrap;
+  }
+
+  /* Row dividers stay for the dropdown panels below (a nice touch
+     there, separating FAQ/Find Us/Juniors etc.) but not for the
+     top-level items, which are a horizontal bar now, not a list. */
+  .nav-toggle > ul > li {
+    border-block-end: none;
+  }
+
+  /*
+    THE ACTUAL FIX for "closed <details> content won't show no matter
+    what display value I give it": since Chrome 131 / Firefox 143 /
+    Safari 18.4 (all Baseline by Sept 2025), a <details>'s non-summary
+    content lives in an internal shadow-DOM slot, and the closed state
+    is enforced via `content-visibility: hidden` on that slot — a
+    DIFFERENT property from `display`. Overriding `display` alone (the
+    rest of this file's rules below) does nothing on its own, because
+    content-visibility: hidden still skips rendering the subtree
+    regardless of what display says. ::details-content is the pseudo-
+    element that targets that slot, so it's the only thing that can
+    actually flip content-visibility back to visible.
+
+    display: contents on the slot itself avoids adding an extra
+    generic box around the real <ul> — the display:flex / display:block
+    rules further down this file, which target the real <ul> directly,
+    still do 100% of the actual layout work. This is additive to those
+    rules, not a replacement for them.
+
+    Two separate unlocks, matching the two things that need to be
+    visible under two different conditions:
+      1. The OUTER nav-toggle's content — always, since top-level items
+         are meant to be permanently visible at this width.
+      2. Each SUBMENU's content — only on :hover/:focus-within, since
+         those are meant to stay closed until triggered.
+  */
+  .nav-toggle::details-content {
+    content-visibility: visible;
+    display: contents;
+  }
+
+  .nav-toggle > ul details:hover::details-content,
+  .nav-toggle > ul details:focus-within::details-content {
+    content-visibility: visible;
+    display: contents;
+  }
+
+  /* The "Menu" toggle has nothing left to do at this width — top-level
+     items are always visible below — so it's hidden outright, and its
+     <ul> forced visible regardless of [open] (see the trick above). */
+  .nav-toggle > summary {
+    display: none;
+  }
+
+  /* Resets the mobile overlay above (position/background/border-block)
+     back to a normal in-flow horizontal bar — nothing here needs to
+     escape the row at this width, since the row itself is stable. */
+  .nav-toggle > ul {
+    position: static;
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    background: none;
+    border-block: none;
+  }
+
+  .nav-toggle > ul > li > a,
+  .nav-toggle > ul > li > details > summary {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-2) var(--space-1);
+  }
+
+  .nav-toggle > ul details {
+    position: relative;
+    padding-inline-start: 0;
+  }
+
+  /* Closed by default (forced, so a leftover [open] from a mobile visit
+     earlier in the same session can't leave it stuck open here); the
+     :hover/:focus-within rule below is the only thing that reveals it. */
+  .nav-toggle > ul details > ul {
+    display: none;
+  }
+
+  .nav-toggle > ul details:hover > ul,
+  .nav-toggle > ul details:focus-within > ul {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 12rem;
+    padding: var(--space-2);
+    background: var(--color-paper);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius);
+    z-index: 20;
+  }
+
+  /*
+    Fixes: click About (sets native [open] AND moves keyboard focus onto
+    its summary — clicking always does both), then just move the mouse
+    to Club without clicking again. Club gets :hover, but focus never
+    left About, so About's :focus-within is STILL true too — both
+    panels show at once. Pure hovering never triggers this (:hover
+    drops the instant the mouse leaves); it's specifically the
+    click-leaves-focus-behind case.
+
+    :has(details:hover) matches the shared <ul> whenever ANY sibling is
+    being hovered; :not(:hover) then picks out the specific sibling
+    that's focus-within but ISN'T the one currently under the mouse —
+    i.e. the stale one — and closes just that one. The genuinely
+    hovered sibling fails :not(:hover) (it IS hovered), so it's
+    unaffected. No mouse anywhere in the group → :has(details:hover)
+    doesn't match anything → keyboard-only navigation (tab through,
+    nothing hovered) is untouched.
+  */
+  .nav-toggle > ul:has(details:hover) details:focus-within:not(:hover) > ul {
+    display: none;
+  }
+
+  .nav-toggle > ul:has(details:hover) details:focus-within:not(:hover) > summary::after {
+    transform: none;
+  }
+
+  /* Club is the last top-level item, closest to the right edge of
+     .content-column — right-align its drawer rather than let it
+     overhang. Simple last-child flip, not full collision detection. */
+  .nav-toggle > ul > li:last-child details > ul {
+    left: auto;
+    right: 0;
+  }
+
+  .nav-toggle > ul details > ul a {
+    display: block;
+    padding: var(--space-1) var(--space-2);
+    white-space: nowrap;
+  }
+
+  /* Visual-only echo of the hover/focus-within reveal above — separate
+     from, and not a fix for, the aria-expanded gap noted up top. */
+  .nav-toggle > ul details:hover > summary::after,
+  .nav-toggle > ul details:focus-within > summary::after {
+    transform: rotate(90deg);
+  }
+}
 
 /*
   Content column — the measure-constrained primitive.
