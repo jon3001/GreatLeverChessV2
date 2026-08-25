@@ -54,7 +54,7 @@
 {{ end }}
 
 <tr class="fixture-row {{ if eq (mod $index 2) 1 }}fixture-row--odd{{ else }}fixture-row--even{{ end }}">
-  <td><time datetime="{{ $page.Date.Format "2006-01-02" }}">{{ $page.Date.Format "Mon 02 Jan 2006" }}</time></td>
+  <td><time datetime="{{ $page.Date.Format "2006-01-02" }}">{{ $page.Date.Format "Mon 02 Jan" }}<br>{{ $page.Date.Format "2006" }}</time></td>
   <td>{{ $homeTeamName }}</td>
   <td>{{ $awayTeamName }}</td>
   <td class="fixture-result">

@@ -357,14 +357,17 @@ h2 {
   vertical-align: baseline;
 }
 
-/* Date is the one column whose content ("Mon 06 Oct 2025") is both
-   short enough to always fit on one line AND was wrapping awkwardly
-   at the table's previous, narrower width — nowrap plus a min-width
-   sized to the longest realistic value stops that without touching
-   any other column. */
+/* Date now renders on two lines ("Mon 02 Jan" / "2006" — see
+   fixture-item.html) rather than one, so the column only needs to be
+   as wide as the longer of those two lines, not the full
+   "Mon 06 Oct 2025" string. 6.5rem is sized to "Mon 13 Oct" (the
+   longest first line: three-letter day + two-digit date + three-
+   letter month), not measured on a real render — recheck against
+   actual fixture dates on a phone. white-space: nowrap now guards
+   each line individually (via the <br>) rather than the whole cell. */
 .fixture-table td:first-child {
   white-space: nowrap;
-  min-width: 9rem;
+  min-width: 6.5rem;
 }
 
 .fixture-table th {
@@ -439,10 +442,15 @@ h2 {
   background: color-mix(in srgb, var(--color-ink) 4%, transparent);
 }
 
+/* Narrow base: stacked, not side-by-side — visual consistency with
+   the stacked Home/Away pairing in .board-row below it, not because
+   either string wraps at 390px (both fit on one line at that width).
+   Reverts to the original space-between row at min-width: 40rem,
+   alongside .board-row's own single-line layout. */
 .board-detail-columns {
   display: flex;
-  justify-content: space-between;
-  gap: var(--space-3);
+  flex-direction: column;
+  gap: var(--space-1);
   font-size: var(--font-size-sm);
   color: var(--color-muted);
   margin-block-end: var(--space-2);
@@ -467,11 +475,20 @@ h2 {
   name pushed the score toward the away side. A fixed-width centre
   column plus two EQUAL 1fr side columns means the score's position is
   determined by the grid track, not by how long either name happens to
-  be — genuinely centred regardless of content.
+  be — genuinely centred regardless of content. That's the
+  min-width: 40rem layout below; this unqueried base is the narrow
+  (mobile-first) layout, three columns instead of four, Home and Away
+  stacked in two rows of the same column rather than side by side — a
+  "Storrie-Baxter, James (1600)"-length name-plus-rating string has no
+  room to sit beside a fixed-width number/notation column and an equal
+  opposing name under ~40rem (computed against .fixture-wide's own
+  min(95vw, 74rem) ceiling and the two 15rem side minimums this
+  breakpoint restores — see the query below).
 */
 .board-row {
   display: grid;
-  grid-template-columns: auto 1fr auto 1fr;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto auto;
   align-items: baseline;
   gap: 0 var(--space-2);
   padding-block: var(--space-1);
@@ -484,35 +501,116 @@ h2 {
 .board-number {
   color: var(--color-muted);
   font-size: var(--font-size-sm);
+  /* Spans both the Home and Away rows and sits centred across the
+     pair, rather than pinned to Home's row alone — reads as "board 3"
+     labelling the pairing, not just the first line of it. */
+  grid-row: 1 / span 2;
+  align-self: center;
 }
 
 .board-side {
   display: inline-flex;
   align-items: baseline;
   gap: 0.4em;
-  /* Player-name-plus-rating strings ("Storrie-Baxter, James (1600)")
-     were wrapping mid-string at the old flex-shrink width; nowrap plus
-     a min-width sized to a realistic long name/rating pair stops that,
-     matching the Date-column fix above for the same reason. */
-  min-width: 15rem;
-  white-space: nowrap;
+  /* Both Home and Away share column 2 (they're on separate rows, so
+     this doesn't collide) and wrap normally — the fixed nowrap
+     min-width below is a min-width: 40rem-only concern, once there's
+     a fixed-width neighbour column to protect against. */
+  grid-column: 2;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
-/* Home sits left-aligned against the score (its natural reading
-   order); away is pushed to the far side via justify-self so the two
-   names read as mirror images either side of the centred score,
-   reinforcing the "equal space both sides" fix above. */
+.board-side--home {
+  grid-row: 1;
+}
+
+/* justify-self: start, not the min-width: 40rem query's end — Home
+   and Away both read from the same left edge when they're stacked
+   (mirroring either side of a centred score only makes sense
+   side-by-side). */
 .board-side--away {
-  justify-self: end;
+  grid-row: 2;
+  justify-self: start;
 }
 
 .board-notation {
   grid-column: 3;
+  /* Spans both rows and centres, same reasoning as .board-number
+     above — the notation belongs to the pairing, not to one row of
+     it. */
+  grid-row: 1 / span 2;
+  align-self: center;
   width: 3.5rem;
   text-align: center;
   justify-self: center;
   font-variant-numeric: tabular-nums;
   color: var(--color-muted);
+}
+
+/*
+  min-width: 40rem (640px): the point above which two 15rem
+  name-plus-rating columns, the 3.5rem notation column, and three
+  column gaps (.board-side's own min-width restored below, times two,
+  plus .board-notation's fixed 3.5rem, plus three var(--space-2) gaps)
+  fit within .fixture-wide's own width — computed, not measured on a
+  real render; confirm against a real phone/tablet before treating it
+  as final. Restores the original single-line, four-column layout:
+  grid-column/grid-row overrides below cancel the narrow layout's
+  row-spanning and column-sharing (an item's own placement always wins
+  over auto-flow, and persists across the breakpoint unless explicitly
+  reset here — grid-template-rows: none on its own would not undo a
+  child's explicit grid-row).
+*/
+@media (min-width: 40rem) {
+  .board-detail-columns {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .board-row {
+    grid-template-columns: auto 1fr auto 1fr;
+    grid-template-rows: none;
+  }
+
+  .board-number {
+    grid-row: auto;
+    align-self: auto;
+  }
+
+  .board-side {
+    /* Player-name-plus-rating strings ("Storrie-Baxter, James (1600)")
+       were wrapping mid-string at the old flex-shrink width; nowrap
+       plus a min-width sized to a realistic long name/rating pair
+       stops that, matching the Date-column fix above for the same
+       reason. grid-column: auto hands Home and Away back to ordinary
+       grid auto-placement (columns 2 and 4, in source order) now that
+       they're no longer sharing column 2 across two rows. */
+    grid-column: auto;
+    min-width: 15rem;
+    white-space: nowrap;
+  }
+
+  .board-side--home {
+    grid-row: auto;
+  }
+
+  /* Home sits left-aligned against the score (its natural reading
+     order); away is pushed to the far side via justify-self so the
+     two names read as mirror images either side of the centred score,
+     reinforcing the "equal space both sides" fix above. */
+  .board-side--away {
+    grid-row: auto;
+    justify-self: end;
+  }
+
+  .board-notation {
+    grid-column: 3;
+    grid-row: auto;
+    align-self: auto;
+  }
 }
 
 .board-note {

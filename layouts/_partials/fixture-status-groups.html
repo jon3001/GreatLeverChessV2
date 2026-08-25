@@ -77,7 +77,7 @@
 {{ $sorted := sort . "Date" "asc" }}
 <div class="fixture-type-group" id="{{ $id }}">
   <h3>{{ $heading }}</h3>
-  <div class="fixture-table-wrap">
+  <div class="fixture-table-wrap" role="region" tabindex="0" aria-label="{{ $heading }} fixtures, scroll to see all columns">
     <table class="fixture-table">
       <thead>
         <tr><th scope="col">Date</th><th scope="col">Home</th><th scope="col">Away</th><th scope="col">Result</th></tr>
