@@ -332,7 +332,7 @@ h2 {
   shared .fixture-wide wrapper above, which is the actual fix for this
   round's heading/table misalignment. This element's only remaining
   job is a LOCAL horizontal-scroll boundary: overflow-x: auto lets one
-  table whose own content is still too wide (long names, five columns)
+  table whose own content is still too wide (long names, four columns)
   scroll WITHIN itself on a narrow viewport, instead of the whole page
   gaining a horizontal scrollbar. Deliberately no further responsive
   handling beyond that — a stopgap for today's desktop readability,
