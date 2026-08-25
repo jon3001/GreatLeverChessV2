@@ -1123,7 +1123,14 @@ footer small {
   align-self: center;
 }
 
-.board-side {
+/* .board-player is the grid item directly (Session 11: merged what
+   was previously a .board-side wrapper around a .colour-square child
+   into this one element — see the DOM-bloat audit). inline-flex plus
+   the colour ::before below (see [data-colour] further down) still
+   lays out swatch-then-name with the same gap as before; the
+   swatch/visually-hidden pairing no longer needs its own wrapper
+   element because ::before generates no real DOM node. */
+.board-player {
   display: inline-flex;
   align-items: baseline;
   gap: 0.4em;
@@ -1137,7 +1144,7 @@ footer small {
   overflow-wrap: break-word;
 }
 
-.board-side--home {
+.board-player--home {
   grid-row: 1;
 }
 
@@ -1145,7 +1152,7 @@ footer small {
    and Away both read from the same left edge when they're stacked
    (mirroring either side of a centred score only makes sense
    side-by-side). */
-.board-side--away {
+.board-player--away {
   grid-row: 2;
   justify-self: start;
 }
@@ -1167,7 +1174,7 @@ footer small {
 /*
   min-width: 40rem (640px): the point above which two 15rem
   name-plus-rating columns, the 3.5rem notation column, and three
-  column gaps (.board-side's own min-width restored below, times two,
+  column gaps (.board-player's own min-width restored below, times two,
   plus .board-notation's fixed 3.5rem, plus three var(--space-2) gaps)
   fit within .fixture-wide's own width — computed, not measured on a
   real render; confirm against a real phone/tablet before treating it
@@ -1284,7 +1291,7 @@ footer small {
     align-self: auto;
   }
 
-  .board-side {
+  .board-player {
     /* Player-name-plus-rating strings ("Storrie-Baxter, James (1600)")
        were wrapping mid-string at the old flex-shrink width; nowrap
        plus a min-width sized to a realistic long name/rating pair
@@ -1297,7 +1304,7 @@ footer small {
     white-space: nowrap;
   }
 
-  .board-side--home {
+  .board-player--home {
     grid-row: auto;
   }
 
@@ -1305,7 +1312,7 @@ footer small {
      order); away is pushed to the far side via justify-self so the
      two names read as mirror images either side of the centred score,
      reinforcing the "equal space both sides" fix above. */
-  .board-side--away {
+  .board-player--away {
     grid-row: auto;
     justify-self: end;
   }
@@ -1341,21 +1348,37 @@ footer small {
    carries the same information to a screen reader (see .visually-hidden
    above). 0.85em ties its size to the surrounding text rather than a
    fixed px value, so it scales with the type scale instead of looking
-   oversized/undersized if the base font size ever changes. */
-.colour-square {
+   oversized/undersized if the base font size ever changes.
+
+   Session 11: generated content on data-colour, not a real
+   .colour-square child element (see the DOM-bloat audit) — a
+   decorative swatch has no accessible-text needs of its own (the
+   visually-hidden sibling text still carries that), so it doesn't
+   need to be a real node. [data-colour="..."] rather than a class
+   deliberately keeps the same (0,1,0) specificity the old
+   .colour-square--white/--black classes had — no cascade behaviour
+   change, just no element backing it. ::before (not ::after) so the
+   generated box sits before the name in both DOM/flex order and
+   reading order, matching the old markup's swatch-then-name sequence. */
+[data-colour="white"]::before {
+  content: "";
   display: inline-block;
   width: 0.85em;
   height: 0.85em;
   flex: 0 0 auto;
   border: var(--border-width) solid var(--color-ink);
   align-self: center;
-}
-
-.colour-square--white {
   background: var(--color-paper);
 }
 
-.colour-square--black {
+[data-colour="black"]::before {
+  content: "";
+  display: inline-block;
+  width: 0.85em;
+  height: 0.85em;
+  flex: 0 0 auto;
+  border: var(--border-width) solid var(--color-ink);
+  align-self: center;
   background: var(--color-ink);
 }
 

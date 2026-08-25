@@ -113,31 +113,37 @@
     {{ warnf "fixture-boards: unrecognised board result %q on board %d of %s" $result .board $fixture.RelPermalink }}
   {{ end }}
 
+  {{/*
+    Session 11 (DOM-bloat audit): the old .board-side wrapper around a
+    .colour-square child is gone — one <span> per side now, carrying
+    all three concerns as attributes/modifiers instead of two nested
+    elements. board-player--home/--away is the one genuinely
+    structural/positional axis (fixed grid-row/grid-column placement,
+    per site.css) and stays a class; colour is per-board DATA, not
+    position, so it's a data-colour attribute rather than a class —
+    see [data-colour] in site.css for why that's also the right
+    specificity match for the swatch it used to take a whole element
+    to draw. The visually-hidden colour text is now a direct child of
+    this span rather than a grandchild, but stays first, so
+    announcement order (colour, then name) is unchanged.
+
+    "Default" matches the ECF LMS's own wording for a board nobody
+    fielded a player for — was "No player fielded".
+
+    Trim markers ({{- / -}}) throughout this <li>, not just tidiness:
+    a stray whitespace text node between the visually-hidden span and
+    the player name would sit outside the flex gap (the abs-positioned
+    visually-hidden span doesn't participate in the flex layout, so
+    that whitespace collapses to a real rendered space against the
+    ::before swatch instead) — collapsing it here keeps the swatch-to-
+    name gap exactly the 0.4em site.css sets, matching the old
+    two-element markup's spacing exactly rather than adding to it.
+  */}}
   <li class="board-row">
     <span class="board-number">Bd {{ .board }}</span>
-    <span class="board-side board-side--home">
-      <span class="colour-square colour-square--{{ if eq $homeColour "W" }}white{{ else }}black{{ end }}">
-        <span class="visually-hidden">{{ if eq $homeColour "W" }}White{{ else }}Black{{ end }}</span>
-      </span>
-      {{/* "Default" matches the ECF LMS's own wording for a board
-           nobody fielded a player for — was "No player fielded". */}}
-      {{ if $homeIsPlaceholder }}
-      <span class="board-player board-player--empty">Default</span>
-      {{ else }}
-      <span class="board-player">{{ $homePerson.name }}{{ with $homePerson.rating }} ({{ . }}){{ end }}</span>
-      {{ end }}
-    </span>
+    <span class="board-player board-player--home{{ if $homeIsPlaceholder }} board-player--empty{{ end }}" data-colour="{{ if eq $homeColour "W" }}white{{ else }}black{{ end }}"><span class="visually-hidden">{{ if eq $homeColour "W" }}White{{ else }}Black{{ end }}</span>{{- if $homeIsPlaceholder }}Default{{ else }}{{ $homePerson.name }}{{ with $homePerson.rating }} ({{ . }}){{ end }}{{ end -}}</span>
     <span class="board-notation">{{ $notation }}{{ with $note }} <span class="board-note">({{ . }})</span>{{ end }}</span>
-    <span class="board-side board-side--away">
-      <span class="colour-square colour-square--{{ if eq $awayColour "W" }}white{{ else }}black{{ end }}">
-        <span class="visually-hidden">{{ if eq $awayColour "W" }}White{{ else }}Black{{ end }}</span>
-      </span>
-      {{ if $awayIsPlaceholder }}
-      <span class="board-player board-player--empty">Default</span>
-      {{ else }}
-      <span class="board-player">{{ $awayPerson.name }}{{ with $awayPerson.rating }} ({{ . }}){{ end }}</span>
-      {{ end }}
-    </span>
+    <span class="board-player board-player--away{{ if $awayIsPlaceholder }} board-player--empty{{ end }}" data-colour="{{ if eq $awayColour "W" }}white{{ else }}black{{ end }}"><span class="visually-hidden">{{ if eq $awayColour "W" }}White{{ else }}Black{{ end }}</span>{{- if $awayIsPlaceholder }}Default{{ else }}{{ $awayPerson.name }}{{ with $awayPerson.rating }} ({{ . }}){{ end }}{{ end -}}</span>
   </li>
   {{ end }}
 </ol>
