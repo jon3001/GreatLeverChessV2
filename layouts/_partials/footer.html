@@ -1,6 +1,25 @@
 <footer>
   <div class="content-column">
     <address>Great Lever Chess Club, 99 Castle St, Haulgh, Bolton BL2 1JP</address>
+    {{/*
+      Site.Menus.footer already yields only the top-level (parentless)
+      entries — Site and Governance — each with its Children populated,
+      same mechanism nav.html relies on for the About/Club submenus.
+      Column layout and any visual treatment land next session; this is
+      structure only.
+    */}}
+    <nav aria-label="Footer">
+      {{ range .Site.Menus.footer }}
+      <div class="footer-nav-group">
+        <h2>{{ .Name }}</h2>
+        <ul>
+          {{ range .Children }}
+          <li><a href="{{ .URL }}">{{ .Name }}</a></li>
+          {{ end }}
+        </ul>
+      </div>
+      {{ end }}
+    </nav>
     <small>&copy; {{ now.Year }} Great Lever Chess Club</small>
   </div>
 </footer>

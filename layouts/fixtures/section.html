@@ -20,6 +20,17 @@
 {{ define "main" }}
 <h1>{{ .Title }}</h1>
 
+<p><a href="/archive/">Looking for a past season? See the Archive.</a></p>
+
+{{/*
+  Session 10: Archive dropped out of the main nav (single-level items
+  are now only News/Fixtures/Contact plus the About/Club submenus), so
+  this is the only in-page link to it left on the site. Without this
+  line the archive taxonomy pages still build and resolve by direct
+  URL, but nothing on the site links to them — worth remembering if
+  this paragraph ever moves or gets cut during the styling pass.
+*/}}
+
 {{/*
   Two ways to gather this section's fixture pages:
 

@@ -10,51 +10,116 @@ title = 'Great Lever Chess Club'
     term.seasons = '/archive/:slug/'
 
 [[menus.main]]
-    name = 'Fixtures'
-    pageRef = '/fixtures'
+    name = 'News'
+    pageRef = '/news'
     weight = 10
 
 [[menus.main]]
-    name = 'Club Nights'
-    pageRef = '/club-nights'
+    name = 'Fixtures'
+    pageRef = '/fixtures'
     weight = 20
-
-[[menus.main]]
-    name = 'Find Us'
-    pageRef = '/find-us'
-    weight = 30
 
 [[menus.main]]
     name = 'Contact'
     pageRef = '/contact'
+    weight = 30
+
+[[menus.main]]
+    name = 'About'
+    identifier = 'about'
+    pageRef = '/about'
     weight = 40
 
 [[menus.main]]
-    name = 'Archive'
-    pageRef = '/seasons'
-    weight = 50
+    name = 'FAQ'
+    pageRef = '/about/faq'
+    parent = 'about'
+    weight = 10
 
 [[menus.main]]
-    name = 'Links'
-    pageRef = '/links'
-    weight = 60
-
-[[menus.main]]
-    name = 'News'
-    pageRef = '/news'
-    weight = 70
-
-[[menus.main]]
-    name = 'History'
-    pageRef = '/history'
-    weight = 80
-
-[[menus.main]]
-    name = 'Documents'
-    pageRef = '/documents'
-    weight = 90
+    name = 'Find Us'
+    pageRef = '/about/find-us'
+    parent = 'about'
+    weight = 20
 
 [[menus.main]]
     name = 'Juniors'
-    pageRef = '/juniors'
-    weight = 100
+    pageRef = '/about/juniors'
+    parent = 'about'
+    weight = 30
+
+[[menus.main]]
+    name = 'Club'
+    identifier = 'club'
+    pageRef = '/club'
+    weight = 50
+
+[[menus.main]]
+    name = 'Officials'
+    pageRef = '/club/officials'
+    parent = 'club'
+    weight = 10
+
+[[menus.main]]
+    name = "Captain's Corner"
+    pageRef = '/club/captains-corner'
+    parent = 'club'
+    weight = 20
+
+[[menus.main]]
+    name = 'Documents'
+    pageRef = '/club/documents'
+    parent = 'club'
+    weight = 30
+
+[[menus.main]]
+    name = 'History & Honours'
+    pageRef = '/club/history-honours'
+    parent = 'club'
+    weight = 40
+
+[[menus.main]]
+    name = 'Directory & Links'
+    pageRef = '/club/directory-links'
+    parent = 'club'
+    weight = 50
+
+[[menus.footer]]
+    name = 'Site'
+    identifier = 'footer-site'
+    weight = 10
+
+[[menus.footer]]
+    name = 'Privacy Policy'
+    pageRef = '/privacy'
+    parent = 'footer-site'
+    weight = 10
+
+[[menus.footer]]
+    name = 'RSS'
+    url = '/index.xml'
+    parent = 'footer-site'
+    weight = 20
+
+[[menus.footer]]
+    name = 'Contact Us'
+    pageRef = '/contact'
+    parent = 'footer-site'
+    weight = 30
+
+[[menus.footer]]
+    name = 'Governance'
+    identifier = 'footer-governance'
+    weight = 20
+
+[[menus.footer]]
+    name = 'Constitution'
+    pageRef = '/constitution'
+    parent = 'footer-governance'
+    weight = 10
+
+[[menus.footer]]
+    name = 'Code of Conduct'
+    pageRef = '/code-of-conduct'
+    parent = 'footer-governance'
+    weight = 20

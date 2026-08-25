@@ -2,11 +2,11 @@
 /index.html                 /                    301
 /fixtures.html               /fixtures/            301
 /results.html                 /fixtures/            301
-/club_nights.html           /club-nights/         301
-/find_us.html                 /find-us/             301
+/club_nights.html           /about/faq/           301
+/find_us.html                 /about/find-us/       301
 /contact_us.html             /contact/             301
 /contact_us_submitted.html   /contact/             301
-/links.html                   /links/               301
+/links.html                   /club/directory-links/ 301
 
 # Archive — not backfilling V1-era seasons; all route to the archive index
 /archive.html                 /archive/             301
