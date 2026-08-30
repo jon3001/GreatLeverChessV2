@@ -180,12 +180,16 @@
     override, site.css). gap is inserted between flex items
     unconditionally, even when one renders at zero height under
     content-visibility: hidden — so the closed accordion was paying a
-    full gap's worth of dead space below the summary. Fixed by
-    styling ::details-content directly instead (site.css): padding
-    declared there collapses along with the box itself when closed,
-    and appears normally when open — no flex needed on <details> at
-    all. The nav/event-table spacing below was never coming from this
-    gap anyway (each already carries its own margin — see
+    full gap's worth of dead space below the summary. Moved onto
+    ::details-content directly instead (site.css), gated behind
+    [open] on the originating <details> — content-visibility: hidden
+    only skips a hidden element's DESCENDANTS, not padding declared on
+    the element's own box, so an earlier version of that rule with no
+    [open] condition just relocated the same dead space rather than
+    removing it (caught on a real 390px render, not from the CSS
+    alone). No flex needed on <details> at all either way. The
+    nav/event-table spacing below was never coming from this gap
+    anyway (each already carries its own margin — see
     .fixture-jump-nav--competitions ul and .fixture-type-group +
     .fixture-type-group in site.css), so removing it here loses
     nothing.

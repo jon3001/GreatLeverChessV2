@@ -878,16 +878,37 @@ footer small {
 /*
   Space between the summary row and its revealed content (replaces
   the .stack gap removed from <details> itself — see
-  fixture-collection.html for why that gap was the whitespace bug,
-  not the fix). ::details-content is the exact box content-visibility
-  collapses when the accordion is closed, so padding declared on it
-  collapses right along with it: zero extra height closed, normal
-  space open. Padding rather than margin, to sidestep this box's own
-  top margin collapsing into its first child's (the same
-  margin-collapsing reason .stack itself is built on gap, not margin
-  — see .stack's comment above).
+  fixture-collection.html for why that gap was the whitespace bug).
+
+  Corrected this round: the previous version of this rule had no
+  [open] condition, on the theory that content-visibility: hidden
+  (the UA behaviour that hides a closed <details>'s content) would
+  collapse this padding away for free when closed. It doesn't —
+  content-visibility: hidden skips rendering an element's
+  DESCENDANTS, but padding-block-start declared directly on
+  ::details-content is that element's OWN box, not its contents in
+  the spec's sense, so it kept rendering at full size regardless of
+  open/closed state. ::details-content's block-size collapses toward
+  zero when closed, but its own padding doesn't collapse with it —
+  which is exactly the gap real-device screenshots caught: the
+  previous fix moved the bug from "gap between two flex items" to
+  "unconditional padding on one of them," rather than removing it.
+
+  [open] on the originating <details> makes the padding conditional
+  on the SELECTOR matching, not on hoping the browser's rendering
+  behaviour makes an unconditional value disappear — when closed,
+  [data-league-accordion][open] simply doesn't match, so there's no
+  padding in the box model at all, not just one rendering small.
+  Same combinator pattern already proven in this file for
+  .nav-toggle > ul details:hover::details-content above (a state
+  selector on the <details>, chained before ::details-content).
+
+  Padding rather than margin: sidesteps this box's own top margin
+  collapsing into its first child's (the same margin-collapsing
+  reason .stack itself is built on gap, not margin — see .stack's
+  comment above).
 */
-[data-league-accordion]::details-content {
+[data-league-accordion][open]::details-content {
   padding-block-start: var(--space-3);
 }
 
