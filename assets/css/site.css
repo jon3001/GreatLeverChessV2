@@ -789,9 +789,54 @@ footer small {
   margin-block-start: var(--space-6);
 }
 
-.fixture-org-group h2 {
+/*
+  League-level accordion summary (this task). `[data-league-accordion]
+  > summary`, not a bare `.fixture-org-group summary` descendant
+  selector: the org group also contains the per-board <details> deep
+  inside fixture-item.html, and a descendant selector would reach
+  those too. The direct-child combinator plus the JS-only attribute
+  can't match anything else, by construction.
+
+  display: flex + justify-content: space-between is the exact same
+  "nested trigger" treatment as .nav-toggle details summary above —
+  label stays left, chevron pushed to the row's right edge, one
+  disclosure affordance reused site-wide rather than a second one
+  invented here. The nested <h2> is a flex item like any other child;
+  its own block-level default doesn't fight the row layout.
+
+  border-block-end/padding-block-end live here now, not on
+  `.fixture-org-group h2` (Session 8's rule, removed): h2 is a flex
+  item on the row's main axis, so it sizes to its own content rather
+  than stretching — a border on the h2 itself would only underline
+  the league name, leaving the chevron floating past the end of it
+  with no line beneath. summary is the full-width flex box, so the
+  border underlines the whole clickable row instead.
+*/
+[data-league-accordion] > summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  list-style: none;
   border-block-end: var(--border-width) solid var(--color-border);
   padding-block-end: var(--space-1);
+}
+
+[data-league-accordion] > summary::-webkit-details-marker {
+  display: none;
+}
+
+[data-league-accordion] > summary::after {
+  content: "\203A";
+  display: inline-block;
+  flex-shrink: 0;
+  margin-inline-start: var(--space-2);
+  color: var(--color-muted);
+  transition: transform 0.15s ease;
+}
+
+[data-league-accordion][open] > summary::after {
+  transform: rotate(90deg);
 }
 
 .fixture-type-group + .fixture-type-group {

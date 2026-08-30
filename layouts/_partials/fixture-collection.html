@@ -72,18 +72,14 @@
   than plain margin-inline: auto.
 */}}
 <div class="fixture-wide">
-{{ if gt (len $orgGroups) 1 }}
-<nav class="fixture-jump-nav" aria-label="Jump to organisation">
-  <ul>
-    {{ range $orgGroups }}
-    {{ $orgName := title (replace .group.Key "-" " ") }}
-    {{ with index $orgNames .group.Key }}{{ $orgName = . }}{{ end }}
-    <li><a href="#org-{{ .group.Key }}">{{ $orgName }}</a></li>
-    {{ end }}
-  </ul>
-</nav>
-{{ end }}
-
+{{/*
+  No page-top "jump to organisation" list any more (this task):
+  replaced by the per-league <details> accordion below, and a plain
+  id anchor into a closed <details> doesn't auto-open it in any
+  current browser, so a jump list pointing at now-collapsed sections
+  would just land the visitor on invisible content. No replacement
+  deep-linking mechanism — decided out of scope for this change.
+*/}}
 {{ range $orgGroups }}
 {{ $orgKey := .group.Key }}
 {{ $orgPages := .group.Pages }}
@@ -150,22 +146,54 @@
   {{ warnf "fixture-collection: event split lost fixtures under organisation %q — %d in, %d out" $orgKey (len $orgPages) $eventTotal }}
 {{ end }}
 
-<section class="fixture-org-group stack" id="org-{{ $orgKey }}">
-  <h2>{{ $orgName }}</h2>
+<section class="fixture-org-group" id="org-{{ $orgKey }}">
+  {{/*
+    League-level accordion (this task) — the whole org section's
+    content (competition jump list, every division/cup table) lives
+    inside one <details>, closed by default: that's the deliberate
+    no-JS fallback state, opened past the desktop breakpoint by
+    site.js on load (see fixture-table-script.html/site.js for why
+    that's a load-time check only, not a live listener).
 
-  {{ if gt (len $eventGroupsOrdered) 1 }}
-  <nav class="fixture-jump-nav fixture-jump-nav--competitions" aria-label="Jump to competition within {{ $orgName }}">
-    <ul>
-      {{ range $eventGroupsOrdered }}
-      <li><a href="#event-{{ $orgKey }}-{{ .group.Key }}">{{ title (replace .group.Key "-" " ") }}</a></li>
-      {{ end }}
-    </ul>
-  </nav>
-  {{ end }}
+    data-league-accordion is a plain attribute, not a class,
+    specifically so site.js's selector can't also catch the per-board
+    <details> nested several levels further down inside
+    fixture-item.html — those carry no such attribute and are
+    untouched by the new script.
 
-  {{ range $eventGroupsOrdered }}
-  {{ partial "fixture-status-groups.html" (dict "pages" .group.Pages "heading" (title (replace .group.Key "-" " ")) "id" (printf "event-%s-%s" $orgKey .group.Key)) }}
-  {{ end }}
+    <h2> stays nested INSIDE <summary> rather than being replaced by
+    plain summary text: a <summary> may contain exactly one heading
+    element per the HTML content model, and this is the difference
+    between a screen reader's headings list still finding "{{ $orgName }}"
+    at heading level 2 versus that name only ever being reachable by
+    tabbing into the disclosure control itself. See site.css's
+    [data-league-accordion] > summary rule for the toggle affordance
+    and border styling this now carries (moved off .fixture-org-group
+    h2, which used to hold it directly).
+
+    class="stack" moves from the <section> (Session 8) onto this
+    <details>: with the whole org body now one child of the section,
+    .stack there would have nothing left to space out. It still does
+    the same job one level down, giving the summary/competition-nav/
+    event-tables the same vertical rhythm they had before.
+  */}}
+  <details class="stack" data-league-accordion>
+    <summary><h2>{{ $orgName }}</h2></summary>
+
+    {{ if gt (len $eventGroupsOrdered) 1 }}
+    <nav class="fixture-jump-nav fixture-jump-nav--competitions" aria-label="Jump to competition within {{ $orgName }}">
+      <ul>
+        {{ range $eventGroupsOrdered }}
+        <li><a href="#event-{{ $orgKey }}-{{ .group.Key }}">{{ title (replace .group.Key "-" " ") }}</a></li>
+        {{ end }}
+      </ul>
+    </nav>
+    {{ end }}
+
+    {{ range $eventGroupsOrdered }}
+    {{ partial "fixture-status-groups.html" (dict "pages" .group.Pages "heading" (title (replace .group.Key "-" " ")) "id" (printf "event-%s-%s" $orgKey .group.Key)) }}
+    {{ end }}
+  </details>
 </section>
 {{ end }}
 </div>{{/* .fixture-wide */}}

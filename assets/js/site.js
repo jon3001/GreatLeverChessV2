@@ -33,3 +33,35 @@ document.querySelectorAll('.fixture-table tbody').forEach((tbody) => {
     if (details) details.open = !details.open;
   });
 });
+
+/*
+  League-accordion default open/closed state (layouts/_partials/
+  fixture-collection.html). Markup always ships closed — that's the
+  no-JS fallback — so this only runs to set the DESKTOP default open.
+  [data-league-accordion] is a plain attribute rather than a class
+  specifically so this selector can't also catch the per-board
+  <details> the click-to-expand handler above already owns; the two
+  features share the file but never touch each other's elements.
+
+  Evaluated once, at load, and never again: no matchMedia change
+  listener and no resize handler. A visitor who's manually toggled a
+  league open or shut is trusted to keep it that way — a live
+  listener would silently flip it back to the breakpoint's default on
+  the next resize or device rotation, overriding a choice they just
+  made.
+
+  40rem matches the one "counts as desktop" breakpoint already used
+  for the nav dropdown and the fixture-table/board-row layout switch
+  (site.css) — not a second value invented here.
+
+  Self-guarding: window.matchMedia has shipped everywhere for over a
+  decade, but if it's ever missing this block quietly no-ops rather
+  than throwing, leaving every accordion in its closed markup default
+  — a safe fallback, not a broken page.
+*/
+if (window.matchMedia) {
+  const isDesktop = window.matchMedia('(min-width: 40rem)').matches;
+  document.querySelectorAll('[data-league-accordion]').forEach((details) => {
+    details.open = isDesktop;
+  });
+}
