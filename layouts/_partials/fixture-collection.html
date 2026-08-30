@@ -171,13 +171,26 @@
     and border styling this now carries (moved off .fixture-org-group
     h2, which used to hold it directly).
 
-    class="stack" moves from the <section> (Session 8) onto this
-    <details>: with the whole org body now one child of the section,
-    .stack there would have nothing left to space out. It still does
-    the same job one level down, giving the summary/competition-nav/
-    event-tables the same vertical rhythm they had before.
+    No class="stack" on this <details> (tried in the first round of
+    this task, reverted): flex-direction:column + gap on <details>
+    itself only ever has TWO flex items regardless of how many real
+    DOM children follow <summary> — <summary>, and the single
+    ::details-content box the browser collectively wraps everything
+    else in (see the ::details-content note above .nav-toggle's own
+    override, site.css). gap is inserted between flex items
+    unconditionally, even when one renders at zero height under
+    content-visibility: hidden — so the closed accordion was paying a
+    full gap's worth of dead space below the summary. Fixed by
+    styling ::details-content directly instead (site.css): padding
+    declared there collapses along with the box itself when closed,
+    and appears normally when open — no flex needed on <details> at
+    all. The nav/event-table spacing below was never coming from this
+    gap anyway (each already carries its own margin — see
+    .fixture-jump-nav--competitions ul and .fixture-type-group +
+    .fixture-type-group in site.css), so removing it here loses
+    nothing.
   */}}
-  <details class="stack" data-league-accordion>
+  <details data-league-accordion>
     <summary><h2>{{ $orgName }}</h2></summary>
 
     {{ if gt (len $eventGroupsOrdered) 1 }}

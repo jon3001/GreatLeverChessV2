@@ -826,17 +826,69 @@ footer small {
   display: none;
 }
 
+/*
+  Own marker rule, deliberately not shared with .nav-toggle's (above):
+  the nav's sideways › encodes "opens a submenu", which is a different
+  interaction than this control's "reveals content in place" — and
+  the nav's chevron was a separate, already-settled call this task
+  isn't reopening. (The two rules already used identical property
+  VALUES by coincidence, not by sharing one selector — so decoupling
+  them here is a one-file, no-cross-effect change; confirmed nothing
+  else references this block.)
+
+  Down-pointing glyph (▾, U+25BE — a filled triangle, not the thin
+  angled ⌄), flipping 180° to point up on open: the expand/collapse
+  convention this task's Wikipedia-mobile reference uses, distinct
+  from the nav's "this leads somewhere else" sideways arrow.
+
+  font-size: var(--font-size-h2), not inherited from <summary>'s own
+  (body-size) font: this ::after is generated on <summary>, which
+  never inherits the larger size its own nested <h2> carries, so left
+  at the inherited default it rendered at body text size next to an
+  h2-sized heading — a real, measurable reason it read as too small,
+  not just a guessed bump. Tied to the same token the heading uses
+  rather than an arbitrary rem value, so the two stay visually paired
+  if that token ever changes. line-height: 1 keeps this larger glyph
+  from adding its own (inherited, loose) line-height on top of that —
+  it should get more visually prominent, not physically taller.
+
+  color: var(--color-accent), not -muted: -muted is this file's
+  de-emphasis token (board notation, timestamps — content that should
+  recede). This is the opposite of that, an interactive affordance
+  that needs to read as actionable, so it takes this site's existing
+  "this is actionable" signal instead — the same token already used
+  for the current-page nav link and the ECF LMS icon link's hover
+  state, both above.
+*/
 [data-league-accordion] > summary::after {
-  content: "\203A";
+  content: "\25BE";
   display: inline-block;
   flex-shrink: 0;
+  font-size: var(--font-size-h2);
+  line-height: 1;
   margin-inline-start: var(--space-2);
-  color: var(--color-muted);
+  color: var(--color-accent);
   transition: transform 0.15s ease;
 }
 
 [data-league-accordion][open] > summary::after {
-  transform: rotate(90deg);
+  transform: rotate(180deg);
+}
+
+/*
+  Space between the summary row and its revealed content (replaces
+  the .stack gap removed from <details> itself — see
+  fixture-collection.html for why that gap was the whitespace bug,
+  not the fix). ::details-content is the exact box content-visibility
+  collapses when the accordion is closed, so padding declared on it
+  collapses right along with it: zero extra height closed, normal
+  space open. Padding rather than margin, to sidestep this box's own
+  top margin collapsing into its first child's (the same
+  margin-collapsing reason .stack itself is built on gap, not margin
+  — see .stack's comment above).
+*/
+[data-league-accordion]::details-content {
+  padding-block-start: var(--space-3);
 }
 
 .fixture-type-group + .fixture-type-group {
