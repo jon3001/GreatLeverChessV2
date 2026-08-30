@@ -783,10 +783,63 @@ footer small {
   margin-right: calc(50% - 50vw + max(0px, 100vw - min(95vw, 74rem)) / 2);
 }
 
-/* Space organisation groups apart from each other; each org's own
-   heading rhythm comes from .stack on its children. */
+/*
+  Space organisation groups apart from each other (fourth round on
+  this symptom — see the two comments below for what rounds 2 and 3
+  each got wrong, since both are relevant to why this is shaped the
+  way it is now).
+
+  Unconditional var(--space-3), not 0 and not var(--space-6): a flat
+  zero (round 3) fixed the oversized gap but over-corrected — three
+  closed rows with nothing beyond their own divider line read as too
+  cramped on a real 390px render. var(--space-3) is reused rather
+  than invented: it's .stack's own default --stack-gap (above), this
+  file's existing token for "consistent vertical rhythm between a set
+  of sibling elements" — i.e. exactly the "related items in a list"
+  reading this needed, as opposed to var(--space-6)'s "separate
+  sections" weight. Unconditional (no :has() here) because this is
+  the row-to-row rhythm every pair of groups gets regardless of
+  either one's state — the OPEN-state extra room is a different,
+  additive concern, handled entirely below.
+*/
 .fixture-org-group + .fixture-org-group {
-  margin-block-start: var(--space-6);
+  margin-block-start: var(--space-3);
+}
+
+/*
+  Open-state breathing room — rewritten this round to fix a real
+  "the tapped row jumps" defect in the previous version. That version
+  used two :has() selectors: one added margin-block-start to the
+  group FOLLOWING an open one (fine — trailing space, pushes only
+  what comes after); the other added margin-block-start to a group
+  that ITSELF has an open details (the bug — conditioning a group's
+  OWN leading margin on its OWN open state means opening a non-first
+  group increases the space above it at the exact instant it opens,
+  visibly shifting its own <summary> on screen — confirmed by tracing
+  both selectors against a 3-group A/B/C case, not by guessing which
+  one was at fault).
+
+  Fixed by dropping the leading-margin selector entirely and
+  expressing this as ONLY a trailing margin, owned exclusively by the
+  group that is itself open — margin-block-end here, never
+  margin-block-start on a sibling, and the selector references only
+  this element's own state, never a neighbour's. Opening a group can
+  now only ever push down whatever comes after it; nothing before the
+  point of interaction is ever touched, so nothing can jump.
+
+  This also composes correctly with the unconditional var(--space-3)
+  above via ordinary margin collapsing (both are plain block-level
+  <section> siblings with no padding/border of their own between
+  them, so adjoining margins collapse to the larger value, not the
+  sum): an open group's trailing var(--space-6) and the next group's
+  leading var(--space-3) collapse to var(--space-6) — the full
+  breathing room a table block needs. Two closed rows have no
+  trailing margin to collapse against, so they land on the plain
+  var(--space-3) above. No extra selector needed to get both totals
+  right.
+*/
+.fixture-org-group:has(> details[open]) {
+  margin-block-end: var(--space-6);
 }
 
 /*
@@ -804,13 +857,22 @@ footer small {
   invented here. The nested <h2> is a flex item like any other child;
   its own block-level default doesn't fight the row layout.
 
-  border-block-end/padding-block-end live here now, not on
+  border-block-end/padding-block live here now, not on
   `.fixture-org-group h2` (Session 8's rule, removed): h2 is a flex
   item on the row's main axis, so it sizes to its own content rather
   than stretching — a border on the h2 itself would only underline
   the league name, leaving the chevron floating past the end of it
   with no line beneath. summary is the full-width flex box, so the
   border underlines the whole clickable row instead.
+
+  padding-block (both sides), not padding-block-end alone (third
+  round on this same symptom): the nested h2's own margin used to
+  give this row breathing room ABOVE its text for free — see the
+  margin-block: 0 override on it below, and why that margin was never
+  legitimate in the first place. Once that's zeroed there's nothing
+  left providing top space unless this padding does it explicitly, so
+  it's now symmetric — var(--space-1) matches the existing bottom
+  value rather than introducing a new one.
 */
 [data-league-accordion] > summary {
   display: flex;
@@ -819,7 +881,40 @@ footer small {
   cursor: pointer;
   list-style: none;
   border-block-end: var(--border-width) solid var(--color-border);
-  padding-block-end: var(--space-1);
+  padding-block: var(--space-1);
+}
+
+/*
+  h2's own margin-block: the actual dominant contributor found this
+  round. Every browser's UA stylesheet gives h2 a default
+  margin-block of ~0.83em EACH side — never reset by this file's own
+  `h2 { font-size; line-height }` rule (site.css, top), so it was
+  fully in effect here the whole time. At this h2's own computed
+  font-size (~20px at a 390px viewport, via --font-size-h2's clamp),
+  that's roughly 17px top AND bottom — around 34px combined, on a
+  heading that's ALWAYS visible regardless of open/closed state, so
+  neither round 1 (the flex-gap on <details>) nor round 2 (the
+  ::details-content padding) touched it; both fixed a real but
+  smaller bug while this one, the biggest single contributor, went
+  unaudited.
+
+  Since h2 is a flex item of the row above with align-items: center,
+  that margin doesn't just sit inertly — a flex line's cross-size is
+  the tallest item's MARGIN box, not its content box, so this alone
+  was inflating the closed row to roughly double a bare text line's
+  height. Zeroed entirely rather than reduced: a heading acting as a
+  disclosure control's row label isn't prose in document flow, so the
+  browser's generic paragraph-spacing assumption for h1-h6 doesn't
+  apply to it — the row's own padding-block (above) is what should
+  own this spacing instead, deliberately and by a known amount.
+
+  Scoped to `[data-league-accordion] > summary h2` specifically, not
+  a blanket `h2 { margin-block: 0 }`: this site has exactly one other
+  h2 usage (.footer-nav-group h2, unrelated) and this rule must not
+  touch it or any future one.
+*/
+[data-league-accordion] > summary h2 {
+  margin-block: 0;
 }
 
 [data-league-accordion] > summary::-webkit-details-marker {
