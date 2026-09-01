@@ -1,8 +1,11 @@
 # Great Lever Chess Club — Website V2
 
 Static site for a Bolton chess club. Replaces a decade-old table-based
-site. Hugo -> Cloudflare Pages. Currently building a demo for club
-feedback; public launch targeted before the October 2026 season.
+site. Hugo -> Cloudflare Pages.
+
+Currently building a demo for club feedback (Stage 1, Sessions 1-10
+complete). Public launch is deliberately *not* on a fixed date — see
+Delivery stages below.
 
 ## Stack
 
@@ -13,6 +16,37 @@ feedback; public launch targeted before the October 2026 season.
   no npm build step of any kind.
 - Cloudflare Pages, git-push deploy. Trunk-based, main only.
 
+## Delivery stages
+
+1. **Club Demonstration** — current
+2. **Automation** (`EcfLmsSync`)
+3. **Soft Launch** — first public exposure, via a link from V1
+4. **Public Cutover** — custom domain, redirects
+5. Member and Prospect Value
+6. Conditional (each individually triggered)
+
+Re-sequenced 21 August 2026: automation moved *ahead* of launch, and a
+soft-launch stage was inserted. Any older document showing Stage 2 as
+Public Cutover or Stage 3 as Automation is stale. October 2026 is no
+longer a protected deadline.
+
+**Soft Launch (3), not Cutover (4), is the first time the public sees
+this site.** Anything gated on "before we go public" is due at Stage 3.
+
+## What is NOT built yet
+
+Do not assume otherwise from the directory layout:
+
+- `tests/` and `workers/` contain only `.gitkeep`.
+- There is no `.github/` directory. No CI, no Actions, no Dependabot.
+  These all arrive with Stage 2.
+- `tools/ecf-lms-sync/` contains only `openapi/`. The sync tool has not
+  been started. `tools/ecf-lms-transform/` is the working Stage 1 tool.
+- `data/positions.json` (FEN board positions) is designed but does not
+  exist.
+- Every page under `content/` outside `content/fixtures/` is a stub of
+  22-73 words. Filling them is Session 11.
+
 ## Hugo conventions — important
 
 Use the post-0.146 layouts structure:
@@ -20,6 +54,10 @@ layouts/baseof.html, layouts/home.html, layouts/page.html,
 layouts/section.html, layouts/_partials/, layouts/_shortcodes/.
 Do NOT use layouts/_default/ or layouts/partials/ — deprecated.
 Most tutorials and older documentation still show the old structure.
+
+`taxonomy.html` renders the terms list; `term.html` renders a single
+term's page. This is the opposite of the pre-0.146 naming, and older
+material gets it backwards.
 
 Since Hugo 0.162, content files of type text/html are rejected by
 default under /content. Content is Markdown. Do not add HTML content
@@ -40,6 +78,10 @@ files that generate no browsable page. Do NOT "fix" this to
 breaks season archive generation with no warning and no build error.
 See docs/content-model.md §2.5.
 
+`build` is the correct front matter key, not `_build`. Taxonomy-term
+fields must be list-valued. The `where` operator for a list-valued
+field is `intersect`, not `in`.
+
 ## ECF LMS capture data
 
 Raw ECF LMS API captures live under `ecf-captures/lms/`, never at
@@ -58,6 +100,11 @@ key set is `event_name`, `event_type`, `fixtures[]`. The org, season
 and event IDs exist ONLY in the capture path, and the transform is
 what lifts them into front matter's `source` block. Don't assume any
 of them can be read back out of a payload.
+
+Three organisations are in scope: Bolton & District (1097), Central
+Lancashire (779), and Great Lever's own page (781) for ad-hoc
+friendlies. Manchester (1237) and East Lancashire (671) are historic
+only — the club does not currently play in either.
 
 ## Generated fixture content
 
@@ -82,6 +129,13 @@ anywhere else in the schema, flag it. URL patterns for deep links back
 to the LMS live in `data/sources.json` keyed by `source.system`;
 resolved URLs are never written into content files.
 
+Fixture files are machine-owned and the transform is their sole
+writer. Human-curated data about a fixture goes in a separate `data/`
+file keyed by `source.fixture_id` — never nested inside `boards[]`,
+which the sync tool regenerates wholesale on every run and which has
+no mechanism to preserve a field it does not recognise. This is why
+FEN board positions live in `data/positions.json`.
+
 ## How to work with me
 
 Explain non-trivial decisions inline. Do not produce finished files
@@ -92,6 +146,10 @@ and state the trade-off.
 I am an experienced C#/.NET backend developer, a Hugo novice, and my
 frontend skills are about a decade stale. Assume competence, assume no
 current frontend idiom.
+
+Do not claim something works because it should. Session 10 shipped four
+bugs that review missed and manual testing caught. If a change needs
+verifying on a real device, say so rather than asserting it is fine.
 
 ## Constraints
 
@@ -104,8 +162,7 @@ current frontend idiom.
 - British English in all site content. Dates as "Tue 14 Oct 2026".
 - Fixture front matter schema is fixed — see docs/content-model.md.
   Don't add, rename, or drop a field without flagging it first;
-  content-structure changes are expensive once real content exists
-  (spec §5).
+  content-structure changes are expensive once real content exists.
 - Data-quality rules in docs/content-model.md §3 are findings from real
   captured payloads, not defensive guesses. Don't simplify them away:
   `board_count` is unreliable in both directions, `winner` is
@@ -113,4 +170,33 @@ current frontend idiom.
   never become `0`, placeholder boards are identified by
   `lms_id: -2`/`-5` and not by the result string, played/upcoming
   derives from `games.length` and not from the scores, and team names
-  need trimming because they are the join key.
+  need trimming because they are the join key. There is a real player
+  named "Null, AJ" — every name string must be quoted or it parses as
+  a YAML null.
+- `content/privacy/_index.md` is `draft: true` and carries unresolved
+  `[PLACEHOLDER]` markers. Do not remove the draft flag, do not fill
+  the placeholders, and do not publish it. It needs committee sign-off.
+
+## Things that are decided, so don't re-litigate them
+
+- The CSS-only nav dropdown has a known `aria-expanded` mismatch. It
+  was accepted deliberately and logged. Don't "fix" it by adding JS.
+- `::details-content` is required to override closed `<details>` state
+  in current browsers. It is not redundant.
+- Fixtures and results are one page, not two.
+- The chronological fixtures view is a separate URL (`/fixtures/all/`),
+  not a same-page tab toggle — that preserves the accessible accordion
+  architecture already built.
+- No comments, no CMS, no search. All Stage 6, all trigger-gated.
+
+## Project documentation
+
+`docs/content-model.md` is the authoritative fixture schema and is the
+one document here you should read before touching content or the
+transform.
+
+Wider project documents (specification, delivery plan, decision log,
+content inventory) live in Jonathan's Claude Project knowledge and are
+NOT in this repo. You cannot read them. If a session needs that
+context, it has to be pasted into the prompt. If you find yourself
+guessing at project history, stop and ask rather than inventing it.
