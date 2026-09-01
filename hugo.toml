@@ -89,11 +89,15 @@ title = 'Great Lever Chess Club'
     identifier = 'footer-site'
     weight = 10
 
-[[menus.footer]]
-    name = 'Privacy Policy'
-    pageRef = '/privacy'
-    parent = 'footer-site'
-    weight = 10
+# Restored at Stage 3 (Soft Launch), when the notice is published.
+# Commented out 1 September 2026: content/privacy/_index.md is draft: true
+# pending placeholder resolution and committee sign-off, so Hugo does not
+# build the page and this link would 404 on every page of the site.
+# [[menus.footer]]
+#     name = 'Privacy'
+#     pageRef = '/privacy'
+#     parent = 'footer-site'
+#     weight = 10
 
 [[menus.footer]]
     name = 'RSS'
