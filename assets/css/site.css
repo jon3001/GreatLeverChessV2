@@ -1643,17 +1643,33 @@ footer small {
     - .fixture-result         "reveals inline row detail"
   This one means "this is a self-contained card of prose; open it to
   read it" — closer to a FAQ answer than to a menu or a data row — so
-  it gets its own visual treatment (a bordered card, not a bordered
-  row) rather than reusing any of the three above.
+  it gets its own visual treatment (a filled card, not a bordered row)
+  rather than reusing any of the three above.
 
   Applied directly to hand-authored <details class="content-accordion">
   in content Markdown (raw HTML — unsafe = true in hugo.toml), not
   wired through a shortcode: there's no per-item data here beyond a
   summary and a body, so a shortcode would only add indirection.
+
+  background: var(--color-accent-tint), not --color-paper — confirmed
+  against a real render that --color-paper (#fbfaf6) reads as
+  indistinguishable from the page, since body has no background set
+  and so renders plain white. --color-accent-tint is this file's
+  existing "this needs to read as a visually distinct surface" token
+  (already used by the footer), reused here rather than adding a
+  fifth colour.
+
+  No border: tried alongside the accent-tint fill (screenshot
+  comparison, headless Firefox) and it added nothing worth keeping —
+  --color-border (#e6e2da) sits only ~15/255 per channel from the fill
+  itself, so it barely read as an edge even up close, and the fill's
+  contrast against the white page already does 100% of the "distinct
+  card" work on its own. Matches the footer's own precedent: accent-
+  tint fill alone signals "distinct surface" elsewhere in this file
+  too, no full border paired with it there either.
 */
 .content-accordion {
-  background: var(--color-paper);
-  border: var(--border-width) solid var(--color-border);
+  background: var(--color-accent-tint);
   border-radius: var(--radius);
 }
 
