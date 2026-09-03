@@ -2,13 +2,7 @@
 title: "Find Us"
 ---
 
-<address>
-Great Lever Chess Club<br>
-The Ukrainian Club (AUGB Bolton Ukrainian Cultural Centre)<br>
-99 Castle Street<br>
-Bolton<br>
-BL2 1JP
-</address>
+{{< club-address >}}
 
 Phone: [01204 526038](tel:+441204526038) — this rings the venue
 itself, not the club. For club questions, use [Contact](/contact/)

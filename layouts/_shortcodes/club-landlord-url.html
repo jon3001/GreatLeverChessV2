@@ -1,0 +1,10 @@
+{{- /*
+  Same mechanism as club-address.html — Markdown content can't read
+  hugo.Data directly, so this shortcode's only job is to hand back one
+  value (the landlord's URL), letting the surrounding text stay as
+  ordinary Markdown link syntax: [AUGB Bolton branch](tag-goes-here).
+  Trimmed tight ("-}}" etc.) because this sits inside a Markdown link's
+  (...) — any stray whitespace or newline in the output would land
+  inside the URL and break the link.
+*/ -}}
+{{- hugo.Data.club.venue_landlord_url -}}

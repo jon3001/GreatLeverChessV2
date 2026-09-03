@@ -1,6 +1,17 @@
 <footer>
   <div class="content-column">
-    <address>Great Lever Chess Club, 99 Castle St, Haulgh, Bolton BL2 1JP</address>
+    {{/*
+      Sourced from data/club.yaml (hugo.Data.club, the non-deprecated
+      accessor — see fixtures/section.html) so this stays in sync with
+      the Find Us page instead of drifting as an independently-typed
+      string. "St" is a footer-only abbreviation of street — kept as a
+      literal replace here rather than a street_short data field,
+      since nowhere else needs the abbreviated form. No locality
+      (Haulgh) or landlord link: footer stays compact, both live on
+      Find Us / Directory & Links instead.
+    */}}
+    {{ $club := hugo.Data.club }}
+    <address>{{ $club.name }}, {{ $club.venue_short }}, {{ replace $club.street "Street" "St" }}, {{ $club.town }} {{ $club.postcode }}</address>
     {{/*
       Site.Menus.footer already yields only the top-level (parentless)
       entries — Site and Governance — each with its Children populated,

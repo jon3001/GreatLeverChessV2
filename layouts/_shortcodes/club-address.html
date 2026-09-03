@@ -1,0 +1,33 @@
+{{/*
+  Shortcode: a template snippet that can be dropped into a content
+  file with a `club-address` tag, not just into a layout. Content
+  files (this one's Markdown) are rendered by Goldmark, which only
+  understands Markdown syntax — it has no notion of hugo.Data or
+  anything else from Hugo's template layer, so a .md file on its own
+  can never read data/club.yaml directly. A shortcode is the escape
+  hatch: at build time Hugo swaps the tag in the source for whatever
+  this template outputs, and this template runs with full access to
+  site data, same as any layout file. That's what lets one data file
+  feed both a template (footer.html, which reads hugo.Data.club
+  directly) and a content file (Find Us) without the address being
+  hand-typed — and able to drift — in two places.
+
+  Called with angle-bracket delimiters rather than percent delimiters:
+  this shortcode already emits finished HTML, so its output should be
+  inserted as-is. Percent delimiters would additionally run that
+  output back through Goldmark's Markdown processing, which is both
+  unneeded here and formatting-fragile for a literal <address> block.
+
+  hugo.Data.club, not .Site.Data.club: this Hugo version (0.164)
+  deprecates .Site.Data in favour of the global hugo.Data function —
+  see layouts/fixtures/section.html for the same note.
+*/}}
+{{ $club := hugo.Data.club }}
+<address>
+{{ $club.name }}<br>
+{{ $club.venue_full }}<br>
+{{ $club.street }}<br>
+{{ $club.locality }}<br>
+{{ $club.town }}<br>
+{{ $club.postcode }}
+</address>
