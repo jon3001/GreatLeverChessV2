@@ -2,6 +2,11 @@ baseURL = 'https://example.org/'
 locale = 'en-GB'
 title = 'Great Lever Chess Club'
 
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+      
 [taxonomies]
     season = 'seasons'
 
