@@ -10,7 +10,9 @@ Bolton<br>
 BL2 1JP
 </address>
 
-Phone: <a href="tel:+441204526038">01204 526038</a>
+Phone: [01204 526038](tel:+441204526038) — this rings the venue
+itself, not the club. For club questions, use [Contact](/contact/)
+instead.
 
 **Club night:** Tuesdays, from 7.30pm — this is the best night to visit
 if you just want to watch or have a chat.

@@ -596,6 +596,15 @@ footer small {
 }
 
 /*
+  Body-copy <address> (e.g. Find Us venue details) shouldn't render in
+  the browser's default italic — same reasoning as footer address
+  above, just scoped to main instead so the two rules stay independent.
+*/
+main address {
+  font-style: normal;
+}
+
+/*
   Page shell — hero region.
   Deliberately NOT wrapped in .content-column: that's the whole point of
   putting it directly in baseof.html as a sibling of the constrained
