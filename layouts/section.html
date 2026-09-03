@@ -1,4 +1,23 @@
 {{ define "main" }}
 <h1>{{ .Title }}</h1>
 {{ .Content }}
+{{/*
+  .Pages, not .RegularPages: this template IS the section page, so
+  .Pages is already scoped to exactly its own children — same call
+  fixtures/section.html makes, and for the same reason (see its
+  comment). .RegularPages would walk the whole site and need a
+  `where` filter to claw back the scope .Pages already has for free.
+
+  No separate draft exclusion: nothing in this project sets
+  `draft: true` today, and Hugo's default `buildDrafts = false`
+  (hugo.toml sets no override) already drops draft pages from .Pages
+  before this template ever sees them.
+*/}}
+{{ if .Pages }}
+<ul>
+  {{ range .Pages }}
+  <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+  {{ end }}
+</ul>
+{{ end }}
 {{ end }}

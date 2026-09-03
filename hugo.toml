@@ -31,22 +31,28 @@ title = 'Great Lever Chess Club'
     weight = 40
 
 [[menus.main]]
+    name = 'Welcome'
+    pageRef = '/about/welcome'
+    parent = 'about'
+    weight = 10
+
+[[menus.main]]
     name = 'FAQ'
     pageRef = '/about/faq'
     parent = 'about'
-    weight = 10
+    weight = 20
 
 [[menus.main]]
     name = 'Find Us'
     pageRef = '/about/find-us'
     parent = 'about'
-    weight = 20
+    weight = 30
 
 [[menus.main]]
     name = 'Juniors'
     pageRef = '/about/juniors'
     parent = 'about'
-    weight = 30
+    weight = 40
 
 [[menus.main]]
     name = 'Club'
