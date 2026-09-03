@@ -23,7 +23,9 @@ don't make a wasted trip.
 - Car park on-site, plus on-street parking
 - Refreshments available to buy at the bar
 
-[Get directions on Google Maps](https://maps.google.com/?q=The+Ukrainian+Club,+99+Castle+Street,+Bolton,+BL2+1JP)
+Get directions:
+[Google Maps](https://maps.google.com/?q=The+Ukrainian+Club,+99+Castle+Street,+Bolton,+BL2+1JP) ·
+[Apple Maps](https://maps.apple.com/?q=The+Ukrainian+Club&address=99+Castle+Street,+Bolton,+BL2+1JP)
 
 <details name="find-us" class="content-accordion">
 <summary>Directions</summary>
