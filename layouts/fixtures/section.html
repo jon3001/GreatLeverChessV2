@@ -20,6 +20,26 @@
 {{ define "main" }}
 <h1>{{ .Title }}</h1>
 
+{{/*
+  Season subtitle (this task) — sourced from data/current_season.json,
+  the same file the current-season filter below reads, not hardcoded.
+  It's keyed per organisation (docs/content-model.md §2.4) and, as the
+  filter's own comment notes, every fielding organisation happens to
+  share one season slug today — `uniq` collapses that to a single
+  label in the normal case. If that ever stops being true the values
+  genuinely disagree, so this joins them rather than silently picking
+  whichever organisation's entry the map happened to yield first.
+
+  A real <p>, not a bare text node after <h1>, so it's independently
+  stylable and sits in the heading hierarchy the way the brief asks.
+*/}}
+{{ $seasonValues := slice }}
+{{ range hugo.Data.current_season }}
+  {{ $seasonValues = $seasonValues | append . }}
+{{ end }}
+{{ $seasonLabel := delimit (uniq $seasonValues) " / " }}
+<p class="fixtures-subtitle">{{ replace $seasonLabel "-" "–" }} season</p>
+
 <p><a href="/archive/">Looking for a past season? See the Archive.</a></p>
 
 {{/*

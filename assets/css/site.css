@@ -1131,6 +1131,44 @@ main address {
 }
 
 /*
+  Home/Away merge into one Match column below 40rem (this task). Both
+  cell sets exist in every row/colgroup/header always (fixture-item.html/
+  fixture-status-groups.html) — no CSS property changes how many <td>s
+  are IN the markup, only which ones generate a box at all. display:
+  none is what does that: a none'd element produces no box (CSS2.1
+  §9.2.5), so it isn't a same-size-but-invisible column, it's absent
+  from the table's column list entirely, and a screen reader never
+  encounters it. That's also why this genuinely removes a column
+  rather than just hiding text in one — the alternative (visually
+  hiding text inside a still-present cell) would leave a hollow column
+  and a confusing "4 cells, one empty" table structure at this width.
+
+  Base/mobile: Home and Away gone, Match shown. Reset at 40rem below.
+*/
+.fixture-col-home,
+.fixture-col-away {
+  display: none;
+}
+
+.fixture-col-match {
+  display: table-cell;
+}
+
+/*
+  <col> needs `table-column` for its shown state, not the `table-cell`
+  the <td>/<th> rule above sets — table-cell is meaningless on an
+  actual <col> element (it isn't a cell), so the shown state has to be
+  a separate, more specific rule for exactly the <col>, not a value
+  swapped in the same one. `col.fixture-col-match` (element + class)
+  outranks the bare `.fixture-col-match` class selector above
+  regardless of source order, so this is what actually wins for the
+  <col> while the bare rule still governs the <td>.
+*/
+col.fixture-col-match {
+  display: table-column;
+}
+
+/*
   Stacked day / day+month / year, replacing the old single-string date
   with one deliberate break per line instead of an accidental wrap.
   display: block on each span is what forces the stacking — inline
@@ -1160,9 +1198,24 @@ main address {
 }
 
 .fixture-date__day,
-.fixture-date__daymonth,
-.fixture-date__year {
+.fixture-date__daymonth {
   display: block;
+}
+
+/*
+  Year hidden below 40rem (this task) — the /fixtures/ season subtitle
+  above the table now says which season is showing, so the year on
+  every row is redundant on a narrow screen. Restored at min-width:
+  40rem below, alongside the other two spans switching from block to
+  inline. The <time datetime="..."> attribute still carries the full
+  date regardless — display: none on a child span removes only this
+  visible text, not the accessible name the parent <time> exposes via
+  its own content when it isn't overridden by aria-label (it isn't
+  here), so nothing is lost from the accessibility tree, only from
+  what's painted on screen.
+*/
+.fixture-date__year {
+  display: none;
 }
 
 .fixture-table th {
@@ -1447,6 +1500,28 @@ main address {
   }
 
   /*
+    Home/Away restored, Match gone — the mirror image of the base
+    rule above, same reasoning (a none'd element generates no box, so
+    this is a genuine 4-column table again, not a hidden-but-present
+    5th column). col.fixture-col-home/-away need the same table-column
+    override as col.fixture-col-match did in the base rule, for the
+    same reason — table-cell is not a meaningful value on a real <col>.
+  */
+  .fixture-col-home,
+  .fixture-col-away {
+    display: table-cell;
+  }
+
+  col.fixture-col-home,
+  col.fixture-col-away {
+    display: table-column;
+  }
+
+  .fixture-col-match {
+    display: none;
+  }
+
+  /*
     table-layout: auto still treats a <col>'s width as a preferred
     size, not just a fixed-layout-only setting — so without this,
     .fixture-col-date/-result (above) went on constraining Date/Result
@@ -1654,6 +1729,23 @@ main address {
 
 .fixtures-updated {
   margin-block-start: var(--space-6);
+  color: var(--color-muted);
+  font-size: var(--font-size-sm);
+}
+
+/*
+  Season subtitle under the /fixtures/ <h1> (this task) — muted and
+  sized down like .fixtures-updated above, the same "secondary page
+  metadata" treatment already used for the last-updated line, rather
+  than inventing a second visual weight for what's the same kind of
+  content (context about the listing, not the listing itself).
+  margin-block-start: 0 avoids stacking a second gap on top of h1's
+  own default bottom margin (unchanged here, not reset), rather than
+  adding to it.
+*/
+.fixtures-subtitle {
+  margin-block-start: 0;
+  margin-block-end: var(--space-3);
   color: var(--color-muted);
   font-size: var(--font-size-sm);
 }

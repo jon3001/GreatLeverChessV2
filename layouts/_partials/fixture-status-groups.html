@@ -90,9 +90,35 @@
         columns — the table equivalent of two 1fr grid tracks.
       */}}
       <colgroup>
+        {{/*
+          Session — Home/Away merge into one Match column below 40rem.
+          Five <col>s now, not four — one per <td> fixture-item.html can
+          emit for a row, including the two that are display:none'd at
+          any given breakpoint. This has to mirror the <td> hiding
+          exactly (same classes, same breakpoint) rather than staying a
+          static four-column declaration: table-layout: fixed (the
+          mobile-only layout, below) takes its column COUNT from
+          colgroup, and a display: none'd <col> or <td> generates no box
+          at all — it isn't a hidden column occupying a slot, it's
+          absent from the column list entirely (CSS2.1 §9.2.5). So at
+          any one breakpoint, "how many <col>s have a box" and "how many
+          <td>s have a box" must match, in the same left-to-right order,
+          or the Nth visible <td> lands under the wrong <col>'s width.
+          Two hidden .fixture-col-home/-away plus one visible
+          .fixture-col-match collapses to the same three visible slots
+          (Date, Match, Result) as the three visible <td>s below, in the
+          same order; swap which pair is hidden past 40rem (see
+          .fixture-col-home/-away/-match in site.css) and it collapses
+          to the original four instead. col elements need `display:
+          table-column` for their SHOWN state rather than the `table-
+          cell` a <td>/<th> wants — see the element-qualified overrides
+          in site.css for why that's a separate rule, not a value swap
+          in the same one.
+        */}}
         <col class="fixture-col-date">
-        <col class="fixture-col-team">
-        <col class="fixture-col-team">
+        <col class="fixture-col-home">
+        <col class="fixture-col-away">
+        <col class="fixture-col-match">
         <col class="fixture-col-result">
       </colgroup>
       <thead>
@@ -104,8 +130,15 @@
           visible (see .result-full/.result-abbr in site.css); display:
           none takes the hidden one out of the accessibility tree on its
           own, so only one of the two is ever announced.
+
+          Home/Away/Match headers now carry the same fixture-col-* classes
+          as the colgroup/body cells they sit above, for the same reason
+          the colgroup above needs them: the header row is a row like any
+          other, so it has to hide/show the same two cells at the same
+          breakpoint or "Home"/"Away" would sit over the merged Match data
+          on a phone (and "Match" would sit over Home's data on desktop).
         */}}
-        <tr><th scope="col">Date</th><th scope="col">Home</th><th scope="col">Away</th><th scope="col" class="fixture-col-result"><span class="result-full">Result</span><span class="result-abbr">Res.</span></th></tr>
+        <tr><th scope="col">Date</th><th scope="col" class="fixture-col-home">Home</th><th scope="col" class="fixture-col-away">Away</th><th scope="col" class="fixture-col-match">Match</th><th scope="col" class="fixture-col-result"><span class="result-full">Result</span><span class="result-abbr">Res.</span></th></tr>
       </thead>
       <tbody>
         {{ range $i, $page := $sorted }}
