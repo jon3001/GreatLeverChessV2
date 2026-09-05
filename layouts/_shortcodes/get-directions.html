@@ -1,0 +1,21 @@
+{{/*
+  Thin binding of get-directions.html to this site's one venue, for
+  use from Markdown content (Find Us). Same reason as club-address.html
+  for existing as a shortcode at all — Goldmark can't read hugo.Data
+  directly — and the same hugo.Data.club accessor (not the deprecated
+  .Site.Data) for the same reason given there.
+
+  club.yaml has no flat `address` field — street/locality/town/postcode
+  are kept separate because club-address.html and footer.html each need
+  to lay them out differently (footer.html abbreviates "Street" to
+  "St", for instance) — so the address string the partial wants is
+  assembled here rather than stored pre-joined in the data file.
+
+  venue_short ("The Ukrainian Club"), not the club name, as the map
+  pin label: it's what a map provider or a driver actually needs to
+  find the building, matching the address previously hand-typed on
+  this page.
+*/}}
+{{ $club := hugo.Data.club }}
+{{ $address := printf "%s, %s, %s %s" $club.street $club.locality $club.town $club.postcode }}
+{{ partial "get-directions.html" (dict "name" $club.venue_short "address" $address) }}
