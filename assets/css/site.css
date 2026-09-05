@@ -940,38 +940,54 @@ main address {
   them here is a one-file, no-cross-effect change; confirmed nothing
   else references this block.)
 
-  Down-pointing glyph (▾, U+25BE — a filled triangle, not the thin
-  angled ⌄), flipping 180° to point up on open: the expand/collapse
-  convention this task's Wikipedia-mobile reference uses, distinct
-  from the nav's "this leads somewhere else" sideways arrow.
+  SVG mask, not the Unicode ▾ this used to be (session 12 polish): a
+  glyph's stroke weight and shape are up to whatever font is actually
+  substituted per browser/OS, which this file has no control over. A
+  hand-drawn chevron path is weight-stable everywhere it renders.
 
-  font-size: var(--font-size-h2), not inherited from <summary>'s own
-  (body-size) font: this ::after is generated on <summary>, which
-  never inherits the larger size its own nested <h2> carries, so left
-  at the inherited default it rendered at body text size next to an
-  h2-sized heading — a real, measurable reason it read as too small,
-  not just a guessed bump. Tied to the same token the heading uses
-  rather than an arbitrary rem value, so the two stay visually paired
-  if that token ever changes. line-height: 1 keeps this larger glyph
-  from adding its own (inherited, loose) line-height on top of that —
-  it should get more visually prominent, not physically taller.
+  CSS mask (mask-image + background-color) rather than background-image:
+  a mask takes its visible colour from background-color, so this is
+  still a one-token-recolourable icon exactly like the glyph it
+  replaces — a background-image would bake the colour into the SVG's
+  own markup instead. One mask-image, rotated by one transform on this
+  same pseudo-element for the open state below — not two icons swapped
+  between closed/open.
 
-  color: var(--color-accent), not -muted: -muted is this file's
-  de-emphasis token (board notation, timestamps — content that should
-  recede). This is the opposite of that, an interactive affordance
-  that needs to read as actionable, so it takes this site's existing
-  "this is actionable" signal instead — the same token already used
-  for the current-page nav link and the ECF LMS icon link's hover
-  state, both above.
+  The path is stroked white, width 2.5 (viewBox 0 0 24 24, so 2.5 user
+  units ≈ 2.5px at native size), fill: none — an open chevron stroke,
+  not a filled triangle. White specifically, not black: CSS mask-image
+  is luminance-based by default, so white (luminance 1) is what becomes
+  opaque/visible through background-color — black would mask the
+  chevron OUT instead. This is this technique's standard gotcha, not
+  an arbitrary colour pick.
+
+  width/height: calc(var(--font-size-h2) * var(--line-height-heading))
+  sizes the icon to the h2's own rendered LINE-HEIGHT, not just its
+  font-size — the brief's requirement — from the same two tokens the
+  heading itself resolves from, so they stay paired if either changes.
+  mask-size: contain preserves the chevron's own aspect ratio inside
+  that box.
+
+  -webkit-mask-* duplicated alongside the unprefixed properties: Safari
+  still requires the prefix for CSS masking; unprefixed mask-image is
+  silently ignored there without it.
 */
 [data-league-accordion] > summary::after {
-  content: "\25BE";
+  content: "";
   display: inline-block;
   flex-shrink: 0;
-  font-size: var(--font-size-h2);
-  line-height: 1;
+  width: calc(var(--font-size-h2) * var(--line-height-heading));
+  height: calc(var(--font-size-h2) * var(--line-height-heading));
   margin-inline-start: var(--space-2);
-  color: var(--color-accent);
+  background-color: var(--color-accent);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
   transition: transform 0.15s ease;
 }
 
@@ -1738,8 +1754,19 @@ main address {
   transition: transform 0.15s ease;
 }
 
+/*
+  color: var(--color-ink) here, distinct from the closed-state ::before
+  rule above which stays --color-accent: this card's fill is
+  --color-accent-tint in both states, and --color-accent against that
+  tint only clears WCAG 1.4.11's 3:1 non-text bar by roughly 4.4:1 —
+  comfortably passing, but with less headroom than this site's other
+  colour pairings. --color-ink against the same tint is roughly 15:1.
+  Scoped to the open state only, per the brief — the closed-state
+  chevron colour is unchanged.
+*/
 .content-accordion[open] > summary::before {
   transform: rotate(90deg);
+  color: var(--color-ink);
 }
 
 /* Open item's summary text also picks up --color-accent (brief's
