@@ -1,10 +1,10 @@
 {{/*
   Renders a "Get directions" line linking out to Google Maps and Apple
-  Maps searches, given a plain venue name and address string. Kept
-  generic (name/address params, no hugo.Data access here) because the
-  Club Directory will later call this once per club from a range loop
-  over data/clubs.yaml, each with its own name/address — binding to
-  this site's single venue is the shortcode's job, not this partial's.
+  Maps searches, given a plain address string and an optional venue
+  name. Kept generic (params in, no hugo.Data access here) because the
+  Club Directory calls this once per club from a range loop over
+  data/clubs.yaml, each with its own address — binding to this site's
+  single venue is the shortcode's job, not this partial's.
 
   urlquery percent-encodes for a URL query string (spaces -> %20,
   commas -> %2C, etc.) so the address round-trips through both map
@@ -12,13 +12,24 @@
   cover every character an address can contain and would eventually
   miss one silently.
 
+  name is optional: Find Us passes venue_short ("The Ukrainian Club"),
+  a real name distinct from the address. The Club Directory doesn't
+  have that as a separate field — clubs.yaml's address is one flat
+  string that, where a club plays at a named venue, already starts
+  with that venue's name (e.g. "The Atherton Arms, 6 Tyldesley Road,
+  ..."). Passing the chess club's own name here instead would search
+  for the wrong thing (a club, not a place), so the directory passes
+  address only and this partial searches on that alone rather than
+  prepending anything redundant.
+
   Google's api=1 search endpoint takes a single free-text `query`, with
   no separate name/address params the way Apple's URL scheme has `q`
-  (label) and `address` (search location) — so the name is prepended
-  into that one query string here, same as Apple's `q`, to keep the
-  pin labelled rather than just geocoded.
+  (label) and `address` (search location) — so when a name is given
+  it's prepended into that one query string, same as Apple's `q`, to
+  keep the pin labelled rather than just geocoded.
 */}}
 {{ $name := .name }}
 {{ $address := .address }}
-{{ $query := printf "%s, %s" $name $address }}
-<p>Get directions: <a href="https://www.google.com/maps/search/?api=1&amp;query={{ $query | urlquery }}">Google Maps</a> &middot; <a href="https://maps.apple.com/?q={{ $name | urlquery }}&amp;address={{ $address | urlquery }}">Apple Maps</a></p>
+{{ $query := $address }}
+{{ with $name }}{{ $query = printf "%s, %s" . $address }}{{ end }}
+<p>Get directions: <a href="https://www.google.com/maps/search/?api=1&amp;query={{ $query | urlquery }}">Google Maps</a> &middot; <a href="https://maps.apple.com/?{{ with $name }}q={{ . | urlquery }}&amp;{{ end }}address={{ $address | urlquery }}">Apple Maps</a></p>

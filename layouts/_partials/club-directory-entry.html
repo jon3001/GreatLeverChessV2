@@ -39,6 +39,15 @@
 
 {{ with $club.address }}
 <address class="p-adr">{{ . }}</address>
+{{/*
+  get-directions.html is the same partial used on Find Us for the
+  club's own venue — this is the per-club range-loop call it was kept
+  generic for. No name passed: that's the chess club's own name here,
+  not a place, and would search for the wrong thing — the venue name
+  is already the first part of the address string where one exists
+  (see the partial's own comment).
+*/}}
+{{ partial "get-directions.html" (dict "address" .) }}
 {{ end }}
 
 {{/*
