@@ -73,7 +73,7 @@
   words repeat verbatim across ~30 entries, so each carries a
   .visually-hidden " — {club name}" suffix so a screen reader user
   scanning by link list out of context can still tell entries apart.
-  "Club website" doesn't get this suffix: it's a generic label same as
+  "Website" doesn't get this suffix: it's a generic label same as
   the other two, but deliberately left without one, per the previous
   session's call.
 */}}
@@ -81,7 +81,7 @@
 <ul class="link-row">
 {{ with $club.website }}
 {{/*
-  "Club website", not the raw URL, as the visible text: matches this
+  "Website", not the raw URL, as the visible text: matches this
   site's own convention elsewhere (e.g. the AUGB Bolton branch link on
   this same page) of descriptive link text rather than a bare URL — and
   a raw URL was also the longest item in the row by far, which is what
@@ -92,7 +92,7 @@
   relative link, not an outbound one, so the scheme is filled in for the
   href only.
 */}}
-<li><a href="{{ if hasPrefix . "http" }}{{ . }}{{ else }}https://{{ . }}{{ end }}">Club website</a></li>
+<li><a href="{{ if hasPrefix . "http" }}{{ . }}{{ else }}https://{{ . }}{{ end }}">Website</a></li>
 {{ end }}
 {{ with $club.ecflms_org_id }}
 <li><a href="{{ replace $.sources.organisation_url "{org_id}" (string .) }}">{{ $.sources.label }}<span class="visually-hidden"> — {{ $club.name }}</span></a></li>

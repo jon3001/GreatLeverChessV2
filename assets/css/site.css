@@ -1871,6 +1871,15 @@ main address {
 }
 
 /*
+  Keeps "Google Maps" / "Apple Maps" from splitting mid-label at narrow
+  widths or large accessibility text sizes, while the surrounding <p>
+  still wraps normally elsewhere.
+*/
+.map-link {
+  white-space: nowrap;
+}
+
+/*
   Following #burnley-chess-club scrolls THIS div (the only valid anchor
   target — it has to sit inside <details>, not on <summary>, for the
   browser's native force-open-on-navigate behaviour) flush to the

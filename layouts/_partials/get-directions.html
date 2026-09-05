@@ -32,4 +32,4 @@
 {{ $address := .address }}
 {{ $query := $address }}
 {{ with $name }}{{ $query = printf "%s, %s" . $address }}{{ end }}
-<p>Get directions: <a href="https://www.google.com/maps/search/?api=1&amp;query={{ $query | urlquery }}">Google Maps</a> &middot; <a href="https://maps.apple.com/?{{ with $name }}q={{ . | urlquery }}&amp;{{ end }}address={{ $address | urlquery }}">Apple Maps</a></p>
+<p>Directions: <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query={{ $query | urlquery }}">Google Maps</a> &middot; <a class="map-link" href="https://maps.apple.com/?{{ with $name }}q={{ . | urlquery }}&amp;{{ end }}address={{ $address | urlquery }}">Apple Maps</a></p>
