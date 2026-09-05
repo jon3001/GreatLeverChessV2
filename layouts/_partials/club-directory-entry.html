@@ -1,0 +1,75 @@
+{{/*
+  One club's entry in the Club Directory (content/club/directory-links).
+  Called from the club-directory shortcode, once per club, already
+  sorted and partitioned by the time it gets here — this partial only
+  renders, it doesn't decide section membership.
+
+  Params: .club (one data/clubs.yaml record), .group (shared <details>
+  name= value for the exclusive accordion), .sources (hugo.Data.sources
+  .ecflms, for the "View on ECF LMS" link).
+*/}}
+{{ $club := .club }}
+{{ $anchor := $club.name | anchorize }}
+{{/*
+  The id lives on this wrapper div, not on <summary> (the brief is
+  explicit) and not on <address>, because <address> only renders at all
+  when the club has one (Lancashire Juniors Chess Club has no fixed
+  venue) — the anchor still has to exist and still has to sit inside
+  <details> even for that club, so it needs a home that's unconditional.
+*/}}
+<details name="{{ .group }}" class="content-accordion">
+<summary>{{ $club.name }}</summary>
+<div id="{{ $anchor }}">
+
+{{/*
+  h-card (microformats2): the container class goes on <address> itself,
+  p-name repeats the name as a property of that card (h-card requires
+  name to be a property of the card, not just nearby text in the
+  <summary>). p-adr is the compound address property; the address strings
+  in clubs.yaml are single hand-typed lines, not decomposed into
+  street/locality/postcode, so p-adr wraps the line as one flat value
+  rather than fabricating sub-properties (p-street-address etc.) the
+  source data doesn't actually have. No SportsClub/ItemList structured
+  data here — deliberately declined for opposition clubs.
+*/}}
+{{ with $club.address }}
+<address class="h-card">
+<span class="p-name">{{ $club.name }}</span><br>
+<span class="p-adr">{{ . }}</span>
+</address>
+{{ end }}
+
+{{/*
+  Alternate venues (e.g. Eccles playing a different address in one
+  division) aren't part of the h-card: they're conditional on a
+  competition, not the club's address, so folding them into p-adr would
+  give parsers two competing "the" addresses for one card.
+*/}}
+{{ range $club.venue_notes }}
+<p>For {{ .context }}: {{ .address }}</p>
+{{ end }}
+
+{{ with $club.website }}
+{{/*
+  Two sites in the data (Stockport, 3Cs) are recorded without a scheme
+  ("stockportchessclub.org") — a bare domain in href is a same-site
+  relative link, not an outbound one, so the scheme is filled in for the
+  href only; the visible link text stays exactly as authored in the data.
+*/}}
+<p><a href="{{ if hasPrefix . "http" }}{{ . }}{{ else }}https://{{ . }}{{ end }}">{{ . }}</a></p>
+{{ end }}
+
+{{ with $club.ecflms_org_id }}
+<p><a href="{{ replace $.sources.organisation_url "{org_id}" (string .) }}">View on {{ $.sources.label }}</a></p>
+{{ end }}
+
+{{ with $club.ecf_club_code }}
+<p><a href="https://rating.englishchess.org.uk/players/list?club_code={{ . }}">ECF ratings — {{ $club.name }}</a></p>
+{{ end }}
+
+{{ with $club.note }}
+<p>{{ . }}</p>
+{{ end }}
+
+</div>
+</details>

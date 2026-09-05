@@ -1,0 +1,292 @@
+# Great Lever Chess Club — Club Directory data (first-pass draft)
+#
+# Covers every club found across the five sources browsed:
+#   - Manchester Chess Federation's own club directory (website)
+#   - ECF LMS: Bolton & District Chess League (organisation/1097)
+#   - ECF LMS: Central Lancashire League (organisation/779)
+#   - ECF LMS: Manchester Chess Federation (organisation/1237)
+#   - ECF LMS: East Lancashire Chess Association (organisation/671) — added
+#     6 September 2026; missed in the first pass, four new clubs (Burnley,
+#     Clitheroe, Great Harwood, Rossendale) plus 671 merged onto the existing
+#     Crusaders Blackburn and Heywood records rather than duplicated.
+#
+# Great Lever Chess Club itself is deliberately excluded (this is a directory
+# of OTHER clubs). ecflms_league_ids only ever contains 1097, 779, 1237
+# and/or 671 — a club's membership of a league outside these five sources
+# (Warrington & District, Wigan & District, Bury and Rochdale, Blackpool and
+# Fylde, Stockport Chess League) was seen on several clubs' own pages but is
+# not recorded here, since those leagues weren't part of this pass.
+#
+# local_junior_provision: boolean, optional (default false) — genuine
+# junior/youth provision AND realistically local to Great Lever (Farnworth,
+# Bolton). A judgement call, not derived from any source page — set only on
+# Bolton Chess Club and Swinton & Worsley Community Chess Club, on Jonathan's
+# own confirmation, 6 September 2026.
+#
+# Cross-checked 6 September 2026 against https://lancashirechess.uk/clubs/
+# (covers East Lancashire/Central Lancashire-area clubs only, not MCF's).
+# Filled Burnley's missing postcode and added a website for Preston and
+# Rossendale (both Facebook, per that site's own listing) — see each
+# record's `note`. Surfaced one genuine venue conflict for Clitheroe,
+# flagged in its own `note` rather than resolved. Every `website` value in
+# this file was also checked reachable via a real browser on 6 September
+# 2026 — WebFetch itself reported several as unreachable (SSL/DNS/robots.txt
+# errors), but all of those were false alarms from its own fetcher; every
+# site loaded fine in a real browser.
+#
+# Addresses: generally MCF's own directory where a club is listed there,
+# ECF LMS organisation page otherwise — with per-club corrections from
+# Jonathan where the two sources disagreed (Swinton & Worsley, Atherton,
+# Bolton use the LMS version; Heywood's venue name updated; Horwich and
+# Wigan's venues came from outside these four sources entirely). See each
+# record's own `note` field for details.
+#
+# ecf_club_code values were extracted from
+# https://rating.englishchess.org.uk/clubs?assoc_code=All (5 September 2026).
+# A few clubs have a second, asterisked entry on that list (e.g. "Bolton *")
+# alongside the plain one used here — not investigated further.
+
+- name: Altrincham & Hale Chess Club
+  ecflms_org_id: 508
+  ecflms_league_ids: [1237]
+  ecf_club_code: 2ALT
+  address: Timperley Village Club, 268 Stockport Road, Timperley, Altrincham, WA15 7UT
+  website: http://www.altrincham4chess.org.uk
+  note:
+
+- name: Ashton Community Chess Club
+  ecflms_org_id: 1238
+  ecflms_league_ids: [1237]
+  ecf_club_code: 2ASH
+  address: Broadoak & Smallshaw Community Centre, Broadoak Rd, Ashton-Under-Lyne, OL6 8RS
+  website: http://www.ashtonccc.co.uk
+  note: Registered on ECF LMS as "Ashton Chess Club".
+
+- name: Atherton Chess Club
+  ecflms_org_id: 780
+  ecflms_league_ids: [1097, 779]
+  ecf_club_code: 2ATH
+  address: The Atherton Arms, 6 Tyldesley Road, Atherton, M46 9DD
+  website: https://athertonchessclub.co.uk/
+  note: MCF's directory gives a slightly different address (Atherton Arms, Tyldesley Rd, Atherton, M46 9AD) — no house number, different postcode.
+
+- name: Blue Club (Oldham) Chess Club
+  ecflms_org_id: 624
+  ecflms_league_ids: [1237]
+  ecf_club_code: 3BCO
+  address: The Blue Club, 19 Victoria Street, Chadderton, Oldham, OL9 0HH
+  website: http://www.theblue.club
+  note: MCF's directory lists this club simply as "Blue Club". Shares this exact venue with Rochdale Chess Club (Central Lancashire League) — confirmed as a genuine shared venue, not a stale duplicate.
+
+- name: Bolton Chess Club
+  ecflms_org_id: 1098
+  ecflms_league_ids: [1097, 1237]
+  ecf_club_code: 2BOL
+  address: Victoria Hall (back entrance), Ridgeway Gates, Bolton, BL1 2AF
+  local_junior_provision: true
+  website: https://www.boltonchess.com/
+  note: MCF's directory gives the postcode as BL1 2AB rather than BL1 2AF.
+
+- name: Bury Chess Club
+  ecflms_org_id: 625
+  ecflms_league_ids: [1097, 1237]
+  ecf_club_code: 2BUR
+  address: Bury Sports Club, Radcliffe Road, Bury, BL9 9JX
+  website: https://www.facebook.com/BuryChessClub/
+  note:
+
+- name: Burnley Chess Club
+  ecflms_org_id: 536
+  ecflms_league_ids: [671]
+  ecf_club_code: 7BLY
+  address: Burnley Rugby Club, Holden Road, Burnley, BB10 2LS
+  website:
+  note: Postcode wasn't given on this club's own ECF LMS organisation page (only a nearby hotel's, for directions) — confirmed as BB10 2LS via lancashirechess.uk/clubs/burnley/.
+
+- name: Chorlton Chess Club
+  ecflms_org_id: 509
+  ecflms_league_ids: [1237]
+  ecf_club_code: 2CHO
+  address: Spread Eagle, 526-528 Wilbraham Road, Chorlton-cum-Hardy, Manchester, M21 9LD
+  website:
+  note: Registered on ECF LMS as "Chorlton-cum-Hardy Chess Club".
+
+- name: Clitheroe Chess Club
+  ecflms_org_id: 672
+  ecflms_league_ids: [671]
+  ecf_club_code: 7CLI
+  address: The Royal British Legion, 43-45 Whalley Road, Clitheroe, BB7 1EE
+  website:
+  note: "CONFLICT: lancashirechess.uk/clubs/clitheroe/ names a different venue — Buck Inn, 11 Lowergate, Clitheroe, BB7 1AD — and a different match night (Tuesday, vs Wednesday on the LMS page). Address above follows the club's own ECF LMS organisation page; verify which is current."
+
+- name: Crusaders Blackburn Chess Club
+  ecflms_org_id: 673
+  ecflms_league_ids: [779, 671]
+  ecf_club_code: 7CRS
+  address: St. Paul's Working Men's Institute, 104 Montague St, Blackburn, BB2 1EE
+  website:
+  note:
+
+- name: Eccles Community Chess Club
+  ecflms_org_id: 792
+  ecflms_league_ids: [1097]
+  ecf_club_code: 2ECC
+  address: 6 Albert Road, Eccles, M30 9QJ
+  venue_notes:
+    - context: Bolton & District League – 2nd Division
+      address: 21 Church Street, Eccles, M30 0DF
+  website: http://www.eccleschess.com
+  note:
+
+- name: Glossop Chess Club
+  ecflms_org_id: 1239
+  ecflms_league_ids: [1237]
+  ecf_club_code: 3GLO
+  address: Bradbury Community House, Market Street, Glossop, SK13 8AR
+  website:
+  note:
+
+- name: Great Harwood Chess Club
+  ecflms_org_id: 674
+  ecflms_league_ids: [671]
+  ecf_club_code: 7GTH
+  address: The Victoria Hotel, St John's Street, Great Harwood, BB6 7EP
+  website:
+  note:
+
+- name: Heywood Chess Club
+  ecflms_org_id: 432
+  ecflms_league_ids: [779, 1237, 671]
+  ecf_club_code: 2HWD
+  address: Hopwood Constitutional Sports and Social Club, Manchester Road, Heywood, OL10 2AP
+  website:
+  note:
+
+- name: Horwich Chess Club
+  ecflms_org_id: 1099
+  ecflms_league_ids: [1097]
+  ecf_club_code: 7HOR
+  address: The Crown, 1 Chorley New Rd, Horwich, Bolton, BL6 7QJ
+  website: https://www.facebook.com/groups/747563320834434/
+  note: No address is published on this club's own ECF LMS organisation page. Venue found via the club's Facebook group ("a small club who meet at The Crown pub Horwich") rather than any of the four browsed sources — worth double-checking.
+
+- name: Lancashire Juniors Chess Club
+  ecflms_org_id: 1504
+  ecflms_league_ids: [779]
+  ecf_club_code: 7LAJ
+  address:
+  website:
+  note: Not a conventional club — fields teams in Central Lancashire League's Friendly Development League for juniors. No fixed venue is published.
+
+- name: Leyland Chess Club
+  ecflms_org_id: 434
+  ecflms_league_ids: [779]
+  ecf_club_code: 7LEY
+  address: Broadfield Arms, Leyland Lane, Leyland, PR25 1XH
+  website:
+  note:
+
+- name: Manchester Social Chess Club
+  ecflms_org_id:
+  ecflms_league_ids: []
+  ecf_club_code: 2MSC
+  address: Waldorf Manchester, 12 Gore St, Manchester, M1 3AQ
+  website:
+  note: Informal, drop-in club — free, open to everyone including league club members. No league fixtures and not listed on ECF LMS.
+
+- name: Manchester University Chess Club
+  ecflms_org_id: 1241
+  ecflms_league_ids: [1237]
+  ecf_club_code: 2MUN
+  address: Room 2.1, Manchester University Students Union, Oxford Road, Manchester, M13 9PR
+  website:
+  note:
+
+- name: Marple & District Chess Club
+  ecflms_org_id: 514
+  ecflms_league_ids: [1237]
+  ecf_club_code: 2MAR
+  address: Navigation Pub, Stockport Rd, Marple, Stockport, SK6 6BD
+  website:
+  note: Registered on ECF LMS as "Marple Chess Club".
+
+- name: Northenden Chess Club
+  ecflms_org_id: 515
+  ecflms_league_ids: [1237]
+  ecf_club_code: 2SAL
+  address: Northenden Social Club, 408-412 Palatine Rd, Manchester, M22 4JT
+  website:
+  note:
+
+- name: Preston Chess Club
+  ecflms_org_id: 237
+  ecflms_league_ids: [779]
+  ecf_club_code: 7PRE
+  address: New Meadow Street Labour Club, 193-195 North Rd, Preston, PR1 1YQ
+  website: https://www.facebook.com/prestonchessclub/
+  note: Moved to this venue from 5 February 2025, per its own LMS organisation page. No dedicated club website found (per lancashirechess.uk/clubs/preston/); website field is its Facebook page.
+
+- name: Radcliffe Chess Club
+  ecflms_org_id: 627
+  ecflms_league_ids: [1097]
+  ecf_club_code: 2RAD
+  address: Little Lever Working Mens Club, Victory Road, Little Lever, BL3 1HZ
+  website:
+  note:
+
+- name: Rochdale Chess Club
+  ecflms_org_id: 628
+  ecflms_league_ids: [779]
+  ecf_club_code: 7ROC
+  address: The Blue Club, 19 Victoria Street, Chadderton, OL9 0HH
+  website: http://www.rochdale-chess-club.org.uk
+  note: Confirmed shared venue with Blue Club (Oldham) Chess Club (MCF) — both genuinely play from the same room.
+
+- name: Rossendale Chess Club
+  ecflms_org_id: 675
+  ecflms_league_ids: [671]
+  ecf_club_code: 7ROS
+  address: ABD Community Centre, Burnley Road, Bacup, OL13 8AB
+  website: https://www.facebook.com/RossendaleChess/
+  note: No dedicated club website found (per lancashirechess.uk/clubs/rossendale/); website field is its Facebook page.
+
+- name: Stockport Chess Club
+  ecflms_org_id: 516
+  ecflms_league_ids: [1237]
+  ecf_club_code: 3STO
+  address: Ladybrook Hotel, Fir Road, Bramhall, Stockport, SK7 2NP
+  website: stockportchessclub.org
+  note:
+
+- name: Swinton & Worsley Community Chess Club
+  ecflms_org_id: 363
+  ecflms_league_ids: [1097, 1237]
+  ecf_club_code: 2WRY
+  address: White Swan, 186 Worsley Road, Swinton, Manchester, M27 5SN
+  local_junior_provision: true
+  website: https://www.swintonandworsleychessclub.com/
+  note: MCF's own directory gives a different venue (Fletcher Hall, Vicarage Road, Swinton, M27 0WA, Thursday nights) — address here follows the club's own ECF LMS organisation page (Tuesday nights) per instruction.
+
+- name: 3Cs Chess Club
+  ecflms_org_id: 1153
+  ecflms_league_ids: [1237]
+  ecf_club_code: 2CCC
+  address: St. Edwards RC Parish Hall, Spring Lane, Lees, Oldham, OL4 5AJ
+  website: www.3cschessclub.com
+  note: MCF's directory calls this club "Three Cs Chess Club".
+
+- name: Urmston Chess Club
+  ecflms_org_id: 517
+  ecflms_league_ids: [1237]
+  ecf_club_code: 7URM
+  address: Urmston Sports Club, Moorside Road, Urmston, Manchester, M41 5UU
+  website: https://www.urmstonchessclub.com
+  note:
+
+- name: Wigan Chess Club
+  ecflms_org_id: 521
+  ecflms_league_ids: [1097]
+  ecf_club_code: 7WGN
+  address: St. Jude's Social Club, Poolstock Lane, Wigan, WN3 5JE
+  website: https://wiganchessclub.co.uk/
+  note: No address is published on this club's own ECF LMS organisation page — venue and website found independently, worth double-checking.

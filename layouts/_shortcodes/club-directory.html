@@ -1,0 +1,61 @@
+{{/*
+  Shortcode, not a layout: content/club/directory-links/_index.md is
+  Markdown, which (like club-address.html's own comment explains) has no
+  access to hugo.Data on its own — this is the escape hatch that lets one
+  data file (data/clubs.yaml) drive per-club markup from inside a content
+  file. Angle-bracket delimiters because this emits finished HTML that
+  must not be re-run through Goldmark.
+
+  Section membership is DERIVED, never hand-set on a club record: a club
+  is "in our leagues" if any of its ecflms_league_ids is an organisation
+  Great Lever currently fields a team in. That "currently fielding" set
+  has to be assembled from two files, because they're keyed differently:
+  data/current_season.json is keyed by organisation SLUG
+  ("bolton-district"), but data/clubs.yaml's ecflms_league_ids are
+  numeric org IDs (1097). data/source_ids.json.ecflms.organisations is
+  the only place that maps one to the other, so it's the join in the
+  middle. Manchester (1237) and East Lancashire (671) have no slug in
+  source_ids.json at all — Great Lever has never fielded a team in
+  either — so they can never end up in $currentOrgIds, which is exactly
+  why every club whose only league IDs are 1237/671 correctly falls
+  through to "Other clubs in the area" below.
+*/}}
+{{ $currentSeasons := hugo.Data.current_season }}
+{{ $currentOrgIds := slice }}
+{{ range $orgId, $meta := hugo.Data.source_ids.ecflms.organisations }}
+  {{ if index $currentSeasons $meta.slug }}
+    {{ $currentOrgIds = $currentOrgIds | append (int $orgId) }}
+  {{ end }}
+{{ end }}
+
+{{/*
+  Sort once, alphabetically by name, THEN partition — where/append below
+  preserve whatever order they're fed, so sorting first is what makes
+  both output sections alphabetical without sorting twice.
+*/}}
+{{ $sortedClubs := sort hugo.Data.clubs "name" }}
+{{ $leagueClubs := slice }}
+{{ $otherClubs := slice }}
+{{ range $sortedClubs }}
+  {{ if intersect .ecflms_league_ids $currentOrgIds }}
+    {{ $leagueClubs = $leagueClubs | append . }}
+  {{ else }}
+    {{ $otherClubs = $otherClubs | append . }}
+  {{ end }}
+{{ end }}
+
+{{/*
+  One shared `name` attribute across BOTH sections, not per-section: the
+  brief is explicit that opening any one entry on this page must close
+  whichever other entry was open, regardless of which section it's in —
+  a single exclusive group, same native <details name> mechanism Find Us
+  already uses, just with ~30 members instead of 2.
+*/}}
+{{ $group := "club-directory" }}
+{{ $orgSources := hugo.Data.sources.ecflms }}
+
+<h2>Clubs in our leagues</h2>
+{{ range $leagueClubs }}{{ partial "club-directory-entry.html" (dict "club" . "group" $group "sources" $orgSources) }}{{ end }}
+
+<h2>Other clubs in the area</h2>
+{{ range $otherClubs }}{{ partial "club-directory-entry.html" (dict "club" . "group" $group "sources" $orgSources) }}{{ end }}
