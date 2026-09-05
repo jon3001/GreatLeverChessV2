@@ -1841,3 +1841,53 @@ main address {
 .content-accordion[open]::details-content {
   block-size: auto;
 }
+
+/*
+  Club Directory entries: website / ECF LMS / ECF Ratings links as one
+  row rather than one <p> each. list-style: none + padding-inline: 0
+  strip the default <ul> bullet/indent, which would otherwise fight the
+  ::before middot below for the "what separates these" job.
+*/
+.link-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+  padding-inline: 0;
+  margin-block: var(--space-2);
+}
+
+/*
+  Middot from CSS, not typed into the markup: a literal " · " between
+  <p> tags would leave a dangling separator on any entry with only one
+  or two of the three possible links. :not(:first-child) instead of a
+  general sibling selector because these are the only children of
+  .link-row — no other element type to accidentally match.
+*/
+.link-row li:not(:first-child)::before {
+  content: "\00B7";
+  margin-inline-end: var(--space-2);
+  color: var(--color-muted);
+}
+
+/*
+  Following #burnley-chess-club scrolls THIS div (the only valid anchor
+  target — it has to sit inside <details>, not on <summary>, for the
+  browser's native force-open-on-navigate behaviour) flush to the
+  viewport top, which pushes the entry's own <summary> heading — sitting
+  above this div in the DOM — off-screen. scroll-margin-top reserves
+  space above the scroll target so the heading lands in view too.
+
+  --space-7 (4.5rem), not a bespoke value: derived from this file's own
+  tokens rather than a live measurement (no browser available this
+  session to inspect the rendered box directly) — .content-accordion >
+  summary's height works out to 2 × --space-3 padding (2rem) plus one
+  body-text line box (line-height-body × font-size-base ≈ 1.55rem),
+  roughly 3.55rem total. --space-7 is the smallest step in this file's
+  spacing scale that clears that with some headroom rather than landing
+  the heading flush against the edge — recheck against a real render
+  and step down to --space-6 (3rem) if 4.5rem reads as an oversized gap.
+*/
+.club-directory-entry {
+  scroll-margin-top: var(--space-7);
+}

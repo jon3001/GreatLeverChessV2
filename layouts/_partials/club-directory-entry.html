@@ -16,27 +16,29 @@
   when the club has one (Lancashire Juniors Chess Club has no fixed
   venue) — the anchor still has to exist and still has to sit inside
   <details> even for that club, so it needs a home that's unconditional.
+  Adding the h-card class to <details> below and this id to the <div>
+  are two different elements, so the two mechanisms don't collide.
 */}}
-<details name="{{ .group }}" class="content-accordion">
-<summary>{{ $club.name }}</summary>
-<div id="{{ $anchor }}">
-
 {{/*
-  h-card (microformats2): the container class goes on <address> itself,
-  p-name repeats the name as a property of that card (h-card requires
-  name to be a property of the card, not just nearby text in the
-  <summary>). p-adr is the compound address property; the address strings
-  in clubs.yaml are single hand-typed lines, not decomposed into
-  street/locality/postcode, so p-adr wraps the line as one flat value
-  rather than fabricating sub-properties (p-street-address etc.) the
-  source data doesn't actually have. No SportsClub/ItemList structured
-  data here — deliberately declined for opposition clubs.
+  h-card (microformats2): the whole entry is the card, so the container
+  class sits on <details> itself rather than on <address> — p-name then
+  belongs on <summary>, since that's already the one place the name is
+  visibly rendered (an h-card's name property has to live somewhere in
+  the card; putting it here instead of duplicating the name again inside
+  the content is what avoids the double-render). p-adr stays a flat
+  value on <address>: the address strings in clubs.yaml are single
+  hand-typed lines, not decomposed into street/locality/postcode, so
+  wrapping the whole line is honest to the source data rather than
+  fabricating sub-properties (p-street-address etc.) it doesn't have.
+  No SportsClub/ItemList structured data here — deliberately declined
+  for opposition clubs.
 */}}
+<details name="{{ .group }}" class="content-accordion h-card">
+<summary class="p-name">{{ $club.name }}</summary>
+<div id="{{ $anchor }}" class="club-directory-entry">
+
 {{ with $club.address }}
-<address class="h-card">
-<span class="p-name">{{ $club.name }}</span><br>
-<span class="p-adr">{{ . }}</span>
-</address>
+<address class="p-adr">{{ . }}</address>
 {{ end }}
 
 {{/*
@@ -49,22 +51,47 @@
 <p>For {{ .context }}: {{ .address }}</p>
 {{ end }}
 
+{{/*
+  One inline row, not one <p> per link: website / ECF LMS / ECF Ratings
+  render as list items so the middot separator can come from CSS
+  (::before on every <li> but the first) instead of being hand-typed
+  into the markup, which would otherwise leave a trailing separator
+  dangling whenever a club only has one or two of the three links.
+
+  The ECF LMS and ECF Ratings link text drops the club name (it's
+  already the page's <summary> heading) and is kept to two words each
+  for a tighter row at narrow widths — but that means the same two
+  words repeat verbatim across ~30 entries, so each carries a
+  .visually-hidden " — {club name}" suffix so a screen reader user
+  scanning by link list out of context can still tell entries apart.
+  "Club website" doesn't get this suffix: it's a generic label same as
+  the other two, but deliberately left without one, per the previous
+  session's call.
+*/}}
+{{ if or $club.website $club.ecflms_org_id $club.ecf_club_code }}
+<ul class="link-row">
 {{ with $club.website }}
 {{/*
+  "Club website", not the raw URL, as the visible text: matches this
+  site's own convention elsewhere (e.g. the AUGB Bolton branch link on
+  this same page) of descriptive link text rather than a bare URL — and
+  a raw URL was also the longest item in the row by far, which is what
+  pushed the other two links onto their own wrapped second line.
+
   Two sites in the data (Stockport, 3Cs) are recorded without a scheme
   ("stockportchessclub.org") — a bare domain in href is a same-site
   relative link, not an outbound one, so the scheme is filled in for the
-  href only; the visible link text stays exactly as authored in the data.
+  href only.
 */}}
-<p><a href="{{ if hasPrefix . "http" }}{{ . }}{{ else }}https://{{ . }}{{ end }}">{{ . }}</a></p>
+<li><a href="{{ if hasPrefix . "http" }}{{ . }}{{ else }}https://{{ . }}{{ end }}">Club website</a></li>
 {{ end }}
-
 {{ with $club.ecflms_org_id }}
-<p><a href="{{ replace $.sources.organisation_url "{org_id}" (string .) }}">View on {{ $.sources.label }}</a></p>
+<li><a href="{{ replace $.sources.organisation_url "{org_id}" (string .) }}">{{ $.sources.label }}<span class="visually-hidden"> — {{ $club.name }}</span></a></li>
 {{ end }}
-
 {{ with $club.ecf_club_code }}
-<p><a href="https://rating.englishchess.org.uk/players/list?club_code={{ . }}">ECF ratings — {{ $club.name }}</a></p>
+<li><a href="https://rating.englishchess.org.uk/players/list?club_code={{ . }}">ECF Ratings<span class="visually-hidden"> — {{ $club.name }}</span></a></li>
+{{ end }}
+</ul>
 {{ end }}
 
 {{ with $club.note }}
