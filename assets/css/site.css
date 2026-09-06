@@ -1131,41 +1131,66 @@ main address {
 }
 
 /*
-  Home/Away merge into one Match column below 40rem (this task). Both
-  cell sets exist in every row/colgroup/header always (fixture-item.html/
-  fixture-status-groups.html) — no CSS property changes how many <td>s
-  are IN the markup, only which ones generate a box at all. display:
-  none is what does that: a none'd element produces no box (CSS2.1
-  §9.2.5), so it isn't a same-size-but-invisible column, it's absent
-  from the table's column list entirely, and a screen reader never
-  encounters it. That's also why this genuinely removes a column
-  rather than just hiding text in one — the alternative (visually
-  hiding text inside a still-present cell) would leave a hollow column
-  and a confusing "4 cells, one empty" table structure at this width.
+  No rules for .fixture-col-home/.fixture-col-away, deliberately.
+  Both were briefly display: none'd below 40rem so Home and Away could
+  collapse into a single merged Match column; that whole approach is
+  reverted. The two columns are visible at every width again and take
+  their width the way they always did — table-layout: fixed splitting
+  whatever Date and Result don't claim between the two un-sized
+  columns, the table equivalent of 1fr 1fr.
 
-  Base/mobile: Home and Away gone, Match shown. Reset at 40rem below.
+  Why it was reverted, so nobody rebuilds it the same way: the merge
+  needed five <col>s with two always hidden, which left the detail
+  row's colspan naming more columns than the table actually rendered.
+  Under table-layout: fixed the browser then quietly redistributed the
+  Match column's width the moment that spanning row was present —
+  212.1px closed, 70.7px open, i.e. roughly a third of what it should
+  have been. Not a value we got wrong: two independent fixes (explicit
+  width: 0 on the hidden columns, then an explicit calc() on Match
+  itself) each produced the identical 70.7px, and forcing the detail
+  row permanently visible reproduced it with no toggling involved at
+  all, which located the cause in the colspan/hidden-column mismatch
+  rather than in anything CSS could pin down. A merged mobile column
+  would need the detail content to live outside the <table> entirely
+  before it's worth attempting again.
+
+  The classes still exist on the <col>/<th>/<td> as identification
+  only (see fixture-status-groups.html) — no CSS is attached to them.
 */
-.fixture-col-home,
-.fixture-col-away {
-  display: none;
-}
-
-.fixture-col-match {
-  display: table-cell;
-}
 
 /*
-  <col> needs `table-column` for its shown state, not the `table-cell`
-  the <td>/<th> rule above sets — table-cell is meaningless on an
-  actual <col> element (it isn't a cell), so the shown state has to be
-  a separate, more specific rule for exactly the <col>, not a value
-  swapped in the same one. `col.fixture-col-match` (element + class)
-  outranks the bare `.fixture-col-match` class selector above
-  regardless of source order, so this is what actually wins for the
-  <col> while the bare rule still governs the <td>.
+  Great Lever's own side, abbreviated below 40rem and full-length above
+  it — the one piece of the merged-column work that survives the
+  revert, because it needs no structural change to carry: two spans in
+  whichever cell holds our team, one visible per breakpoint.
+
+  Same two-text-nodes idea as .result-abbr/.result-full above, with one
+  deliberate difference: there, display: none removes the unused node
+  from the accessibility tree and only one is ever announced. Here the
+  full name must be announced at BOTH widths (a screen reader should
+  never hear "GLA"), so below 40rem the full name is visually hidden
+  rather than display: none'd — present and announced, just not drawn.
+  The abbreviation carries aria-hidden in the markup, so it's never
+  announced at either width.
 */
-col.fixture-col-match {
-  display: table-column;
+.team-abbr {
+  display: inline;
+}
+
+/* Same clip technique as .visually-hidden, inlined rather than sharing
+   that class in the markup, because this one has to be UNDONE at
+   40rem — every property below is reset in the min-width: 40rem block
+   so the full name becomes ordinary visible text there. */
+.team-full {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /*
@@ -1500,25 +1525,26 @@ col.fixture-col-match {
   }
 
   /*
-    Home/Away restored, Match gone — the mirror image of the base
-    rule above, same reasoning (a none'd element generates no box, so
-    this is a genuine 4-column table again, not a hidden-but-present
-    5th column). col.fixture-col-home/-away need the same table-column
-    override as col.fixture-col-match did in the base rule, for the
-    same reason — table-cell is not a meaningful value on a real <col>.
+    Great Lever's own side: full name, no abbreviation, now there's
+    room for it. The abbreviation goes entirely (display: none takes it
+    out of the accessibility tree, though it's aria-hidden either way),
+    and every clip property from .team-full's base rule is reset so it
+    becomes ordinary inline text rather than a visually-hidden one.
+    <strong> stays at this width — bolding our own side is wanted at
+    every breakpoint, and it's markup, not a rule that needs undoing.
   */
-  .fixture-col-home,
-  .fixture-col-away {
-    display: table-cell;
-  }
-
-  col.fixture-col-home,
-  col.fixture-col-away {
-    display: table-column;
-  }
-
-  .fixture-col-match {
+  .team-abbr {
     display: none;
+  }
+
+  .team-full {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
   }
 
   /*

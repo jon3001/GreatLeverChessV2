@@ -91,34 +91,27 @@
       */}}
       <colgroup>
         {{/*
-          Session — Home/Away merge into one Match column below 40rem.
-          Five <col>s now, not four — one per <td> fixture-item.html can
-          emit for a row, including the two that are display:none'd at
-          any given breakpoint. This has to mirror the <td> hiding
-          exactly (same classes, same breakpoint) rather than staying a
-          static four-column declaration: table-layout: fixed (the
-          mobile-only layout, below) takes its column COUNT from
-          colgroup, and a display: none'd <col> or <td> generates no box
-          at all — it isn't a hidden column occupying a slot, it's
-          absent from the column list entirely (CSS2.1 §9.2.5). So at
-          any one breakpoint, "how many <col>s have a box" and "how many
-          <td>s have a box" must match, in the same left-to-right order,
-          or the Nth visible <td> lands under the wrong <col>'s width.
-          Two hidden .fixture-col-home/-away plus one visible
-          .fixture-col-match collapses to the same three visible slots
-          (Date, Match, Result) as the three visible <td>s below, in the
-          same order; swap which pair is hidden past 40rem (see
-          .fixture-col-home/-away/-match in site.css) and it collapses
-          to the original four instead. col elements need `display:
-          table-column` for their SHOWN state rather than the `table-
-          cell` a <td>/<th> wants — see the element-qualified overrides
-          in site.css for why that's a separate rule, not a value swap
-          in the same one.
+          Four <col>s, one per <td> every row emits, at every width —
+          reverted from the five the merged Match column needed. That
+          merge is gone precisely because of what a fifth column cost
+          here: two of the five were always display: none'd, so the
+          detail row's colspan named more columns than the table
+          actually rendered, and the fixed-layout algorithm responded by
+          quietly redistributing the Match column's width the moment
+          that spanning row existed (measured at 70.7px against an
+          expected 212.1px, unchanged across two separate attempts to
+          pin the widths). Four <col>s and a matching colspan="4" is the
+          state that doesn't provoke it. See the revert note on
+          .fixture-col-home/-away in site.css.
+
+          Naming stays fixture-col-home/-away rather than the two
+          identical fixture-col-team classes this had originally — they
+          carry no CSS of their own either way, but they identify which
+          column is which for anyone reading the colgroup.
         */}}
         <col class="fixture-col-date">
         <col class="fixture-col-home">
         <col class="fixture-col-away">
-        <col class="fixture-col-match">
         <col class="fixture-col-result">
       </colgroup>
       <thead>
@@ -131,14 +124,13 @@
           none takes the hidden one out of the accessibility tree on its
           own, so only one of the two is ever announced.
 
-          Home/Away/Match headers now carry the same fixture-col-* classes
-          as the colgroup/body cells they sit above, for the same reason
-          the colgroup above needs them: the header row is a row like any
-          other, so it has to hide/show the same two cells at the same
-          breakpoint or "Home"/"Away" would sit over the merged Match data
-          on a phone (and "Match" would sit over Home's data on desktop).
+          Home/Away headers carry the same fixture-col-* classes as the
+          colgroup and body cells they sit above — inert as CSS (neither
+          class has any rule now the merge is reverted), kept only so
+          the three places that describe the same column agree by name.
+          The Match header is gone with the rest of that column.
         */}}
-        <tr><th scope="col">Date</th><th scope="col" class="fixture-col-home">Home</th><th scope="col" class="fixture-col-away">Away</th><th scope="col" class="fixture-col-match">Match</th><th scope="col" class="fixture-col-result"><span class="result-full">Result</span><span class="result-abbr">Res.</span></th></tr>
+        <tr><th scope="col">Date</th><th scope="col" class="fixture-col-home">Home</th><th scope="col" class="fixture-col-away">Away</th><th scope="col" class="fixture-col-result"><span class="result-full">Result</span><span class="result-abbr">Res.</span></th></tr>
       </thead>
       <tbody>
         {{ range $i, $page := $sorted }}

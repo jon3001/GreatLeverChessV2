@@ -54,8 +54,9 @@
 {{ end }}
 
 {{/*
-  Great Lever side detection for the merged Match column (below 40rem,
-  Part 4) — checked against data/own_team.json's raw_name list for
+  Great Lever side detection, used to bold whichever of the Home/Away
+  cells holds our own team (at every width) and to abbreviate it below
+  40rem — checked against data/own_team.json's raw_name list for
   this fixture's organisation, trimmed, not a hasPrefix "Great Lever"
   string check: that's already on record as wrong here (stray
   whitespace in team names is a real, seen issue, and a derby fields
@@ -110,25 +111,29 @@
     to sit on.
   */}}
   <td><time datetime="{{ $page.Date.Format "2006-01-02" }}" class="fixture-date"><span class="fixture-date__day">{{ $page.Date.Format "Mon" }}</span><span class="fixture-date__daymonth">{{ $page.Date.Format "02 Jan" }}</span><span class="fixture-date__year">{{ $page.Date.Format "2006" }}</span></time></td>
-  <td class="fixture-col-home">{{ $homeTeamName }}</td>
-  <td class="fixture-col-away">{{ $awayTeamName }}</td>
   {{/*
-    Merged Match column, below 40rem only (Part 3/4) — both cell sets
-    exist in the markup always; which one is display: none'd is a CSS
-    breakpoint decision (site.css), not a template one, so a screen
-    reader always finds exactly one coherent table, never a hybrid of
-    both. Home always first, no (H)/(A) marker — position IS the venue
-    marker, deliberately, per the brief. Only the Great Lever side (per
-    $homeIsGreatLever/$awayIsGreatLever above) gets the bold/abbreviated
-    treatment; the opponent side always renders as its full plain name,
-    on both rows of a derby if neither, either, is the "away" default —
-    a derby correctly bolds/abbreviates BOTH sides since each is tested
-    on its own. aria-hidden on the initials plus a .visually-hidden full
-    name is the same pattern already used on the board list further
-    down this page (fixture-boards.html) and the LMS link below — no
-    title attribute, unreachable on touch and inconsistently announced.
+    Home and Away are two always-visible columns at every width again —
+    the merged Match column, and the display: none'd cell pairs it
+    needed, are gone (see the revert note in site.css). What's kept
+    from that work is per-side, inside whichever cell actually holds
+    our own team: <strong> at every width, and the initials swapped in
+    for the full name below 40rem only.
+
+    Both spans are always in the markup; .team-abbr/.team-full toggle
+    which one is VISIBLE per breakpoint, the same two-text-nodes
+    pattern .result-abbr/.result-full already uses for the Result
+    header. The abbreviation carries aria-hidden and the full name
+    stays in the accessibility tree at both widths (visually hidden
+    below 40rem, plainly visible above it), so a screen reader always
+    hears "Great Lever A" and never "GLA" — no <abbr title>, which is
+    unreachable on touch and inconsistently announced.
+
+    Opponent cells get neither treatment at any width. A derby fields
+    Great Lever on both sides and gets it in both cells, since each
+    side is tested independently against own_team.json above.
   */}}
-  <td class="fixture-col-match">{{ if $homeIsGreatLever }}<strong><span aria-hidden="true">{{ $homeInitials }}</span><span class="visually-hidden">{{ $homeTeamName }}</span></strong>{{ else }}{{ $homeTeamName }}{{ end }} v {{ if $awayIsGreatLever }}<strong><span aria-hidden="true">{{ $awayInitials }}</span><span class="visually-hidden">{{ $awayTeamName }}</span></strong>{{ else }}{{ $awayTeamName }}{{ end }}</td>
+  <td class="fixture-col-home">{{ if $homeIsGreatLever }}<strong><span class="team-abbr" aria-hidden="true">{{ $homeInitials }}</span><span class="team-full">{{ $homeTeamName }}</span></strong>{{ else }}{{ $homeTeamName }}{{ end }}</td>
+  <td class="fixture-col-away">{{ if $awayIsGreatLever }}<strong><span class="team-abbr" aria-hidden="true">{{ $awayInitials }}</span><span class="team-full">{{ $awayTeamName }}</span></strong>{{ else }}{{ $awayTeamName }}{{ end }}</td>
   <td class="fixture-result">
     {{ if $isPlayed }}
     {{/*
@@ -200,13 +205,12 @@
 {{ if $isPlayed }}
 <tr class="fixture-detail-row">
   {{/*
-    colspan="5" now, matching the colgroup's new 5-column total (Part
-    3) rather than the old 4 — a lone spanning cell like this one gets
-    clamped to however many columns are actually rendered at a given
-    breakpoint (3 on mobile, 4 on desktop) if it names more than that,
-    per the HTML table-model-forming algorithm, so this stays correct
-    at both without needing a breakpoint-specific value.
+    colspan="4", matching the colgroup's four columns exactly at every
+    width — back from the 5 the merged Match column briefly needed.
+    Keeping these two numbers equal is not cosmetic: a colspan naming
+    MORE columns than the table actually renders is what triggered the
+    fixed-layout column-width bug that merge was reverted for.
   */}}
-  <td colspan="5">{{ partial "fixture-boards.html" $page }}</td>
+  <td colspan="4">{{ partial "fixture-boards.html" $page }}</td>
 </tr>
 {{ end }}
